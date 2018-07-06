@@ -1,0 +1,8 @@
+
+.htaccess
+php_error.log
+web.config
+framework/config.inc.php
+upload/*
+log/*
+*.log

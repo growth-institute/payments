@@ -1,0 +1,19 @@
+#payment-form #card-element {
+
+	margin-bottom: 10px;
+	border: 1px solid #DDDDDD;
+	border-radius: 4px;
+	padding: 10px;
+}
+
+#payment-form #card-errors {
+
+	margin-bottom: 10px;
+	color: #CC0000;
+}
+
+#payment-form .form-row label {
+
+	margin-bottom: 10px;
+	display: block;
+}
