@@ -2477,6 +2477,9 @@ h4,
 .action-bar .bar-buttons {
   text-align: right;
 }
+.span {
+  display: none;
+}
 .item-list {
   margin-bottom: 15px;
 }

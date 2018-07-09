@@ -11,7 +11,7 @@
 								<h2 class="bar-title">
 									<a href="#" class="action-button button-back"><i class="fa fa-fw fa-home"></i></a>
 									<span>Dashboard</span>
-								</h2>
+								</h2>	
 							</div>
 						</div>
 					</div>
