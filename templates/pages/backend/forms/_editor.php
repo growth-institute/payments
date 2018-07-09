@@ -16,11 +16,11 @@
 							<?php endif; ?>
 							<div class="form-group">
 								<label for="quantity" class="control-label">Quantity</label>
-								<input type="number" name="quantity" id="quantity" value="<?php sanitized_print($item ? $item->getMeta('quantity') : '');?>" class="form-control input-block">
+								<input type="number" name="quantity" min="1" id="quantity" value="<?php sanitized_print($item ? $item->getMeta('quantity') : '');?>" class="form-control input-block">
 							</div>
 							<div class="form-group">
 								<label for="total" class="control-label">Total</label>
-								<input type="number" name="total" id="total" class="form-control input-block" value="<?php sanitized_print($item ? $item->total : ''); ?>">
+								<input type="number" name="total" id="total" min="1" class="form-control input-block" value="<?php sanitized_print($item ? $item->total : ''); ?>">
 							</div>
 							<div class="form-group">
 								<?php
