@@ -32,9 +32,10 @@ Site = Class.extend({
 
 		
 		$('.js-copy').on('click', function(e) {
+			e.preventDefault();
 			var copy = $('.input').select();
 			document.execCommand("copy");
-			alert("Copied the text: " + $('.input').val());
+			$( '.span' ).css( "display", "inline" ).fadeOut( 2000 );			
 		});
 		
 	}

@@ -50,7 +50,8 @@
 								?>
 											<div class="field">
 												<span class="field-name">Link</span>
-												<span class="field-value"><input type="text" readonly class="input" value="<?php echo('https://payments.growthinstitute.com/form/'.$item->slug); ?>"> <a href="#" class="button button-primary js-copy"><i class="fa fa-fw fa-copy"></i></a></span>
+												<span class="field-value"><input type="text" readonly  class="form-control input" value="<?php echo('https://payments.growthinstitute.com/form/'.$item->slug); ?>"> <a href="#" class="button button-primary js-copy"><i class="fa fa-fw fa-copy"></i></a></span>
+												<span class="span">Text copied!</span>
 											</div>			
 								<?php endif; ?>	
 							</div>
