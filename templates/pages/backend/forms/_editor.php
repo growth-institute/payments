@@ -15,6 +15,10 @@
 								<img class="img-responsive" src="<?php echo($attachment_image->url);?>" alt="image_products">
 							<?php endif; ?>
 							<div class="form-group">
+										<label for="product_image" class="control-label">Product Image</label>
+										<input type="file" name="product_image" id="product_image" class="form-control input-block">
+									</div>
+							<div class="form-group">
 								<label for="quantity" class="control-label">Quantity</label>
 								<input type="number" name="quantity" min="1" id="quantity" value="<?php sanitized_print($item ? $item->getMeta('quantity') : '');?>" class="form-control input-block">
 							</div>
@@ -133,10 +137,7 @@
 										<label for="product_description" class="control-label">Product Description</label>
 										<textarea name="product_description" id="product_description"  class="form-control input-block" rows="10"><?php sanitized_print($item ? $item->getMeta('product_description') : '');?></textarea> 
 									</div>
-									<div class="form-group">
-										<label for="product_image" class="control-label">Product Image</label>
-										<input type="file" name="product_image" id="product_image" class="form-control input-block">
-									</div>
+									
 								</div>
 						</div>
 					</div>
