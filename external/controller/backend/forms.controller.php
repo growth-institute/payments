@@ -216,7 +216,7 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
 				$form->updateMeta('product_image', $attachment->id);
-				$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
+				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}
 		return $response->respond();

@@ -115,7 +115,7 @@
 										</select>
 									</div>
 									<div class="form-group">
-										<label for="time_to_live" class="control-label">Time to live</label>
+										<label for="time_to_live" class="control-label">Time to live in days - leave empty for no limit</label>
 										<input type="text" name="time_to_live" id="time_to_live" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('time_to_live') : ''); ?>">
 									</div>
 									<div class="form-group">
@@ -137,6 +137,10 @@
 									<div class="form-group">
 										<label for="product_image" class="control-label">Product Image</label>
 										<input type="file" name="product_image" id="product_image" class="form-control input-block">
+										<?php 
+											$name_image = isset($attachment_image) ? $attachment_image->name : false;
+											 echo($name_image);
+										?>
 									</div>
 								</div>
 						</div>
