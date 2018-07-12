@@ -87,7 +87,9 @@ class BackendFormsController extends Controller{
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
 				$product_image = $request->files('product_image');
-				$attachment = Attachments::upload($product_image);	
+				$attachment = Attachments::upload($product_image);
+				$periodicity = $request->post('periodicity');
+				$ocurrency = $request->post('ocurrency');	
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -129,6 +131,8 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
 				$form->updateMeta('product_image', $attachment->id);
+				$form->updateMeta('periodicity', $periodicity);
+				$form->updateMeta('ocurrency', $ocurrency);
 		  
 				$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
 			break;
@@ -171,7 +175,7 @@ class BackendFormsController extends Controller{
 				$currency = $request->post('currency');
 				$total = $request->post('total');
 				$subscription = $request->post('subscription');
-				
+
 				//MetaPost
 				$quantity = $request->post('quantity');
 				$extra_seats = $request->post('extra_seats');
@@ -180,6 +184,8 @@ class BackendFormsController extends Controller{
 				$product_description = $request->post('product_description');
 				$product_image = $request->files('product_image');
 				$attachment = Attachments::upload($product_image);
+				$periodicity = $request->post('periodicty');
+				$ocurrency = $request->post('ocurrency');
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('name',$name)
@@ -216,6 +222,8 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
 				$form->updateMeta('product_image', $attachment->id);
+				$form->updateMeta('periodicity', $periodicity);
+				$form->updateMeta('ocurrency', $ocurrency);
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}

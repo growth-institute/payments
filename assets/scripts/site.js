@@ -30,12 +30,38 @@ Site = Class.extend({
 			el.find('li a').first().trigger('click');
 		});
 
-		
+		/**Clipboard function */
 		$('.js-copy').on('click', function(e) {
 			e.preventDefault();
 			var copy = $('.input').select();
 			document.execCommand("copy");
 			$( '.span' ).css( "display", "inline" ).fadeOut( 2000 );			
+		});
+		/**Checking the val yes or no to show and hide inputs */
+		if ($('#subscription').val() == 'Yes') {
+			$('#label_periodicity').css("display","block");
+			$("#periodicity").css("display","block");
+			$('#label_ocurrency').css("display", "block");
+			$('#ocurrency').css("display", "block");
+		} else {
+			$("#label_periodicity").css("display", "none");
+			$("#periodicity").css("display", "none");
+			$('#label_ocurrency').css("display", "none");
+			$('#ocurrency').css("display", "none");
+		}
+		/**Showing elements when the val of subscription change yes/no*/
+		$('#subscription').on('change', function() {
+			if ($('#subscription').val() == 'Yes' ) {
+				$('#label_periodicity').show();
+				$('#periodicity').show();
+				$('#label_ocurrency').show();
+				$('#ocurrency').show();
+			} else {
+				$('#label_periodicity').hide();
+				$('#periodicity').hide();
+				$('#label_ocurrency').hide();
+				$('#ocurrency').hide();
+			}
 		});
 		
 	}

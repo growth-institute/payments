@@ -120,12 +120,26 @@
 									</div>
 									<div class="form-group">
 										<label for="subscription" class="control-label">Subscription</label>
-										<select class="form-control input-block" name="subscription">
+										<select class="form-control input-block" name="subscription" id="subscription">
 											<option disabled selected>Select</option>
-											<option name="Yes"  value="Yes" <?php echo( $item && $item->subscription == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
+											<option name="Yes" id="Yes" value="Yes" <?php echo( $item && $item->subscription == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
 											<option name="No"  value="No" <?php echo( $item && $item->subscription == 'No' ? 'selected="selected"' : ''); ?> >No</option>
 										</select>
 									</div>
+									<div class="form-group">
+										<label for="periodicity"  id="label_periodicity" class="control-label">Periodicity</label>
+										<select name="periodicity" id="periodicity" class="form-control input-block">
+											<option disabled selected>Select</option>
+											<option name="annual" value="annual" <?php echo( $item && $item->getMeta('periodicity') == 'annual' ? 'selected="selected"' : ''); ?> >Annual</option>
+											<option name"monthly" value="monthly" <?php echo( $item && $item->getMeta('periodicity') == 'monthly' ? 'selected="selected"' : ''); ?> >Monthly</option>
+										</select>
+										<!--<input type="text" value="" name="periodicity" id="periodicity" class="form-control input-block">-->																	
+									</div>
+									<div class="form-group">
+										<label for="ocurrency" id="label_ocurrency"class="control-label">Ocurency</label>
+										<input type="text" name="ocurrency" id="ocurrency" value="<?php sanitized_print($item ? $item->getMeta('ocurrency') : ''); ?>" class="form-control input-block">
+									</div>
+
 									<div class="form-group">
 										<label for="thank_you_page" class="control-label">Thank you Page</label>
 										<input type="url" name="thank_you_page" id="thank_you_page" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('thank_you_page') : '');?>">
