@@ -31,7 +31,7 @@
 	$site->registerStyle('print', 'print.css', false, array(), array('media' => 'print') );
 	$site->registerStyle('backend', 'backend.less', false, array('reset', 'google-fonts', 'font-awesome') );
 	$site->enqueueStyle('print');
-	$site->enqueueStyle('backend');
+	//$site->enqueueStyle('backend');
 	//$site->registerScript('site', 'site.js', false);
 	$site->registerScript('backend', 'backend.js', false);
 	$site->registerScript('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js', true);

@@ -184,7 +184,7 @@ class BackendFormsController extends Controller{
 				$product_description = $request->post('product_description');
 				$product_image = $request->files('product_image');
 				$attachment = Attachments::upload($product_image);
-				$periodicity = $request->post('periodicty');
+				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()

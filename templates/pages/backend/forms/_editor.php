@@ -131,15 +131,15 @@
 										<select name="periodicity" id="periodicity" class="form-control input-block">
 											<option disabled selected>Select</option>
 											<option name="annual" value="annual" <?php echo( $item && $item->getMeta('periodicity') == 'annual' ? 'selected="selected"' : ''); ?> >Annual</option>
-											<option name"monthly" value="monthly" <?php echo( $item && $item->getMeta('periodicity') == 'monthly' ? 'selected="selected"' : ''); ?> >Monthly</option>
+											<option name="monthly" value="monthly" <?php echo( $item && $item->getMeta('periodicity') == 'monthly' ? 'selected="selected"' : ''); ?> >Monthly</option>
 										</select>
 										<!--<input type="text" value="" name="periodicity" id="periodicity" class="form-control input-block">-->																	
 									</div>
 									<div class="form-group">
-										<label for="ocurrency" id="label_ocurrency"class="control-label">Ocurency</label>
+										<label for="ocurrency" id="label_ocurrency"class="control-label">Ocurrency</label>
 										<input type="text" name="ocurrency" id="ocurrency" value="<?php sanitized_print($item ? $item->getMeta('ocurrency') : ''); ?>" class="form-control input-block">
+										<div class="help-block" >Zero ocurrency is unlimited</div>
 									</div>
-
 									<div class="form-group">
 										<label for="thank_you_page" class="control-label">Thank you Page</label>
 										<input type="url" name="thank_you_page" id="thank_you_page" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('thank_you_page') : '');?>">
