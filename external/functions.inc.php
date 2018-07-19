@@ -25,7 +25,6 @@
 		'Roboto' => array(400, '400italic',700,'700italic')
 	);
 	$site->registerStyle('google-fonts', get_google_fonts($fonts), true );
-	//$site->registerStyle('chimplate', 'chimplate.css', false );
 	$site->registerStyle('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', true);
 	$site->registerStyle('reset', 'reset.css', false );
 	$site->registerStyle('print', 'print.css', false, array(), array('media' => 'print') );
