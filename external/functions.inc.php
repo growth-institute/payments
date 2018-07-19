@@ -40,6 +40,9 @@
 	$site->registerScript('site', 'site.js', false, array('class'));
 	$site->enqueueScript('site');
 	$site->registerScript('backend', 'backend.js',false);
+	#HRH adds
+	$site->registerScript('jqvalidator', 'jquery.valid4tor.js', false);
+
 
 	# General meta tags
 	$site->addMeta('UTF-8', '', 'charset');
