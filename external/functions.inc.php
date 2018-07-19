@@ -34,11 +34,10 @@
 	$site->enqueueStyle('backend');
 	//$site->registerScript('site', 'site.js', false);
 	$site->registerScript('backend', 'backend.js', false);
+	$site->registerScript('jqvalidator', 'jquery.valid4tor.js', false); 
 	$site->registerScript('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js', true);
 	$site->registerScript('underscore', 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js', true);
-	$site->registerScript('class', 'class.js', false, array('jquery', 'underscore'));
-	#HRH adds
-	$site->registerScript('jqvalidator', 'jquery.valid4tor.js', true); 
+	$site->registerScript('class', 'class.js', false, array('jquery', 'underscore', 'jqvalidator'));
 	$site->registerScript('site', 'site.js', false, array('class'));
 	$site->enqueueScript('site');
 	$site->registerScript('backend', 'backend.js',false);
