@@ -41,7 +41,7 @@
 	$site->enqueueScript('site');
 	$site->registerScript('backend', 'backend.js',false);
 	#HRH adds
-	$site->registerScript('jqvalidator', 'jquery.valid4tor.js', false);
+	$site->registerScript('jqvalidator', 'jquery.valid4tor.js', false); 
 
 
 	# General meta tags
