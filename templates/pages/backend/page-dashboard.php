@@ -1,8 +1,6 @@
 <?php $this->partial('header-html'); ?>
 	<?php $this->partial('header'); ?>
-
 		<section class="section section-dashboard">
-
 			<div class="action-bar">
 				<div class="inner">
 					<div class="margins-horz">
@@ -11,7 +9,7 @@
 								<h2 class="bar-title">
 									<a href="#" class="action-button button-back"><i class="fa fa-fw fa-home"></i></a>
 									<span>Dashboard</span>
-								</h2>	
+								</h2>
 							</div>
 						</div>
 					</div>
@@ -79,8 +77,6 @@
 					</div>
 				</div>
 			</div>
-
 		</section>
-
 	<?php $this->partial('footer'); ?>
 <?php $this->partial('footer-html'); ?>
