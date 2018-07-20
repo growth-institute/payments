@@ -30,6 +30,11 @@
 			return static::$instance;
 		}
 
+		static function init() {
+			global $site;
+			$site->enqueueStyle('site');
+		}
+
 		protected function __construct() {
 			global $site;
 			#
@@ -48,6 +53,7 @@
 			#
 			$request = $site->getRequest();
 			$response = $site->getResponse();
+			Payments::init();
 			#
 			$params = [];
 			$params['pdoargs'] = ['fetch_metas'];
@@ -123,6 +129,7 @@
 			#
 			$request = $site->getRequest();
 			$response = $site->getResponse();
+			Payments::init();
 			#
 			$req_order = get_item($args, 1);
 			$order = PaymentsOrders::getByUid($req_order);
