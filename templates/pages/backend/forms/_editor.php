@@ -27,9 +27,9 @@
 								$obj = isset($item) ? json_decode($item->processor) : false;
 							?>
 							<label for="processor" class="control-label">Processor</label>
-							<label><input type="checkbox" name="processor[]" id="processor" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control">PayPal</label>
-							<label><input type="checkbox" name="processor[]" id="processor" value="Stripe" <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control">Stripe</label>
-							<label><input type="checkbox" name="processor[]" id="processor" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control">Conekta</label>
+							<label><input type="checkbox" name="processor[]" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control">PayPal</label>
+							<label><input type="checkbox" name="processor[]" value="Stripe" <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control">Stripe</label>
+							<label><input type="checkbox" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control">Conekta</label>
 						</div>
 						<div class="form-group">
 							<label for="currency" class="control-label">Currency</label>
@@ -70,7 +70,7 @@
 					<a href="#tab-two">Additional Information</a>
 				</li>
 				<li>
-					<a href="#tab-three">Conekta</a>
+					<a href="#tab-three">Installments</a>
 				</li>
 			</ul>
 			<div class="tabs tabs-border">
@@ -113,8 +113,8 @@
 									<label for="extra_seats" class="control-label">Extra Seats</label>
 									<select class="form-control input-block" name="extra_seats">
 										<option disabled selected>Select</option>
-										<option name="Yes"  value="Yes" <?php echo( $item && $item->getMeta('extra_seats') == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
-										<option name="No"  value="No" <?php echo( $item && $item->getMeta('extra_seats') == 'No' ? 'selected="selected"' : ''); ?> >No</option>
+										<option value="Yes" <?php echo( $item && $item->getMeta('extra_seats') == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
+										<option value="No" <?php echo( $item && $item->getMeta('extra_seats') == 'No' ? 'selected="selected"' : ''); ?> >No</option>
 									</select>
 								</div>
 								<div class="form-group">
@@ -123,17 +123,17 @@
 								</div>
 								<div class="form-group">
 									<label for="subscription" class="control-label">Subscription</label>
-									<select class="form-control input-block" name="subscription" id="subscription">
-										<option disabled selected>Select</option>
-										<option name="Yes" id="Yes" value="Yes" <?php echo( $item && $item->subscription == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
-										<option name="No"  value="No" <?php echo( $item && $item->subscription == 'No' ? 'selected="selected"' : ''); ?> >No</option>
+									<select class="form-control input-block js-toggle-periodicity" name="subscription" id="subscription">
+										<option value="">No</option>
+										<option value="Yes" <?php echo( $item && $item->subscription == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
 									</select>
 								</div>
-								<div id="periodicity-group">
+								<div class="hide" id="periodicity-group">
 									<div class="form-group">
 										<label for="periodicity"  id="label_periodicity" class="control-label">Periodicity</label>
 										<select name="periodicity" id="periodicity" class="form-control input-block">
 											<option disabled selected>Select</option>
+
 											<option name="monthly" value="monthly" <?php echo( $item && $item->getMeta('periodicity') == 'monthly' ? 'selected="selected"' : ''); ?> >Monthly</option>
 											<option name="3_months" value="3_months" <?php echo( $item && $item->getMeta('periodicity') == '3_months' ? 'selected="slected"' : ''); ?> >Every 3 months</option>
 											<option name="6_months" value="6_months" <?php echo( $item && $item->getMeta('periodicity') == '6_months' ? 'selected="selected"' : ''); ?> >Every 6 months</option>
@@ -166,11 +166,18 @@
 					</div>
 				</div>
 				<div class="tab" id="tab-three">
-					<div class="metabox">
-						<div class="metabox-header">Conekta</div>
+					<div class="metabox hide" id="metabox-installment">
+						<div class="metabox-header">Installments</div>
 							<div class="metabox-body">
 								<div class="form-group">
-									<label>TabConekta</label>
+									<label class="control-label">Select your payment option: </label>
+									<?php
+										$installments = isset($item) ? $item->getMeta('installments') : false;
+									?>
+									<label class="control-label"><input class="form-control" type="checkbox" name="installments[]" value="3" <?php echo( $installments && in_array('3',$installments) ? 'checked="checked"' : ''); ?> >Every 3 months</label>
+									<label class="control-label"><input type="checkbox" class="form-control" name="installments[]" value="6" <?php echo( $installments && in_array('6', $installments) ? 'checked="checked"' : ''); ?> >Every 6 months</label>
+									<label class="control-label"><input type="checkbox" class="form-control" name="installments[]" value="9" <?php echo( $installments && in_array('9', $installments) ? 'checked="checked"' : ''); ?>>Every 9 months</label>
+									<label class="control-label"><input type="checkbox" class="form-control" name="installments[]" value="12" <?php echo( $installments && in_array('12', $installments) ? 'checked="checked"' : '' );?> >Every 12 months</label>
 								</div>
 							</div>
 					</div>

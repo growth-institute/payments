@@ -12,8 +12,24 @@ Site = Class.extend({
 			obj.onDomReady($);
 		});
 	},
+	showPeriodicity: function(val) {
+		if ( val ) {
+			$('#periodicity-group').removeClass('hide');
+		} else {
+			$('#periodicity-group').addClass('hide');
+		}
+	},
+	installments: function(val) {
+
+		if (val){
+			$('#metabox-installment').removeClass('hide');
+		} else {
+			$('#metabox-installment').addClass('hide');
+		}
+	},
 	onDomReady: function($) {
 		var obj = this;
+		
 		// Tabs Miniplugin
 		$('.tab-list li a').on('click', function(e) {
 			e.preventDefault();
@@ -28,46 +44,27 @@ Site = Class.extend({
 			var el = $(this);
 			el.find('li a').first().trigger('click');
 		});
-
 		/**Clipboard function */
+		$('.span').css("display","none");
 		$('.js-copy').on('click', function(e) {
 			e.preventDefault();
 			var copy = $('.input').select();
 			document.execCommand("copy");
 			$( '.span' ).css( "display", "inline" ).fadeOut( 2000 );
 		});
-		/**Checking the val yes or no to show and hide inputs */
-		if ($('#subscription').val() == 'Yes') {
-			$('#label_periodicity').css("display","block");
-			$("#periodicity").css("display","block");
-			$('#label_ocurrency').css("display", "block");
-			$('#ocurrency').css("display", "block");
-			$('#ocurrency_message').css("display","block");
-		} else {
-			$("#label_periodicity").css("display", "none");
-			$("#periodicity").css("display", "none");
-			$('#label_ocurrency').css("display", "none");
-			$('#ocurrency').css("display", "none");
-			$('#ocurrency_message').css("display", "none");
-		}
-		/**Showing elements when the val of subscription change yes/no*/
-		$('#subscription').on('change', function() {
-			if ($('#subscription').val() == 'Yes' ) {
-				$('#label_periodicity').show();
-				$('#periodicity').show();
-				$('#label_ocurrency').show();
-				$('#ocurrency').show();
-				$('#ocurrency').val('0');
-				$('#ocurrency_message').show();
-			} else {
-				$('#label_periodicity').hide();
-				$('#periodicity').hide();
-				$('#label_ocurrency').hide();
-				$('#ocurrency').hide();
-				$('#ocurrency_message').hide();
-			}
-		});
-		
+		//set default 0 value in ocurrency
+		$('#ocurrency').val('0');
+		//call function show periodicty
+		$('.js-toggle-periodicity').on('click', function() {
+			var el = $(this),
+				val = el.val();
+			obj.showPeriodicity(val);
+		}).trigger('change');
+		$('#conekta:checked').on('change', function(){
+			var el = $(this),
+				val = el.val();
+			obj.installments(val);
+		}).trigger('change');
 	}
 });
 

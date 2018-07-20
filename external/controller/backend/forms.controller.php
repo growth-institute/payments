@@ -88,7 +88,9 @@ class BackendFormsController extends Controller{
 				$product_image = $request->files('product_image');
 				$attachment = Attachments::upload($product_image);
 				$periodicity = $request->post('periodicity');
-				$ocurrency = $request->post('ocurrency');	
+				$ocurrency = $request->post('ocurrency');
+				$installments = $request->post('installments');
+
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -132,6 +134,7 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('product_image', $attachment->id);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
+				$form->updateMeta('installments', $installments);
 
 				$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
 			break;
@@ -185,6 +188,7 @@ class BackendFormsController extends Controller{
 				$attachment = Attachments::upload($product_image);
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
+				$installments = $request->post('installments');
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('name',$name)
@@ -223,6 +227,7 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('product_image', $attachment->id);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
+				$form->updateMeta('installments', $installments);
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}
