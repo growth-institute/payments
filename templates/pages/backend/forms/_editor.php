@@ -141,6 +141,7 @@
 										</select>
 									</div>
 									<div class="form-group">
+
 										<label for="ocurrency" id="label_ocurrency"class="control-label">Ocurrency</label>
 										<input type="number" min="0" name="ocurrency" id="ocurrency" value="<?php sanitized_print($item ? $item->getMeta('ocurrency') : ''); ?>" class="form-control input-block">
 										<div class="help-block" id="ocurrency_message">Zero ocurrency is unlimited</div>
