@@ -10,7 +10,7 @@
 			global $site;
 			$data = [];
 			$data['form'] = $form;
-			$site->partial('payments/form-conekta');
+			$site->partial('payments/form-conekta', $data);
 		}
 
 		function includeDependencies($form) {
