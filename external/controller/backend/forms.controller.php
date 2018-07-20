@@ -54,7 +54,6 @@ class BackendFormsController extends Controller{
 			
 			$site->render('backend/forms/page-index', $data);
 			return $response->respond();
-		
 	}
 	function newAction(){
 		global $site;
@@ -87,7 +86,9 @@ class BackendFormsController extends Controller{
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
 				$product_image = $request->files('product_image');
-				$attachment = Attachments::upload($product_image);	
+				$attachment = Attachments::upload($product_image);
+				$periodicity = $request->post('periodicity');
+				$ocurrency = $request->post('ocurrency');	
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -102,16 +103,16 @@ class BackendFormsController extends Controller{
 				if(! $validator->isValid() ){
 					//add Flasher class to show errors 
 					Flasher::notice('The following fields are required: ' . implode(', ', $validator->getErrors()));
-					$site->redirectTo($site->urlTo('/backend/forms/new'));  
+					$site->redirectTo($site->urlTo('/backend/forms/new'));
 				}
 				$form = new Form();
 				$form->name = $name;
 				$form->slug = $slug;
 				$explode = explode(',', $products);
 				foreach ($explode as $data) {
-					if($data == ' '){
+					if ($data == ' ') {
 						unset($data);
-					}else{
+					} else {
 						trim($data);
 					}
 				}
@@ -129,7 +130,9 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
 				$form->updateMeta('product_image', $attachment->id);
-		  
+				$form->updateMeta('periodicity', $periodicity);
+				$form->updateMeta('ocurrency', $ocurrency);
+
 				$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
 			break;
 		}
@@ -139,7 +142,7 @@ class BackendFormsController extends Controller{
 		global $site;
 		$request = $site->getRequest();
 		$response = $site->getResponse();
-	
+
 		$this->requireUser();
 
 		$params = array();
@@ -150,7 +153,7 @@ class BackendFormsController extends Controller{
 		if(!$form) {
 			$site->redirectTo( $site->urlTo('/backend/forms/') );
 		}
-	   
+
 		switch($request->type){
 			case 'get':
 			//create an object Flasher to send massage with url
@@ -159,7 +162,7 @@ class BackendFormsController extends Controller{
 				$data['item'] = $form;
 				$data['notice'] = $notice;
 				$site->render('backend/forms/page-edit', $data);
-			   
+				
 			break;
 			case 'post':
 			//getting data post to send them DB
@@ -171,7 +174,7 @@ class BackendFormsController extends Controller{
 				$currency = $request->post('currency');
 				$total = $request->post('total');
 				$subscription = $request->post('subscription');
-				
+
 				//MetaPost
 				$quantity = $request->post('quantity');
 				$extra_seats = $request->post('extra_seats');
@@ -180,6 +183,8 @@ class BackendFormsController extends Controller{
 				$product_description = $request->post('product_description');
 				$product_image = $request->files('product_image');
 				$attachment = Attachments::upload($product_image);
+				$periodicity = $request->post('periodicity');
+				$ocurrency = $request->post('ocurrency');
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('name',$name)
@@ -189,7 +194,7 @@ class BackendFormsController extends Controller{
 				->addRule('processor',$processor)
 				->addRule('currency',$currency)
 				->addRule('total',$total)
-				
+
 				->validate();
 				//check the result
 				if(! $validator->isValid() ){
@@ -216,7 +221,9 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
 				$form->updateMeta('product_image', $attachment->id);
-				$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
+				$form->updateMeta('periodicity', $periodicity);
+				$form->updateMeta('ocurrency', $ocurrency);
+				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}
 		return $response->respond();
@@ -241,7 +248,7 @@ class BackendFormsController extends Controller{
 				//delete data
 				$form->delete();
 				$site->redirectTo($site->urlTo('/backend/forms?msg=230'));
-			 break;
+			break;
 		}
 		return $response->respond();
 	}

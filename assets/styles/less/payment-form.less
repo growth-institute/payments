@@ -1,0 +1,342 @@
+@payment_base_color: #2D67B1;
+
+body {
+
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+	overflow-x: hidden;
+}
+
+section {
+
+	flex: 1;
+}
+
+* {
+
+	font-family: 'Roboto';
+}
+
+.fa {
+
+	font: normal normal normal 14px/1 FontAwesome;
+}
+
+@media (min-width: 1280px) {
+
+	.inner { width: 1280px; }
+}
+
+@media (min-width: @breakpoint_tablet) {
+
+	.wrapper { margin: 0 auto -70px; }
+	& > footer, .push { height: 70px; }
+}
+
+/* Header */
+/* ------------------------------------------------------------------------------------------ */
+
+
+.site-header {
+
+	text-align: center;
+
+	@media (min-width: @breakpoint_tablet) {
+
+		text-align: left;
+	}
+
+	background-color: @payment_base_color;
+
+	img {
+
+		max-width: 200px;
+	}
+}
+
+/* Footer */
+/* ------------------------------------------------------------------------------------------ */
+
+.site-footer {
+
+	text-align: center;
+	background: #252525;
+
+	@media (min-width: @breakpoint_tablet) {
+
+		text-align: left;
+	}
+
+	color: #7E7E7E;
+
+	a {
+
+		color: #7E7E7E;
+		padding: 0 5px;
+
+		&:hover {
+
+			text-decoration: underline;
+		}
+
+		@media (min-width: @breakpoint_tablet) {
+
+			padding: 0 15px;
+		}
+	}
+
+
+	.legal {
+
+		padding: 15px 0;
+	}
+
+	.footer-menu {
+
+		padding: 15px 0;
+		list-style-type: none;
+
+		@media (min-width: @breakpoint_tablet) {
+
+			text-align: right;
+		}
+
+		li {
+
+			list-style-type: none;
+			.inline-block();
+
+			a {
+
+				text-transform: uppercase;
+				display: block;
+				color: white;
+			}
+		}
+	}
+}
+
+/* Content */
+/* ------------------------------------------------------------------------------------------ */
+
+.payment-navigation {
+
+	padding-top: 40px;
+	margin-bottom: 30px;
+
+
+	.menu {
+
+		.cf;
+		background-color: @payment_base_color;
+		border-radius: 5px;
+
+		.menu-item {
+
+			float: left;
+			width: 50%;
+			text-align: center;
+
+			&:first-child {
+
+				background: url('../images/payment-form/menu-divider.jpg') right center no-repeat;
+			}
+
+			a {
+
+				display: block;
+				font-size: 1.2em;
+				padding: 15px 0;
+				color: rgba(255, 255, 255, 0.5);
+				text-transform: uppercase;
+
+				&.active {
+
+					color: white;
+				}
+			}
+		}
+	}
+}
+
+.payment-content {
+
+	margin-bottom: 50px;
+
+	h2 {
+
+		font-size: 1.5em;
+		margin-bottom: 15px;
+	}
+
+	form {
+
+		font-size: 1.2em;
+
+		.form-group {
+
+			margin-bottom: 25px;
+
+			label {
+
+				margin-bottom: 15px;
+			}
+
+			.required {
+
+				color: @payment_base_color;
+			}
+		}
+
+		.input-checkbox {
+
+			font-size: 11px;
+
+			input { float: left; }
+			span {
+
+				display: block;
+				margin-left: 30px;
+			}
+		}
+
+		.cta {
+
+			text-align: center;
+
+			.button {
+
+				margin-bottom: 15px;
+				text-transform: uppercase;
+			}
+		}
+	}
+
+
+	.payment-method {
+
+		text-transform: uppercase;
+		margin-bottom: 30px;
+		font-size: 0.9em;
+		list-style-type: none;
+
+		li {
+
+			.inline-block();
+
+			a {
+
+				color: #555555;
+				padding: 0 20px;
+
+				&:first-child {
+
+					padding-left: 0;
+				}
+
+				&.active {
+
+					color: @payment_base_color;
+					font-weight: bold;
+				}
+			}
+		}
+	}
+
+	.card-element {
+
+		border: 1px solid #DDD;
+		margin-bottom: 30px;
+		padding: 10px;
+		border-radius: 3px;
+	}
+
+	#card-errors {
+
+		margin-bottom: 15px;
+		color: red;
+	}
+
+	.payment-method-container-paypal {
+
+		display: none;
+
+		.cta-paypal {
+
+			display: block;
+			margin: 30px auto;
+
+		}
+	}
+
+	.product-info {
+
+		background-color: #F5F5F5;
+		border-radius: 10px;
+
+		.product-total {
+
+			border-top: 2px solid white;
+			font-size: 1.3em;
+
+
+			.total-total {
+
+				h3 {
+
+					text-transform: uppercase;
+				}
+			}
+
+			.total-prices {
+
+				text-align: right;
+
+				.old-price {
+
+					color: #CECECE;
+					text-decoration: line-through;
+				}
+
+				.new-price {
+
+					font-size: 1.2em;
+					color: @payment_base_color;
+				}
+			}
+		}
+	}
+}
+
+.payment-features {
+
+	padding: 80px 0;
+	background-color: #F5F5F5;
+	text-align: center;
+
+	.feature {
+
+		display: block;
+		margin: 0 auto;
+		line-height: 1.5;
+		max-width: 250px;
+		margin-bottom: 50px;
+
+		img {
+
+			margin-bottom: 10px;
+		}
+
+		h2 {
+
+			font-size: 1.2em;
+			margin-bottom: 10px;
+		}
+	}
+}
+
+.total-extra-seats {
+
+	display: none;
+}
