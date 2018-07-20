@@ -30,6 +30,7 @@
 	$site->registerStyle('reset', 'reset.css', false );
 	$site->registerStyle('print', 'print.css', false, array(), array('media' => 'print') );
 	$site->registerStyle('backend', 'backend.less', false, array('reset', 'google-fonts', 'font-awesome') );
+	$site->registerStyle('site', 'site.less', false, array('reset', 'google-fonts', 'font-awesome') );
 	$site->enqueueStyle('print');
 	//$site->enqueueStyle('backend');
 	//$site->registerScript('site', 'site.js', false);
@@ -72,6 +73,7 @@
 	include $site->baseDir('/external/controller/backend.controller.php');
 	include $site->baseDir('/external/controller/backend/managers.controller.php');
 	include $site->baseDir('/external/controller/backend/forms.controller.php');
+
 	# Models
 	include $site->baseDir('/external/model/attachment.model.php');
 	include $site->baseDir('/external/model/user.model.php');
@@ -87,7 +89,7 @@
 	include $site->baseDir('/external/payments/payments.inc.php');
 
 	$site->payments->enableConnector('hubspot', new HubSpotConnector);
-	
+
 	# Start session
 	//session_start();
 

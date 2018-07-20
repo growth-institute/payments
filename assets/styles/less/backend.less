@@ -209,14 +209,16 @@ h4, .h4 { font-size: 1.25em;  }
 			color: @text_1;
 		}
 
+		&[readonly],
 		&[readonly=readonly] {
 
 			border-color: @border_1;
-			background: @background_2;
+			background: @background_2 !important;
 			color: @text_1;
 			cursor: default;
 		}
 
+		&[disabled],
 		&[disabled=disabled] {
 
 			border-color: @border_1;
@@ -318,9 +320,8 @@ h4, .h4 { font-size: 1.25em;  }
 			display: block;
 			margin-left: 60px;
 		}
-		
 	}
-	
+
 	.bar-buttons {
 
 		text-align: right;

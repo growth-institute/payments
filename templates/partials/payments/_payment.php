@@ -1,5 +1,5 @@
-	<h2>Payment</h2>
-	<ul class="tab-list">
+	<h2>Payment Detail</h2>
+	<ul class="tab-list payment-method">
 		<?php
 			if ($processors):
 				foreach ($processors as $name => $processor):
