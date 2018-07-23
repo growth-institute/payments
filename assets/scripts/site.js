@@ -65,6 +65,22 @@ Site = Class.extend({
 				val = el.val();
 			obj.installments(val);
 		}).trigger('change');
+		//validation forms fronend
+		$('#form-test').on('submit', function() {
+			return $(this).validate({
+				callbacks: {
+					fail: function(field, type, message) {
+						/* An item has failed validation, field has the jQuery object, type is the rule and message its description */
+					},
+					success: function() {
+						/* Everything is OK, continue */
+					},
+					error: function(fields) {
+						/* Missing info! 'fields' is a jQuery object with the offending fields */
+					}
+				}
+			});
+		});
 	}
 });
 
