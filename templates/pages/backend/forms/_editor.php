@@ -15,6 +15,29 @@
 							<img class="img-responsive" src="<?php echo($attachment_image->url);?>" alt="image_products">
 						<?php endif; ?>
 						<div class="form-group">
+								<div class="margins">
+									<form action="" method="post" enctype="multipart/form-data" class="form-upload hide">
+										<input type="file" name="file" id="file" class="hide">
+									</form>
+									<div class="uploader-area" data-input="[name=file]" data-target="process.php">
+										<span class="cue-text">Arrastra tus archivos XML aquí o haz clic para agregarlos manualmente</span>
+									</div>
+									<div class="attachments"></div>
+									<a href="#" class="button button-primary button-block js-clear hide"><i class="fa fa-fw fa-trash"></i> Limpiar lista</a>
+
+									<script type="text/template" id="partial-attachment">
+										<div class="attachment" id="<%= item.uid %>">
+											<span class="attachment-name"><%= item.name %></span>
+											<small class="attachment-size">(<%= (item.size / 1024).toFixed(2) %> KiB)</small>
+											<span class="attachment-percent">0%</span>
+											<div class="attachment-progress">
+												<div class="progress-bar"></div>
+											</div>
+										</div>
+									</script>
+								</div>
+							</div>
+						<div class="form-group">
 							<label for="quantity" class="control-label">Quantity</label>
 							<input type="number" name="quantity" id="quantity" value="<?php sanitized_print($item ? $item->getMeta('quantity') : '');?>" class="form-control input-block">
 						</div>
@@ -22,23 +45,7 @@
 							<label for="total" class="control-label">Total</label>
 							<input type="number" name="total" id="total" class="form-control input-block" value="<?php sanitized_print($item ? $item->total : ''); ?>">
 						</div>
-						<div class="form-group">
-							<?php
-								$obj = isset($item) ? json_decode($item->processor) : false;
-							?>
-							<label for="processor" class="control-label">Processor</label>
-							<label><input type="checkbox" name="processor[]" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control">PayPal</label>
-							<label><input type="checkbox" name="processor[]" value="Stripe" <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control">Stripe</label>
-							<label><input type="checkbox" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control">Conekta</label>
-						</div>
-						<div class="form-group">
-							<label for="currency" class="control-label">Currency</label>
-							<select class="form-control input-block" name="currency">
-								<option selected disabled>Select</option>
-								<option name="usd" value="usd" <?php echo($item && $item->currency == 'usd' ? 'selected="selected"' : ''); ?> >USD</option>
-								<option name="mxn" value="mxn" <?php echo($item && $item->currency == 'mxn' ? 'selected="selected"' : ''); ?> >MXN</option>
-							</select>
-						</div>
+						
 						<div class="form-group">
 							<?php
 								$slug = $item ? $item->slug : false;
@@ -62,6 +69,14 @@
 			</div>
 		</div>
 		<div class="panel-fluid">
+			<div class="form-group">
+				<label for="name" class="control-label">Name</label>
+				<input type="text" name="name" id="email" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->name : ''); ?>">
+			</div>
+			<div class="form-group">
+				<label for="slug" class="control-label">Slug</label>
+				<input type="text" id="login" name="slug" class="form-control input-block" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
+			</div>
 			<ul class="tab-list">
 				<li class="selected">
 					<a href="#tab-one">General Information</a>
@@ -78,14 +93,7 @@
 					<div class="metabox">
 						<div class="metabox-header">Generals</div>
 							<div class="metabox-body">
-								<div class="form-group">
-									<label for="name" class="control-label">Name</label>
-									<input type="text" name="name" id="email" class="form-control input-block" value="<?php sanitized_print($item ? $item->name : ''); ?>">
-								</div>
-									<div class="form-group">
-										<label for="slug" class="control-label">Slug</label>
-										<input type="text" id="login" name="slug" class="form-control input-block" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
-									</div>
+								
 								<div class="form-group">
 									<?php 
 										$decode = isset($item) ? json_decode($item->products) : false;
@@ -101,6 +109,56 @@
 										<option name="English"  value="English" <?php echo( $item && $item->language == 'English' ? 'selected="selected"' :  ''); ?> >English</option>
 										<option name="Spanish"  value="Spanish" <?php echo( $item && $item->language == 'Spanish' ? 'selected="selected"' : ''); ?> >Spanish</option>
 									</select>
+								</div>
+								<div class="form-group">
+								<label for="currency" class="control-label">Currency</label>
+								<select class="form-control input-block" name="currency">
+									<option selected disabled>Select</option>
+									<option name="usd" value="usd" <?php echo($item && $item->currency == 'usd' ? 'selected="selected"' : ''); ?> >USD</option>
+									<option name="mxn" value="mxn" <?php echo($item && $item->currency == 'mxn' ? 'selected="selected"' : ''); ?> >MXN</option>
+								</select>
+								</div>
+								<div class="form-group">
+									<?php
+										$obj = isset($item) ? json_decode($item->processor) : false;
+									?>
+									<label for="processor" class="control-label">Processor</label>
+									<label><input type="checkbox" name="processor[]" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control">PayPal</label>
+									<label><input type="checkbox" name="processor[]" value="Stripe" <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control">Stripe</label>
+									<label><input type="checkbox" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control">Conekta</label>
+								</div>
+								<div class="form-group">
+									<label for="language" class="control-label">Language</label>
+									<select class="form-control input-block" name="language">
+										<option disabled selected>Select</option>
+										<option name="English"  value="English" <?php echo( $item && $item->language == 'English' ? 'selected="selected"' :  ''); ?> >English</option>
+										<option name="Spanish"  value="Spanish" <?php echo( $item && $item->language == 'Spanish' ? 'selected="selected"' : ''); ?> >Spanish</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="subscription" class="control-label">Subscription</label>
+									<select class="form-control input-block js-toggle-periodicity" name="subscription" id="subscription">
+										<option value="">No</option>
+										<option value="Yes" <?php echo( $item && $item->subscription == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
+									</select>
+								</div>
+								<div class="hide" id="periodicity-group">
+									<div class="form-group">
+										<label for="periodicity"  id="label_periodicity" class="control-label">Periodicity</label>
+										<select name="periodicity" id="periodicity" class="form-control input-block">
+											<option disabled selected>Select</option>
+
+											<option name="monthly" value="monthly" <?php echo( $item && $item->getMeta('periodicity') == 'monthly' ? 'selected="selected"' : ''); ?> >Monthly</option>
+											<option name="3_months" value="3_months" <?php echo( $item && $item->getMeta('periodicity') == '3_months' ? 'selected="slected"' : ''); ?> >Every 3 months</option>
+											<option name="6_months" value="6_months" <?php echo( $item && $item->getMeta('periodicity') == '6_months' ? 'selected="selected"' : ''); ?> >Every 6 months</option>
+											<option name="annual" value="annual" <?php echo( $item && $item->getMeta('periodicity') == 'annual' ? 'selected="selected"' : ''); ?> >Annual</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="ocurrency" id="label_ocurrency"class="control-label">Ocurrency</label>
+										<input type="number" min="0" name="ocurrency" id="ocurrency" value="<?php sanitized_print($item ? $item->getMeta('ocurrency') : ''); ?>" class="form-control input-block">
+										<div class="help-block" id="ocurrency_message">Zero ocurrency is unlimited</div>
+									</div>
 								</div>
 							</div>
 					</div>
