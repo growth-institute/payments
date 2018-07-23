@@ -69,6 +69,14 @@
 			</div>
 		</div>
 		<div class="panel-fluid">
+			<div class="form-group">
+				<label for="name" class="control-label">Name</label>
+				<input type="text" name="name" id="email" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->name : ''); ?>">
+			</div>
+			<div class="form-group">
+				<label for="slug" class="control-label">Slug</label>
+				<input type="text" id="login" name="slug" class="form-control input-block" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
+			</div>
 			<ul class="tab-list">
 				<li class="selected">
 					<a href="#tab-one">General Information</a>
@@ -85,14 +93,7 @@
 					<div class="metabox">
 						<div class="metabox-header">Generals</div>
 							<div class="metabox-body">
-								<div class="form-group">
-									<label for="name" class="control-label">Name</label>
-									<input type="text" name="name" id="email" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->name : ''); ?>">
-								</div>
-									<div class="form-group">
-										<label for="slug" class="control-label">Slug</label>
-										<input type="text" id="login" name="slug" class="form-control input-block" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
-									</div>
+								
 								<div class="form-group">
 									<?php 
 										$decode = isset($item) ? json_decode($item->products) : false;
@@ -135,11 +136,29 @@
 									</select>
 								</div>
 								<div class="form-group">
-								<label>Suscription<input type="checkbox" name="Suscription" id="suscription" value="" class="form-control"></label>
+									<label for="subscription" class="control-label">Subscription</label>
+									<select class="form-control input-block js-toggle-periodicity" name="subscription" id="subscription">
+										<option value="">No</option>
+										<option value="Yes" <?php echo( $item && $item->subscription == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
+									</select>
 								</div>
-								<div class="form-group">
-								<label for="ocurrency" >Ocurrency<input type="number" name="ocurrency" id="ocurrency" min="0" class="form-control" value="<?php sanitized_print($item ? $item->total : ''); ?>"></label>
-								<label for="periodicity" class="">Periodicity<input type="number" name="periodicity" min="0" id="periodicity" min="1" class="form-control" value="<?php sanitized_print($item ? $item->total : ''); ?>"></label>
+								<div class="hide" id="periodicity-group">
+									<div class="form-group">
+										<label for="periodicity"  id="label_periodicity" class="control-label">Periodicity</label>
+										<select name="periodicity" id="periodicity" class="form-control input-block">
+											<option disabled selected>Select</option>
+
+											<option name="monthly" value="monthly" <?php echo( $item && $item->getMeta('periodicity') == 'monthly' ? 'selected="selected"' : ''); ?> >Monthly</option>
+											<option name="3_months" value="3_months" <?php echo( $item && $item->getMeta('periodicity') == '3_months' ? 'selected="slected"' : ''); ?> >Every 3 months</option>
+											<option name="6_months" value="6_months" <?php echo( $item && $item->getMeta('periodicity') == '6_months' ? 'selected="selected"' : ''); ?> >Every 6 months</option>
+											<option name="annual" value="annual" <?php echo( $item && $item->getMeta('periodicity') == 'annual' ? 'selected="selected"' : ''); ?> >Annual</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="ocurrency" id="label_ocurrency"class="control-label">Ocurrency</label>
+										<input type="number" min="0" name="ocurrency" id="ocurrency" value="<?php sanitized_print($item ? $item->getMeta('ocurrency') : ''); ?>" class="form-control input-block">
+										<div class="help-block" id="ocurrency_message">Zero ocurrency is unlimited</div>
+									</div>
 								</div>
 							</div>
 					</div>
