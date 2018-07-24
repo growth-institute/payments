@@ -70,7 +70,10 @@
 					<a href="#tab-two">Additional Information</a>
 				</li>
 				<li>
-					<a href="#tab-three">Installments</a>
+					<a href="#tab-three" class="hide" id="tab-installment">Installments</a>
+				</li>
+				<li>
+					<a href="#tab-four"></a>
 				</li>
 			</ul>
 			<div class="tabs tabs-border">
@@ -128,7 +131,7 @@
 										<option value="Yes" <?php echo( $item && $item->subscription == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
 									</select>
 								</div>
-								<div class="hide" id="periodicity-group">
+								<div id="periodicity-group">
 									<div class="form-group">
 										<label for="periodicity"  id="label_periodicity" class="control-label">Periodicity</label>
 										<select name="periodicity" id="periodicity" class="form-control input-block">
@@ -166,7 +169,7 @@
 					</div>
 				</div>
 				<div class="tab" id="tab-three">
-					<div class="metabox hide" id="metabox-installment">
+					<div class="metabox" >
 						<div class="metabox-header">Installments</div>
 							<div class="metabox-body">
 								<div class="form-group">
@@ -181,6 +184,9 @@
 								</div>
 							</div>
 					</div>
+				</div>
+				<div class="tab" id="tab-four">
+					
 				</div>
 			</div>
 		</div>

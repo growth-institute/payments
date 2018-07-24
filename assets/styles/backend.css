@@ -2695,7 +2695,7 @@ ul.tab-list > li.selected > a {
 .backend-page-login,
 .backend-setup,
 .page-error {
-  background: #081e30 url('http://127.0.0.1/webchimp/clientes/ggi/payment-forms/payments/assets/less/images/template/bg-night.png') center top no-repeat;
+  background: #081e30 url('http://localhost/payment/assets/less/images/template/bg-night.png') center top no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;

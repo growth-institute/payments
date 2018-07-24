@@ -2329,7 +2329,7 @@ section {
   text-align: center;
 }
 .payment-navigation .menu .menu-item:first-child {
-  background: url('http://127.0.0.1/webchimp/clientes/ggi/payment-forms/payments/assets/images/payment-form/menu-divider.jpg') right center no-repeat;
+  background: url('http://localhost/payment/assets/images/payment-form/menu-divider.jpg') right center no-repeat;
 }
 .payment-navigation .menu .menu-item a {
   display: block;

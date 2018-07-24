@@ -13,18 +13,17 @@ Site = Class.extend({
 		});
 	},
 	showPeriodicity: function(val) {
-		if ( val ) {
+		if (val) {
 			$('#periodicity-group').removeClass('hide');
 		} else {
 			$('#periodicity-group').addClass('hide');
 		}
 	},
 	installments: function(val) {
-
 		if (val){
-			$('#metabox-installment').removeClass('hide');
+			$('#tab-installment').removeClass('hide');
 		} else {
-			$('#metabox-installment').addClass('hide');
+			$('#tab-installment').addClass('hide');
 		}
 	},
 	onDomReady: function($) {
@@ -55,7 +54,7 @@ Site = Class.extend({
 		//set default 0 value in ocurrency
 		$('#ocurrency').val('0');
 		//call function show periodicty
-		$('.js-toggle-periodicity').on('click', function() {
+		$('.js-toggle-periodicity').on('change', function() {
 			var el = $(this),
 				val = el.val();
 			obj.showPeriodicity(val);

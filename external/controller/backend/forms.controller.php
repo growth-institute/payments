@@ -6,13 +6,28 @@ class BackendFormsController extends Controller{
 	function getSubControllerName($base_name){
 		return "BackendForms{$base_name}";
 	}
+
+	function slugCheckAction() {
+		global $site;
+		$request = $site->getRequest();
+		$response = $site->getResponse();
+		$dbh = $site->getDatabase();
+		$slug = $request->post('slug');
+		$data = $dbh->prepare("SELECT slug FROM payments_form WHERE slug = '$slug'");
+		//$data = Forms::getBySlug($slug);
+		$data->execute();
+		if ($data->rowCount() > 0) {
+			echo "This slug already exist";
+		}
+		return $response->ajaxRespond('success');
+	}
+
 	function indexAction(){
 		global $site;
 			$request = $site->getRequest();
 			$response = $site->getResponse();
 			
 			$this->requireUser();
-			
 			$dbh = $site->getDatabase();
 			
 			$search = $request->param('search', '');
@@ -55,11 +70,11 @@ class BackendFormsController extends Controller{
 			$site->render('backend/forms/page-index', $data);
 			return $response->respond();
 	}
+
 	function newAction(){
 		global $site;
 		$request = $site->getRequest();
 		$response = $site->getResponse();
-		
 		$this->requireUser();
 		switch ($request->type) {
 			case 'get':
@@ -90,7 +105,6 @@ class BackendFormsController extends Controller{
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				$installments = $request->post('installments');
-
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -135,12 +149,12 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);
-
 				$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
 			break;
 		}
 		return $response->respond();
 	}
+
 	function editAction($id){
 		global $site;
 		$request = $site->getRequest();
@@ -156,7 +170,6 @@ class BackendFormsController extends Controller{
 		if(!$form) {
 			$site->redirectTo( $site->urlTo('/backend/forms/') );
 		}
-
 		switch($request->type){
 			case 'get':
 			//create an object Flasher to send massage with url
@@ -233,6 +246,7 @@ class BackendFormsController extends Controller{
 		}
 		return $response->respond();
 	}
+
 	function deleteAction($id){
 		global $site;
 		$request = $site->getRequest();
@@ -258,4 +272,5 @@ class BackendFormsController extends Controller{
 		return $response->respond();
 	}
 }
+
 ?>
