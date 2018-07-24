@@ -12,5 +12,6 @@
 	<link rel="apple-touch-icon" sizes="114x114" href="<?php $site->img('branding/favicon-lg.png'); ?>" />
 	<!-- Stylesheets -->
 	<?php $site->includeStyles(); ?>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
 </head>
 <body class="<?php $site->bodyClass() ?>">
