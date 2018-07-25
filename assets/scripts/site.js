@@ -107,7 +107,7 @@ Site = Class.extend({
 				res= 'truemxn2';
 				//alert("Not a valid character");
 			}
-			else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' &&  ) {
+			else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
 				$('#conekta', '#PayPal').attr('disabled', true);
 				console.log('mxn sin suscr');
 				res= 'truemxn';
