@@ -88,7 +88,7 @@
 					<a href="#tab-three" class="hide" id="tab-installment">Installments</a>
 				</li>
 				<li>
-					<a href="#tab-four"></a>
+					<a href="#tab-four">Discounts</a>
 				</li>
 			</ul>
 			<div class="tabs tabs-border">
@@ -245,7 +245,51 @@
 					</div>
 				</div>
 				<div class="tab" id="tab-four">
-					
+					<div class="metabox">
+						<div class="metabox-header">Discounts</div>
+							<div class="metabox-body">
+								<div class="repeater repeater-discount" data-partial="#partial-repeater-discount">
+									<div class="repeater-items">
+									</div>
+									<div class="repeater-actions">
+										<a href="#" class="button button-primary js-repeater-add">Add</a>
+									</div>
+									<script type="text/template" id="partial-repeater-discount">
+										<div class="repeater-item">
+											<div class="item-grip">
+												<div class="grip-number"><span><%= number %></span></div>
+											</div>
+											<div class="item-actions">
+												<a href="#" class="item-action action-insert js-repeater-insert"><i class="fa fa-plus"></i></a>
+												<a href="#" class="item-action action-delete js-repeater-delete"><i class="fa fa-minus"></i></a>
+											</div>
+											<div class="item-controls">
+												<div class="row row-md row-5">
+													<div class="col col-md-4 ">
+														<div class="form-group">
+															<label for="range_<%= number %>" class="control-label">Range</label>
+															<input type="text" name="range[]" id="range_<%= number %>" class="form-control input-block" value="">
+														</div>
+													</div>
+													<div class="col col-md-4">
+														<div class="form-group">
+															<label for="val_<%= number %>" class="control-label">val</label>
+															<input type="text" name="val[]" id="val_<%= number %>" class="form-control input-block" value="">
+														</div>
+													</div>
+													<div class="col col-md-4">
+														<div class="form-group">
+															<label for="type_<%= number %>" class="control-label">Type</label>
+															<input type="text" name="type[]" id="type_<%= number %>" class="form-control input-block" value="">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</script>
+								</div>
+							</div>
+					</div>
 				</div>
 			</div>
 		</div>

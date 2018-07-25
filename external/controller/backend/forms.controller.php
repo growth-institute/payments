@@ -26,10 +26,9 @@ class BackendFormsController extends Controller{
 		global $site;
 			$request = $site->getRequest();
 			$response = $site->getResponse();
-			
+
 			$this->requireUser();
 			$dbh = $site->getDatabase();
-			
 			$search = $request->param('search', '');
 			$search_products = $request->param('search_products', '');
 			$search_language = $request->param('language', '');
@@ -66,7 +65,7 @@ class BackendFormsController extends Controller{
 			$data['search_currency'] = $search_currency;
 			$data['search_subscription'] = $search_subscription;
 			$data['show'] = $show;
-			
+			//redirect url to page index 
 			$site->render('backend/forms/page-index', $data);
 			return $response->respond();
 	}
@@ -105,6 +104,9 @@ class BackendFormsController extends Controller{
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				$installments = $request->post('installments');
+				$range = $request->post('range');
+				$val = $request->post('val');
+				$type = $request->post('type');
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -149,6 +151,9 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);
+				$form->updateMeta('range', $range);
+				$form->updateMeta('val', $val);
+				$form->updateMeta('type', $type);
 				$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
 			break;
 		}
@@ -211,7 +216,6 @@ class BackendFormsController extends Controller{
 				->addRule('processor',$processor)
 				->addRule('currency',$currency)
 				->addRule('total',$total)
-
 				->validate();
 				//check the result
 				if(! $validator->isValid() ){

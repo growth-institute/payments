@@ -80,6 +80,64 @@ Site = Class.extend({
 				}
 			});
 		});
+		$('.repeater').on('click', '.js-repeater-insert', function(e) {
+			var el = $(this),
+				item = el.closest('.repeater-item'),
+				items = el.closest('.repeater-items'),
+				repeater = item.closest('.repeater'),
+				template = repeater.data('template'),
+				number = items.find('.repeater-item').length + 1;
+			e.preventDefault();
+			if (! template ) {
+				template = _.template( $( repeater.data('partial') ).html() || '<div>Template not found</div>' );
+				repeater.data('template', template);
+			}
+			var newRow = $( template({ number: number }) );
+			newRow.hide();
+			item.before(newRow);
+			items.find('.repeater-item').each(function(index) {
+				var row = $(this);
+				row.find('.grip-number > span').text(index + 1);
+			});
+			newRow.fadeIn();
+			//obj.codeMirrorInit( newRow.find('.codemirror') );
+		});
+		
+		$('.repeater').on('click', '.js-repeater-delete', function(e) {
+			var el = $(this),
+				item = el.closest('.repeater-item'),
+				items = el.closest('.repeater-items'),
+				repeater = item.closest('.repeater');
+			e.preventDefault();
+			item.fadeOut(function() {
+				$(this).remove();
+				items.find('.repeater-item').each(function(index) {
+					var row = $(this);
+					row.find('.grip-number > span').text(index + 1);
+				});
+			});
+		});
+		
+		$('.repeater').on('click', '.js-repeater-add', function(e) {
+			var el = $(this),
+				repeater = el.closest('.repeater'),
+				items = repeater.find('.repeater-items'),
+				template = repeater.data('template'),
+				number = items.find('.repeater-item').length + 1;
+			e.preventDefault();
+			if (! template ) {
+				template = _.template( $( repeater.data('partial') ).html() || '<div>Template not found</div>' );
+				repeater.data('template', template);
+			}
+			var newRow = $( template({ number: number }) );
+			newRow.hide();
+			items.append(newRow);
+			items.find('.repeater-item').each(function(index) {
+				var row = $(this);
+				row.find('.grip-number > span').text(index + 1);
+			});
+			newRow.fadeIn();
+		});
 	}
 });
 
