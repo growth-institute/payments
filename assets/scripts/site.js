@@ -80,6 +80,115 @@ Site = Class.extend({
 				}
 			});
 		});
+		//processors conditionals
+		var res = '';
+		function processors(){
+			
+			if ($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
+				console.log('usd con suscr');
+				res= 'true';
+				$('#conekta', '#PayPal').attr('disabled', true);
+				//alert("Not a valid character");
+			}
+			else if($('#currency').val() == 'usd' && $('#subscription').val() == '' ) {
+				$('#conekta').attr('disabled', true);
+				console.log('usd sin suscr');
+				res= 'true2';
+				//alert("Not a valid character");
+			}
+			else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
+				console.log('mxn sin suscr');
+				res= 'truemxn';
+				//alert("Not a valid character");
+			}
+			else if($('#currency').val() == 'mxn' && $('#subscription').val() == 'Yes' ) {
+				$('#conekta', '#PayPal').attr('disabled', true);
+				console.log('mxn con suscr');
+				res= 'truemxn2';
+				//alert("Not a valid character");
+			}
+			else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' &&  ) {
+				$('#conekta', '#PayPal').attr('disabled', true);
+				console.log('mxn sin suscr');
+				res= 'truemxn';
+				//alert("Not a valid character");
+			}
+			else {
+				res= 'invalid';
+			}
+		}	
+		processors();
+		$('#subscription').change( function() {
+			processors();
+			//processors(res);
+			console.log(res);
+		});
+		$('#currency').change( function() {
+			processors();
+			console.log(res);
+		});
+
+		//Loadzilla
+		$('.uploader-area').each(function() {
+			var el = $(this),
+				target = el.data('target'),
+				attachments = el.next('.attachments'),
+				attachment = _.template( $('#partial-attachment').html() ),
+				loadzilla = new LoadzillaLite();
+	
+			// Existing buttons
+			attachments.find('.js-remove').on('click', function(e) {
+				e.preventDefault();
+				var el = $(this);
+				el.closest('.attachment').fadeOut(function() {
+					$(this).remove();
+				});
+			});
+			// Initialize Loadzilla instance
+			loadzilla.init({
+				element: el,
+				target: target,
+				callbacks: {
+					start: function(item) {
+						attachments.html( attachment({ item: item }) );
+					},
+					progress: function(item, percent) {
+						var attachment = $('#' + item.uid);
+						attachment.find('.attachment-percent').text(percent + '%');
+						attachment.find('.attachment-progress .progress-bar').css('width', percent + '%');
+					},
+					complete: function(item, response) {
+	
+						var attachment = $('#' + item.uid),
+							buttonRemove = $('<a class="attachment-remove js-remove" href="#">Remove</a>'),
+							status = '';
+						attachment.find('.attachment-percent').fadeOut();
+						attachment.find('.attachment-progress .progress-bar').fadeOut(function() {
+							if (response && response.result == 'success') {
+								attachment.find('.attachment-percent').fadeOut(function() {
+									$(this).remove();
+								});
+	
+								status = response.data.ConsultaResult.CodigoEstatus + ' / ' + response.data.ConsultaResult.Estado;
+								attachment.append('<i class="fa fa-fw fa-check"></i>');
+								attachment.addClass('has-success');
+								attachment.append('<div class="attachment-status">'+status+'</div>');
+							} else {
+	
+								// Error
+								attachment.append('<i class="fa fa-fw fa-warning"></i>');
+								attachment.addClass('has-error');
+								attachment.append('<div class="attachment-status">'+response.message||'Ha ocurrido un error'+'</div>');
+							}
+	
+							$('.js-clear').removeClass('hide');
+						});
+					}
+			 }
+			});
+			// Bind events
+			loadzilla.onDomReady();
+		});
 	}
 });
 

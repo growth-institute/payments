@@ -2220,7 +2220,7 @@ html {
 }
 body {
   background: #121212;
-  color: #ffffff;
+  color: #fffffe;
   display: flex;
   min-height: 100vh;
   flex-direction: column;
@@ -2292,10 +2292,10 @@ h4,
   }
 }
 .alert-overlay .alert .alert-message {
-  color: #565656;
+  color: #dddddd;
 }
 .alert-overlay .alert .alert-buttons {
-  background: #ffffff;
+  background: #fffffe;
 }
 .link-overlay {
   position: absolute;
@@ -2357,22 +2357,22 @@ h4,
 .button.button-primary {
   background: #22baa0;
   border-color: #22baa0;
-  color: #ffffff;
+  color: #fffffe;
 }
 .button.button-primary:hover {
   background: #35dabe;
   border-color: #35dabe;
-  color: #ffffff;
+  color: #fffffe;
 }
 .button.button-secondary {
   background: #12afcb;
   border-color: #12afcb;
-  color: #ffffff;
+  color: #fffffe;
 }
 .button.button-secondary:hover {
   background: #24cdec;
   border-color: #24cdec;
-  color: #ffffff;
+  color: #fffffe;
 }
 .button.button-link {
   color: #22baa0;
@@ -2382,31 +2382,31 @@ h4,
 }
 .form-group .control-label {
   font-size: 0.95em;
-  color: #777777;
+  color: #c7c7c7;
 }
 .form-group .form-control {
   border-radius: 0;
   border-color: #323232;
-  background: #1b1b1b;
-  color: #ffffff;
+  background: #2b2b2b;
+  color: #fffffe;
 }
 .form-group .form-control:focus {
   border-color: #323232;
   background: #121212;
-  color: #ffffff;
+  color: #fffffe;
 }
 .form-group .form-control[readonly],
 .form-group .form-control[readonly=readonly] {
   border-color: #323232;
-  background: #1b1b1b !important;
-  color: #ffffff;
+  background: #2b2b2b !important;
+  color: #fffffe;
   cursor: default;
 }
 .form-group .form-control[disabled],
 .form-group .form-control[disabled=disabled] {
   border-color: #323232;
-  background: #1b1b1b;
-  color: #565656;
+  background: #2b2b2b;
+  color: #dddddd;
   cursor: default;
 }
 .form-group .form-control.input-code {
@@ -2414,14 +2414,14 @@ h4,
   min-height: 180px;
 }
 .metabox {
-  background: #1b1b1b;
+  background: #2b2b2b;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.075);
-  color: #565656;
+  color: #dddddd;
   margin-bottom: 15px;
 }
 .metabox .metabox-header {
   border-bottom: 1px solid #232323;
-  color: #7c7c7c;
+  color: #ffffff;
   font-size: 11px;
   font-weight: 700;
   padding: 15px;
@@ -2429,7 +2429,7 @@ h4,
 }
 .metabox .metabox-footer {
   border-top: 1px solid #232323;
-  color: #7c7c7c;
+  color: #ffffff;
   font-size: 11px;
   font-weight: 700;
   padding: 15px;
@@ -2458,8 +2458,8 @@ h4,
   position: relative;
 }
 .action-bar .bar-title .action-button {
-  border-right: 1px solid rgba(86, 86, 86, 0.15);
-  color: rgba(86, 86, 86, 0.85);
+  border-right: 1px solid rgba(221, 221, 221, 0.15);
+  color: rgba(221, 221, 221, 0.85);
   font-size: 21px;
   height: 42px;
   left: 0;
@@ -2470,7 +2470,7 @@ h4,
   width: 42px;
 }
 .action-bar .bar-title .action-button:hover {
-  color: #565656;
+  color: #dddddd;
 }
 .action-bar .bar-title span {
   display: block;
@@ -2489,7 +2489,7 @@ h4,
   font-size: 1.25em;
 }
 .item-list .item .item-details {
-  color: #777777;
+  color: #c7c7c7;
 }
 .item-list .item:not(:last-child) {
   border-bottom: 1px solid #232323;
@@ -2498,10 +2498,10 @@ h4,
   background: #12afcb;
 }
 .item-list.list-hover .item:hover .item-name {
-  color: #ffffff;
+  color: #fffffe;
 }
 .item-list.list-hover .item:hover .item-details {
-  color: #ffffff;
+  color: #fffffe;
 }
 .pagination {
   list-style: none;
@@ -2521,10 +2521,10 @@ h4,
 }
 .pagination li.active a {
   background: #12afcb;
-  color: #ffffff;
+  color: #fffffe;
 }
 .pagination li.disabled a {
-  color: #777777;
+  color: #c7c7c7;
 }
 .panel-wrapper {
   display: flex;
@@ -2551,12 +2551,12 @@ h4,
   }
 }
 .site-header {
-  background: #1b1b1b;
-  color: #ffffff;
+  background: #2b2b2b;
+  color: #fffffe;
 }
 .site-footer {
   font-size: 0.85em;
-  color: #777777;
+  color: #c7c7c7;
 }
 .table-wrapper {
   overflow-x: auto;
@@ -2569,7 +2569,7 @@ h4,
   border-bottom: 1px solid #232323;
 }
 .table-wrapper table.table thead tr th {
-  color: #777777;
+  color: #c7c7c7;
   font-size: 11px;
   font-weight: 700;
   padding: 10px 15px;
@@ -2583,7 +2583,7 @@ h4,
   border-top: 1px solid #232323;
 }
 .table-wrapper table.table tfoot tr th {
-  color: #777777;
+  color: #c7c7c7;
   font-size: 11px;
   font-weight: 700;
   padding: 10px 15px;
@@ -2604,7 +2604,7 @@ h4,
   margin-bottom: 3px;
 }
 .table-wrapper table.table tbody tr td .item-details {
-  color: #777777;
+  color: #c7c7c7;
   margin-bottom: 3px;
 }
 .table-wrapper table.table tbody tr td .item-actions {
@@ -2660,7 +2660,7 @@ ul.tab-list > li > a {
   border-bottom-color: transparent;
 }
 ul.tab-list > li.selected > a {
-  color: #777777;
+  color: #c7c7c7;
 }
 @media (min-width: 768px) {
   ul.tab-list > li.selected > a {
@@ -2683,7 +2683,7 @@ ul.tab-list > li.selected > a {
   display: block;
 }
 .the-content {
-  color: #ffffff;
+  color: #fffffe;
 }
 .the-content .has-tagline {
   margin-bottom: 3px;
@@ -2695,7 +2695,7 @@ ul.tab-list > li.selected > a {
 .backend-page-login,
 .backend-setup,
 .page-error {
-  background: #081e30 url('http://localhost/payment/assets/less/images/template/bg-night.png') center top no-repeat;
+  background: #081e30 url('http://localhost/GI/payment/assets/less/images/template/bg-night.png') center top no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
@@ -2726,11 +2726,11 @@ ul.tab-list > li.selected > a {
   background: rgba(0, 0, 0, 0);
 }
 ::-webkit-scrollbar-track {
-  background: #1b1b1b;
+  background: #2b2b2b;
 }
 ::-webkit-scrollbar-thumb {
   background: #323232;
-  border: 1px solid #1b1b1b;
+  border: 1px solid #2b2b2b;
 }
 .repeater .repeater-items {
   border-top: 1px solid #232323;
@@ -2794,7 +2794,7 @@ ul.tab-list > li.selected > a {
 }
 .repeater .repeater-items .repeater-item .item-actions .item-action.action-insert:hover {
   background: #12afcb;
-  color: #ffffff;
+  color: #fffffe;
 }
 .repeater .repeater-items .repeater-item .item-actions .item-action.action-delete {
   top: 50%;
@@ -2802,7 +2802,7 @@ ul.tab-list > li.selected > a {
 }
 .repeater .repeater-items .repeater-item .item-actions .item-action.action-delete:hover {
   background: #f25656;
-  color: #ffffff;
+  color: #fffffe;
 }
 .repeater .repeater-items .repeater-item:hover .item-actions .item-action {
   display: block;
@@ -2813,4 +2813,11 @@ ul.tab-list > li.selected > a {
   border: 1px solid #232323;
   border-top: none;
   padding: 10px;
+}
+/* Loadzilla*/
+/* ---------------------------------------------------------------------------------------------- */
+.uploader-area {
+  text-align: center;
+  padding: 100px 50px;
+  border: 1px dashed #BBB;
 }
