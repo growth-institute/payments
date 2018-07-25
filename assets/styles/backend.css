@@ -2695,7 +2695,7 @@ ul.tab-list > li.selected > a {
 .backend-page-login,
 .backend-setup,
 .page-error {
-  background: #081e30 url('http://localhost/payment/assets/less/images/template/bg-night.png') center top no-repeat;
+  background: #081e30 url('http://localhost/GI/payment/assets/less/images/template/bg-night.png') center top no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
@@ -2813,4 +2813,11 @@ ul.tab-list > li.selected > a {
   border: 1px solid #232323;
   border-top: none;
   padding: 10px;
+}
+/* Loadzilla*/
+/* ---------------------------------------------------------------------------------------------- */
+.uploader-area {
+  text-align: center;
+  padding: 100px 50px;
+  border: 1px dashed #BBB;
 }

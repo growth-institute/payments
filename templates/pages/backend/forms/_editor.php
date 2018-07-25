@@ -115,29 +115,13 @@
 								</div>
 								<div class="form-group">
 								<label for="currency" class="control-label">Currency</label>
-								<select class="form-control input-block" name="currency">
+								<select class="form-control input-block" name="currency" id="currency">
 									<option selected disabled>Select</option>
 									<option name="usd" value="usd" <?php echo($item && $item->currency == 'usd' ? 'selected="selected"' : ''); ?> >USD</option>
 									<option name="mxn" value="mxn" <?php echo($item && $item->currency == 'mxn' ? 'selected="selected"' : ''); ?> >MXN</option>
 								</select>
 								</div>
-								<div class="form-group">
-									<?php
-										$obj = isset($item) ? json_decode($item->processor) : false;
-									?>
-									<label for="processor" class="control-label">Processor</label>
-									<label><input type="checkbox" name="processor[]" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control">PayPal</label>
-									<label><input type="checkbox" name="processor[]" value="Stripe" <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control">Stripe</label>
-									<label><input type="checkbox" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control">Conekta</label>
-								</div>
-								<div class="form-group">
-									<label for="language" class="control-label">Language</label>
-									<select class="form-control input-block" name="language">
-										<option disabled selected>Select</option>
-										<option name="English"  value="English" <?php echo( $item && $item->language == 'English' ? 'selected="selected"' :  ''); ?> >English</option>
-										<option name="Spanish"  value="Spanish" <?php echo( $item && $item->language == 'Spanish' ? 'selected="selected"' : ''); ?> >Spanish</option>
-									</select>
-								</div>
+								
 								<div class="form-group">
 									<label for="subscription" class="control-label">Subscription</label>
 									<select class="form-control input-block js-toggle-periodicity" name="subscription" id="subscription">
@@ -162,6 +146,15 @@
 										<input type="number" min="0" name="ocurrency" id="ocurrency" value="<?php sanitized_print($item ? $item->getMeta('ocurrency') : ''); ?>" class="form-control input-block">
 										<div class="help-block" id="ocurrency_message">Zero ocurrency is unlimited</div>
 									</div>
+								</div>
+								<div class="form-group">
+									<?php
+										$obj = isset($item) ? json_decode($item->processor) : false;
+									?>
+									<label for="processor" class="control-label">Processor</label>
+									<label><input type="radio" name="processor[]" id="PayPal" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control">PayPal</label>
+									<label><input type="radio" name="processor[]" id="Stripe" value="Stripe" <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control">Stripe</label>
+									<label><input type="radio" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control">Conekta</label>
 								</div>
 							</div>
 					</div>
