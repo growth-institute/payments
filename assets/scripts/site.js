@@ -1,4 +1,4 @@
-git /**
+ /**
  * site.js
  * Base logic, feel free to replace with your own and/or use the libraries of your choice
  */
@@ -80,7 +80,6 @@ Site = Class.extend({
 				}
 			});
 		});
-<<<<<<< HEAD
 		$('.repeater').on('click', '.js-repeater-insert', function(e) {
 			var el = $(this),
 				item = el.closest('.repeater-item'),
@@ -138,6 +137,7 @@ Site = Class.extend({
 				row.find('.grip-number > span').text(index + 1);
 			});
 			newRow.fadeIn();
+		});
 		//processors conditionals
 		var res = '';
 		function processors(){
