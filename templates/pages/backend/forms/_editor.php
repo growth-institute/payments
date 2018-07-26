@@ -20,7 +20,7 @@
 										<input type="file" name="file" id="file" class="hide">
 									</form>
 									<div class="uploader-area" data-input="[name=file]" data-target="process.php">
-										<span class="cue-text">Arrastra tus archivos XML aquí o haz clic para agregarlos manualmente</span>
+										<span class="cue-text">Drag and drop your files or click to add them</span>
 									</div>
 									<div class="attachments"></div>
 									<a href="#" class="button button-primary button-block js-clear hide"><i class="fa fa-fw fa-trash"></i> Limpiar lista</a>
@@ -176,46 +176,12 @@
 									<input type="text" name="time_to_live" id="time_to_live" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('time_to_live') : ''); ?>">
 								</div>
 								<div class="form-group">
-									<label for="subscription" class="control-label">Subscription</label>
-									<select class="form-control input-block js-toggle-periodicity" name="subscription" id="subscription">
-										<option value="">No</option>
-										<option value="Yes" <?php echo( $item && $item->subscription == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
-									</select>
-								</div>
-								<div id="periodicity-group">
-									<div class="form-group">
-										<label for="periodicity"  id="label_periodicity" class="control-label">Periodicity</label>
-										<select name="periodicity" id="periodicity" class="form-control input-block">
-											<option disabled selected>Select</option>
-
-											<option name="monthly" value="monthly" <?php echo( $item && $item->getMeta('periodicity') == 'monthly' ? 'selected="selected"' : ''); ?> >Monthly</option>
-											<option name="3_months" value="3_months" <?php echo( $item && $item->getMeta('periodicity') == '3_months' ? 'selected="slected"' : ''); ?> >Every 3 months</option>
-											<option name="6_months" value="6_months" <?php echo( $item && $item->getMeta('periodicity') == '6_months' ? 'selected="selected"' : ''); ?> >Every 6 months</option>
-											<option name="annual" value="annual" <?php echo( $item && $item->getMeta('periodicity') == 'annual' ? 'selected="selected"' : ''); ?> >Annual</option>
-										</select>
-									</div>
-									<div class="form-group">
-
-										<label for="ocurrency" id="label_ocurrency"class="control-label">Ocurrency</label>
-										<input type="number" min="0" name="ocurrency" id="ocurrency" value="<?php sanitized_print($item ? $item->getMeta('ocurrency') : ''); ?>" class="form-control input-block">
-										<div class="help-block" id="ocurrency_message">Zero ocurrency is unlimited</div>
-									</div>
-								</div>
-								<div class="form-group">
 									<label for="thank_you_page" class="control-label">Thank you Page</label>
 									<input type="url" name="thank_you_page" id="thank_you_page" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('thank_you_page') : '');?>">
 								</div>
 								<div class="form-group">
 									<label for="product_description" class="control-label">Product Description</label>
 									<textarea name="product_description" id="product_description"  class="form-control input-block" rows="10"><?php sanitized_print($item ? $item->getMeta('product_description') : '');?></textarea> 
-								</div>
-								<div class="form-group">
-									<label for="product_image" class="control-label">Product Image</label>
-									<input type="file" name="product_image" id="product_image" class="form-control input-block">
-									<?php 
-										$name_image = isset($attachment_image) ? $attachment_image->name : false;
-										 echo($name_image);
-									?>
 								</div>
 							</div>
 					</div>

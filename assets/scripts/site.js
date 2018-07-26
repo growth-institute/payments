@@ -59,11 +59,19 @@ Site = Class.extend({
 				val = el.val();
 			obj.showPeriodicity(val);
 		}).trigger('change');
-		$('#conekta:checked').on('change', function(){
+		$('#conekta' ).change( function(){
+			console.log('checked');
 			var el = $(this),
 				val = el.val();
 			obj.installments(val);
-		}).trigger('change');
+			
+		});
+		$('#PayPal, #Stripe' ).change( function(){
+			console.log('checked2');
+			var el = $(this),
+				val = '';
+			obj.installments(val);
+		});
 		//validation forms fronend
 		$('#form-test').on('submit', function() {
 			return $(this).validate({
@@ -145,30 +153,26 @@ Site = Class.extend({
 			if ($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
 				console.log('usd con suscr');
 				res= 'true';
-				$('#conekta', '#PayPal').attr('disabled', true);
+				$('#conekta, #PayPal').attr('disabled', true);
 				//alert("Not a valid character");
 			}
 			else if($('#currency').val() == 'usd' && $('#subscription').val() == '' ) {
 				$('#conekta').attr('disabled', true);
+				$('#PayPal').attr('disabled', false);
 				console.log('usd sin suscr');
 				res= 'true2';
 				//alert("Not a valid character");
 			}
 			else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
+				$('#conekta, #PayPal').attr('disabled', false);
 				console.log('mxn sin suscr');
 				res= 'truemxn';
 				//alert("Not a valid character");
 			}
 			else if($('#currency').val() == 'mxn' && $('#subscription').val() == 'Yes' ) {
-				$('#conekta', '#PayPal').attr('disabled', true);
+				$('#conekta, #PayPal').attr('disabled', true);
 				console.log('mxn con suscr');
 				res= 'truemxn2';
-				//alert("Not a valid character");
-			}
-			else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
-				$('#conekta', '#PayPal').attr('disabled', true);
-				console.log('mxn sin suscr');
-				res= 'truemxn';
 				//alert("Not a valid character");
 			}
 			else {
