@@ -232,7 +232,7 @@
 													</div>
 													<div class="col col-md-4">
 														<div class="form-group">
-															<label for="val_<%= number %>" class="control-label">val</label>
+															<label for="val_<%= number %>" class="control-label">Value</label>
 															<input type="text" name="val[]" id="val_<%= number %>" class="form-control input-block" value="">
 														</div>
 													</div>

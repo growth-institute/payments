@@ -6,7 +6,7 @@ class BackendFormsController extends Controller{
 	function getSubControllerName($base_name){
 		return "BackendForms{$base_name}";
 	}
-
+/*Create endpoint to check if a slug exists in db*/
 	function slugCheckAction() {
 		global $site;
 		$request = $site->getRequest();
@@ -17,9 +17,27 @@ class BackendFormsController extends Controller{
 		//$data = Forms::getBySlug($slug);
 		$data->execute();
 		if ($data->rowCount() > 0) {
-			echo "This slug already exist";
+			$message = 'This slug already exist';
 		}
-		return $response->ajaxRespond('success');
+		return $response->ajaxRespond('success', $message);
+	}
+/*Create endpoint to check the extension of image*/
+function checkImageAction(){
+		global $site; 
+		$request = $site->getRequest();
+		$response = $site->getResponse();
+		$allowed = array('png','jpg','jpeg','gif');
+		$product_image = $request->files('product_image');
+		$attachment = Attachments::upload($product_image);
+		$ext = pathinfo($attachment, PATHINFO_EXTENSION);
+		if (!in_array($ext, $allowed)) {
+			$message = "This file extension is not allowed";
+		}else{
+			$form = new Form();
+			$form->updateMeta('product_image', $attachment->id);
+			$message= "This file has been uploaded";
+		}
+		return $response->ajaxRespond('success', $message);
 	}
 
 	function indexAction(){
@@ -53,7 +71,6 @@ class BackendFormsController extends Controller{
 			$params['page'] = $page;
 			$params['conditions'] = $conditions;
 			$items = Forms::all($params);
-			$total = Forms::count($conditions);
 			$total = Forms::count($conditions);
 			
 			$data = [];
@@ -107,6 +124,9 @@ class BackendFormsController extends Controller{
 				$range = $request->post('range');
 				$val = $request->post('val');
 				$type = $request->post('type');
+				$array = array_merge($range,$val,$type);
+				
+				exit;
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -207,6 +227,9 @@ class BackendFormsController extends Controller{
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				$installments = $request->post('installments');
+				$range = $request->post('range');
+				$val = $request->post('val');
+				$type = $request->post('type');
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('name',$name)
@@ -245,6 +268,9 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);
+				$form->updateMeta('range', $range);
+				$form->updateMeta('val', $val);
+				$form->updateMeta('type', $type);
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}
