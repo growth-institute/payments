@@ -124,9 +124,17 @@ function checkImageAction(){
 				$range = $request->post('range');
 				$val = $request->post('val');
 				$type = $request->post('type');
-				$array = array_merge($range,$val,$type);
-				
-				exit;
+				$lenght_array = count($range);
+				$array = [];
+				for($x = 0; $x < $lenght_array; $x++) {
+					$array_discount[] = [
+					"range" => $range[$x],
+					"val" => $val[$x],
+					"type" => $type[$x]
+					];
+				}
+				//print_a($array_discount);
+				//exit;
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -171,9 +179,7 @@ function checkImageAction(){
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);
-				$form->updateMeta('range', $range);
-				$form->updateMeta('val', $val);
-				$form->updateMeta('type', $type);
+				$form->updateMeta('discounts', $array_discount);
 				$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
 			break;
 		}
@@ -230,6 +236,15 @@ function checkImageAction(){
 				$range = $request->post('range');
 				$val = $request->post('val');
 				$type = $request->post('type');
+				$lenght_array = count($range);
+				$array = [];
+				for($x = 0; $x < $lenght_array; $x++) {
+					$array_discount[] = [
+					"range" => $range[$x],
+					"val" => $val[$x],
+					"type" => $type[$x]
+					];
+				}
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('name',$name)
@@ -268,9 +283,7 @@ function checkImageAction(){
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);
-				$form->updateMeta('range', $range);
-				$form->updateMeta('val', $val);
-				$form->updateMeta('type', $type);
+				$form->updateMeta('discounts', $array_discount);
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}
