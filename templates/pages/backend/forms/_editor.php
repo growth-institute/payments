@@ -208,7 +208,50 @@
 						<div class="metabox-header">Discounts</div>
 							<div class="metabox-body">
 								<div class="repeater repeater-discount" data-partial="#partial-repeater-discount">
+										
 									<div class="repeater-items">
+										
+											<?php
+												$discounts = isset($item) ? $item->getMeta("discounts") : false;
+												$counter = 1;
+												if ($discounts) :
+													foreach ($discounts as $discount => $value) :
+											?>
+													<div class="repeater-item">
+														<div class="item-grip">
+															<div class="grip-number"><span><?php echo($counter++); ?></span></div>
+														</div>
+														<div class="item-actions">
+															<a href="#" class="item-action action-insert js-repeater-insert"><i class="fa fa-plus"></i></a>
+															<a href="#" class="item-action action-delete js-repeater-delete"><i class="fa fa-minus"></i></a>
+														</div>
+														<div class="item-controls">
+															<div class="row row-md row-5">
+																<div class="col col-md-4 ">
+																	<div class="form-group">
+																		<label for="range_<%= number %>" class="control-label">Range</label>
+																		<input type="text" name="range[]" class="form-control input-block" value="<?php echo($value['range']);?>">
+																	</div>
+																</div>
+																<div class="col col-md-4">
+																	<div class="form-group">
+																		<label for="val_<%= number %>" class="control-label">Value</label>
+																		<input type="text" name="val[]" class="form-control input-block" value="<?php echo($value['val']);?>">
+																	</div>
+																</div>
+																<div class="col col-md-4">
+																	<div class="form-group">
+																		<label for="type_<%= number %>" class="control-label">Type</label>
+																		<input type="text" name="type[]" class="form-control input-block" value="<?php echo($value['type']); ?>">
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+											<?php
+													endforeach;
+												endif;
+											?>
 									</div>
 									<div class="repeater-actions">
 										<a href="#" class="button button-primary js-repeater-add">Add</a>

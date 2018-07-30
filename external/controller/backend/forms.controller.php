@@ -26,18 +26,23 @@ function checkImageAction(){
 		global $site; 
 		$request = $site->getRequest();
 		$response = $site->getResponse();
+		$result = 'error';
+		$data = [];
+		$message = '';
 		$allowed = array('png','jpg','jpeg','gif');
 		$product_image = $request->files('product_image');
-		$attachment = Attachments::upload($product_image);
 		$ext = pathinfo($attachment, PATHINFO_EXTENSION);
 		if (!in_array($ext, $allowed)) {
 			$message = "This file extension is not allowed";
 		}else{
-			$form = new Form();
-			$form->updateMeta('product_image', $attachment->id);
-			$message= "This file has been uploaded";
+			$attachment = Attachments::upload($product_image);
+			if ($attachment) {
+				$data['attachment'] = $attachment;
+				$result = "success";
+			}
 		}
-		return $response->ajaxRespond('success', $message);
+		
+		return $response->ajaxRespond($result, $data, $message);
 	}
 
 	function indexAction(){
