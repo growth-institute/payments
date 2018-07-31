@@ -13,13 +13,17 @@ class BackendFormsController extends Controller{
 		$response = $site->getResponse();
 		$dbh = $site->getDatabase();
 		$slug = $request->post('slug');
+		$data = [];
+		$message = '';
 		$data = $dbh->prepare("SELECT slug FROM payments_form WHERE slug = '$slug'");
 		//$data = Forms::getBySlug($slug);
 		$data->execute();
 		if ($data->rowCount() > 0) {
 			$message = 'This slug already exist';
+			$result = 'error';
+
 		}
-		return $response->ajaxRespond('success', $message);
+		return $response->ajaxRespond($result, $data, $message);
 	}
 /*Create endpoint to check the extension of image*/
 function checkImageAction(){
@@ -138,8 +142,6 @@ function checkImageAction(){
 					"type" => $type[$x]
 					];
 				}
-				//print_a($array_discount);
-				//exit;
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -185,7 +187,8 @@ function checkImageAction(){
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);
 				$form->updateMeta('discounts', $array_discount);
-				$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
+				//$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
+				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}
 		return $response->respond();
