@@ -19,7 +19,7 @@
 									<form action="" method="post" enctype="multipart/form-data" class="form-upload hide">
 										<input type="file" name="file" id="file" class="hide">
 									</form>
-									<div class="uploader-area" data-input="[name=file]" data-target="process.php">
+									<div class="uploader-area" data-input="[name=file]" data-target="forms.controller.php">
 										<span class="cue-text">Drag and drop your files or click to add them</span>
 									</div>
 									<div class="attachments"></div>
@@ -43,7 +43,7 @@
 						</div>
 						<div class="form-group">
 							<label for="total" class="control-label">Total</label>
-							<input type="number" name="total" id="total" class="form-control input-block" value="<?php sanitized_print($item ? $item->total : ''); ?>">
+							<input type="number" name="total" id="total" class="form-control input-block" data-validate="required" value="<?php sanitized_print($item ? $item->total : ''); ?>">
 						</div>
 						
 						<div class="form-group">
@@ -63,7 +63,7 @@
 					<div class="text-right">
 						
 						<a href="<?php $site->urlTo("/backend/forms/", true); ?>" class="button button-link">Go back</a>
-						<button type="submit" class="button button-primary">Save changes</button>
+						<button type="submit" id='submit' class="button button-primary">Save changes</button>
 					</div>
 				</div>
 			</div>
@@ -75,7 +75,7 @@
 			</div>
 			<div class="form-group">
 				<label for="slug" class="control-label">Slug</label>
-				<input type="text" id="login" name="slug" class="form-control input-block" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
+				<input type="text" id="login" name="slug" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
 			</div>
 			<ul class="tab-list">
 				<li class="selected">
@@ -103,11 +103,11 @@
 										$implode = isset($item) ? implode(',', $decode) : false;
 									?>
 									<label for="products" class="control-label">Products</label>
-									<input type="text" name="products" id="products" class="form-control input-block" value="<?php sanitized_print($decode && $implode ? $implode : '');?>">
+									<input type="text" name="products" id="products" data-validate="required" class="form-control input-block" value="<?php sanitized_print($decode && $implode ? $implode : '');?>">
 								</div>
 								<div class="form-group">
 									<label for="language" class="control-label">Language</label>
-									<select class="form-control input-block" name="language">
+									<select class="form-control input-block" name="language" data-validate="required">
 										<option disabled selected>Select</option>
 										<option name="English"  value="English" <?php echo( $item && $item->language == 'English' ? 'selected="selected"' :  ''); ?> >English</option>
 										<option name="Spanish"  value="Spanish" <?php echo( $item && $item->language == 'Spanish' ? 'selected="selected"' : ''); ?> >Spanish</option>
@@ -115,7 +115,7 @@
 								</div>
 								<div class="form-group">
 								<label for="currency" class="control-label">Currency</label>
-								<select class="form-control input-block" name="currency" id="currency">
+								<select class="form-control input-block" name="currency" id="currency" data-validate="required">
 									<option selected disabled>Select</option>
 									<option name="usd" value="usd" <?php echo($item && $item->currency == 'usd' ? 'selected="selected"' : ''); ?> >USD</option>
 									<option name="mxn" value="mxn" <?php echo($item && $item->currency == 'mxn' ? 'selected="selected"' : ''); ?> >MXN</option>
@@ -152,8 +152,8 @@
 										$obj = isset($item) ? json_decode($item->processor) : false;
 									?>
 									<label for="processor" class="control-label">Processor</label>
-									<label><input type="radio" name="processor[]" id="PayPal" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control">PayPal</label>
-									<label><input type="radio" name="processor[]" id="Stripe" value="Stripe" <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control">Stripe</label>
+									<label><input type="radio" name="processor[]" data-validate="required"  id="PayPal" value="PayPal"  <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control">PayPal</label>
+									<label><input type="radio" name="processor[]" id="Stripe" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control">Stripe</label>
 									<label><input type="radio" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control">Conekta</label>
 								</div>
 							</div>

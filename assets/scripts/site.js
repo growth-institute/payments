@@ -73,14 +73,17 @@ Site = Class.extend({
 			obj.installments(val);
 		});
 		//validation forms fronend
-		$('#form-test').on('submit', function() {
-			return $(this).validate({
+		$('#submit').click( function(event) {
+			//event.preventDefault();
+			return $('form').validate({
 				callbacks: {
 					fail: function(field, type, message) {
 						/* An item has failed validation, field has the jQuery object, type is the rule and message its description */
+						console.log('form invalid');
 					},
 					success: function() {
 						/* Everything is OK, continue */
+						$('form').submit();
 					},
 					error: function(fields) {
 						/* Missing info! 'fields' is a jQuery object with the offending fields */
@@ -213,6 +216,7 @@ Site = Class.extend({
 				callbacks: {
 					start: function(item) {
 						attachments.html( attachment({ item: item }) );
+						//console.log(item);
 					},
 					progress: function(item, percent) {
 						var attachment = $('#' + item.uid);
@@ -224,9 +228,11 @@ Site = Class.extend({
 						var attachment = $('#' + item.uid),
 							buttonRemove = $('<a class="attachment-remove js-remove" href="#">Remove</a>'),
 							status = '';
+							console.log(response.result);
 						attachment.find('.attachment-percent').fadeOut();
 						attachment.find('.attachment-progress .progress-bar').fadeOut(function() {
 							if (response && response.result == 'success') {
+								
 								attachment.find('.attachment-percent').fadeOut(function() {
 									$(this).remove();
 								});
@@ -242,7 +248,7 @@ Site = Class.extend({
 								attachment.addClass('has-error');
 								attachment.append('<div class="attachment-status">'+response.message||'Ha ocurrido un error'+'</div>');
 							}
-	
+							//console.log(attachment);
 							$('.js-clear').removeClass('hide');
 						});
 					}

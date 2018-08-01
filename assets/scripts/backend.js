@@ -34,23 +34,23 @@ Site = Class.extend({
 		// 	obj.updateOptionSelect(select, textarea);
 		// }
 
-		$('form[data-submit=validate]').on('submit', function() {
-			var form = $(this);
-			return form.validate({
-				callbacks: {
-					fail: function(field, type, message) {
-						field.closest('.form-group').addClass('has-error');
-						field.on('focus', function() {
-							field.closest('.form-group').removeClass('has-error');
-							field.off('focus');
-						});
-					},
-					error: function(fields) {
-						$.alert('Please fill all the required fields');
-					}
-				}
-			});
-		});
+		// $('form[data-submit=validate]').on('submit', function() {
+		// 	var form = $(this);
+		// 	return form.validate({
+		// 		callbacks: {
+		// 			fail: function(field, type, message) {
+		// 				field.closest('.form-group').addClass('has-error');
+		// 				field.on('focus', function() {
+		// 					field.closest('.form-group').removeClass('has-error');
+		// 					field.off('focus');
+		// 				});
+		// 			},
+		// 			error: function(fields) {
+		// 				$.alert('Please fill all the required fields');
+		// 			}
+		// 		}
+		// 	});
+		// });
 
 		// $('.async-paginated').on('click', '.pagination a', function(e) {
 		// 	var el = $(this),
