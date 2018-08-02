@@ -10,7 +10,7 @@
 			global $site;
 			$data = [];
 			$data['form'] = $form;
-			$site->partial('payments/form-stripe');
+			$site->partial('payments/form-stripe', $data);
 		}
 
 		function includeDependencies($form) {

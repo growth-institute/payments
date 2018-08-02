@@ -1,15 +1,13 @@
+<?php if ($processors): ?>
 	<h2>Payment Detail</h2>
-	<ul class="tab-list payment-method">
-		<?php
-			if ($processors):
-				foreach ($processors as $name => $processor):
-		?>
-			<li><a href="#tab-<?php sanitized_print( strtolower($name) ); ?>"><?php sanitized_print( $processor->getTitle() ); ?></a></li>
-		<?php
-				endforeach;
-			endif;
-		?>
-	</ul>
+
+	<?php if(count($processors) > 1): ?>
+		<ul class="tab-list payment-method">
+			<?php foreach ($processors as $name => $processor): ?>
+				<li><a href="#tab-<?php sanitized_print( strtolower($name) ); ?>"><?php sanitized_print( $processor->getTitle() ); ?></a></li>
+			<?php endforeach; ?>
+		</ul>
+	<?php endif; ?>
 	<div class="tabs">
 		<?php
 			if ($processors):
@@ -24,3 +22,4 @@
 			endif;
 		?>
 	</div>
+<?php endif; ?>
