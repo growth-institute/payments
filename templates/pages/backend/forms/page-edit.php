@@ -32,6 +32,7 @@
 						<?php
 							$data = array();
 							$data['item'] = $item;
+							//print_a($data);
 							$site->partial('backend/forms/editor', $data, $site->baseDir('/templates/pages'));
 						?>
 					</div>

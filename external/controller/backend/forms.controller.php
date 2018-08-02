@@ -6,15 +6,56 @@ class BackendFormsController extends Controller{
 	function getSubControllerName($base_name){
 		return "BackendForms{$base_name}";
 	}
+/*Create endpoint to check if a slug exists in db*/
+	function slugCheckAction() {
+		global $site;
+		$request = $site->getRequest();
+		$response = $site->getResponse();
+		$dbh = $site->getDatabase();
+		$slug = $request->post('slug');
+		$data = [];
+		$message = '';
+		$data = $dbh->prepare("SELECT slug FROM payments_form WHERE slug = '$slug'");
+		//$data = Forms::getBySlug($slug);
+		$data->execute();
+		if ($data->rowCount() > 0) {
+			$message = 'This slug already exist';
+			$result = 'error';
+
+		}
+		return $response->ajaxRespond($result, $data, $message);
+	}
+/*Create endpoint to check the extension of image*/
+function checkImageAction(){
+		global $site; 
+		$request = $site->getRequest();
+		$response = $site->getResponse();
+		$result = 'error';
+		$data = [];
+		$message = '';
+		$allowed = array('png','jpg','jpeg','gif');
+		$product_image = $request->files('product_image');
+		$ext = pathinfo($attachment, PATHINFO_EXTENSION);
+		if (!in_array($ext, $allowed)) {
+			$message = "This file extension is not allowed";
+		}else{
+			$attachment = Attachments::upload($product_image);
+			if ($attachment) {
+				$data['attachment'] = $attachment;
+				$result = "success";
+			}
+		}
+		
+		return $response->ajaxRespond($result, $data, $message);
+	}
+
 	function indexAction(){
 		global $site;
 			$request = $site->getRequest();
 			$response = $site->getResponse();
-			
+
 			$this->requireUser();
-			
 			$dbh = $site->getDatabase();
-			
 			$search = $request->param('search', '');
 			$search_products = $request->param('search_products', '');
 			$search_language = $request->param('language', '');
@@ -40,7 +81,6 @@ class BackendFormsController extends Controller{
 			$params['conditions'] = $conditions;
 			$items = Forms::all($params);
 			$total = Forms::count($conditions);
-			$total = Forms::count($conditions);
 			
 			$data = [];
 			$data['items'] = $items;
@@ -51,15 +91,15 @@ class BackendFormsController extends Controller{
 			$data['search_currency'] = $search_currency;
 			$data['search_subscription'] = $search_subscription;
 			$data['show'] = $show;
-			
+			//redirect url to page index 
 			$site->render('backend/forms/page-index', $data);
 			return $response->respond();
 	}
+
 	function newAction(){
 		global $site;
 		$request = $site->getRequest();
 		$response = $site->getResponse();
-		
 		$this->requireUser();
 		switch ($request->type) {
 			case 'get':
@@ -90,7 +130,18 @@ class BackendFormsController extends Controller{
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				$installments = $request->post('installments');
-
+				$range = $request->post('range');
+				$val = $request->post('val');
+				$type = $request->post('type');
+				$lenght_array = count($range);
+				$array = [];
+				for($x = 0; $x < $lenght_array; $x++) {
+					$array_discount[] = [
+					"range" => $range[$x],
+					"val" => $val[$x],
+					"type" => $type[$x]
+					];
+				}
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -135,12 +186,14 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);
-
-				$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
+				$form->updateMeta('discounts', $array_discount);
+				//$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
+				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}
 		return $response->respond();
 	}
+
 	function editAction($id){
 		global $site;
 		$request = $site->getRequest();
@@ -156,7 +209,6 @@ class BackendFormsController extends Controller{
 		if(!$form) {
 			$site->redirectTo( $site->urlTo('/backend/forms/') );
 		}
-
 		switch($request->type){
 			case 'get':
 			//create an object Flasher to send massage with url
@@ -189,6 +241,18 @@ class BackendFormsController extends Controller{
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				$installments = $request->post('installments');
+				$range = $request->post('range');
+				$val = $request->post('val');
+				$type = $request->post('type');
+				$lenght_array = count($range);
+				$array = [];
+				for($x = 0; $x < $lenght_array; $x++) {
+					$array_discount[] = [
+					"range" => $range[$x],
+					"val" => $val[$x],
+					"type" => $type[$x]
+					];
+				}
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('name',$name)
@@ -198,7 +262,6 @@ class BackendFormsController extends Controller{
 				->addRule('processor',$processor)
 				->addRule('currency',$currency)
 				->addRule('total',$total)
-
 				->validate();
 				//check the result
 				if(! $validator->isValid() ){
@@ -228,11 +291,13 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);
+				$form->updateMeta('discounts', $array_discount);
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}
 		return $response->respond();
 	}
+
 	function deleteAction($id){
 		global $site;
 		$request = $site->getRequest();
@@ -258,4 +323,5 @@ class BackendFormsController extends Controller{
 		return $response->respond();
 	}
 }
+
 ?>
