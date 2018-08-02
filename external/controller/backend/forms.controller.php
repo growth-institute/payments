@@ -13,14 +13,15 @@ class BackendFormsController extends Controller{
 		$response = $site->getResponse();
 		$dbh = $site->getDatabase();
 		$slug = $request->post('slug');
-		$data = [];
-		$message = '';
-		$data = $dbh->prepare("SELECT slug FROM payments_form WHERE slug = '$slug'");
-		//$data = Forms::getBySlug($slug);
-		$data->execute();
-		if ($data->rowCount() > 0) {
-			$message = 'This slug already exist';
-			$result = 'error';
+		$result = 'error';
+		//$data = [];
+		$message = 'This slug already exist';
+		//$data = $dbh->prepare("SELECT slug FROM payments_form WHERE slug = '$slug'");
+		$data = Forms::allBySlug($slug);
+		//$data->execute();
+		if (!count($data)) {
+			$message = 'Need a new slug';
+			$result = 'success';
 
 		}
 		return $response->ajaxRespond($result, $data, $message);

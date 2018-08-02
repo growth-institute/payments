@@ -102,11 +102,12 @@ LoadzillaLite = Class.extend({
 			}
 		});
 	},
-	uploadFile: function(file, item) {
+	uploadFile: function( file, item) {
 		var obj = this,
 			formData = new FormData();
 		// Create the formData structure
 		formData.append('file', file, file.name);
+		console.log(formData);
 		$.ajax({
 			url: obj.opts.target,
 			data: formData,

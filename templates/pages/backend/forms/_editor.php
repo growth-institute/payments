@@ -19,7 +19,7 @@
 									<form action="" method="post" enctype="multipart/form-data" class="form-upload hide">
 										<input type="file" name="file" id="file" class="hide">
 									</form>
-									<div class="uploader-area" data-input="[name=file]" data-target="forms.controller.php">
+									<div class="uploader-area" data-input="[name=file]" data-target="<?php $site->urlTo('/backend/forms/check-image',true)     ?>">
 										<span class="cue-text">Drag and drop your files or click to add them</span>
 									</div>
 									<div class="attachments"></div>
@@ -71,11 +71,11 @@
 		<div class="panel-fluid">
 			<div class="form-group">
 				<label for="name" class="control-label">Name</label>
-				<input type="text" name="name" id="email" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->name : ''); ?>">
+				<input type="text" name="name" id="name" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->name : ''); ?>">
 			</div>
 			<div class="form-group">
 				<label for="slug" class="control-label">Slug</label>
-				<input type="text" id="login" name="slug" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
+				<input type="text" id="slug" name="slug" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
 			</div>
 			<ul class="tab-list">
 				<li class="selected">
@@ -152,9 +152,12 @@
 										$obj = isset($item) ? json_decode($item->processor) : false;
 									?>
 									<label for="processor" class="control-label">Processor</label>
-									<label><input type="radio" name="processor[]" data-validate="required"  id="PayPal" value="PayPal"  <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control">PayPal</label>
-									<label><input type="radio" name="processor[]" id="Stripe" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control">Stripe</label>
-									<label><input type="radio" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control">Conekta</label>
+									<label id="lbpaypalUSD"class="hide"><input type="checkbox" name="processor[]" data-validate="required"  id="PayPalUSD" value="PayPal"  <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">PayPal</label>
+									<label id="lbstripeUSD"class="hide"><input type="checkbox" name="processor[]" id="StripeUSD" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control hide">Stripe</label>
+									<label id="lbpaypalMNX"class="hide"><input type="checkbox" name="processor[]" id="PayPalMNX" value="PayPal"  <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">PayPal</label>
+									<label id="lbstripeMNX"class="hide"><input type="checkbox" name="processor[]" id="StripeMNX" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control hide">Stripe</label>
+									
+									<label id="lbconekta"class="hide"><input type="checkbox" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">Conekta</label>
 								</div>
 							</div>
 					</div>

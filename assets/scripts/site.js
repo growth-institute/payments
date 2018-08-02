@@ -20,11 +20,20 @@ Site = Class.extend({
 		}
 	},
 	installments: function(val) {
-		if (val){
+		if ($('#conekta').is(':checked')) {
 			$('#tab-installment').removeClass('hide');
 		} else {
 			$('#tab-installment').addClass('hide');
 		}
+	},
+	checkSlug: function(name){
+
+		return $.ajax({
+			url: constants.siteUrl + 'backend/forms/slug-check',
+			type: 'POST',
+			data: { method: 'method', name: 'name'}
+		});
+					
 	},
 	onDomReady: function($) {
 		var obj = this;
@@ -59,7 +68,7 @@ Site = Class.extend({
 				val = el.val();
 			obj.showPeriodicity(val);
 		}).trigger('change');
-		$('#conekta' ).change( function(){
+		$('#conekta').change( function(){
 			console.log('checked');
 			var el = $(this),
 				val = el.val();
@@ -72,6 +81,22 @@ Site = Class.extend({
 				val = '';
 			obj.installments(val);
 		});
+		//validation slug
+		// $('#name').on('blur', function(e){
+		// 	var el = $(this),
+		// 		name = el.val();
+		// 	if (name) {
+		// 		var slug = obj.checkSlug(name);
+		// 		ajax.done(function (response){
+		// 			if (response.result == 'success') {
+		// 				$('#slug').val(response.data.slug);
+		// 			} else{
+		// 				obj.checkSlug(response.data.name + '-1');
+		// 			}
+			
+		// 		});
+		// 	}
+		// } );
 		//validation forms fronend
 		$('#submit').click( function(event) {
 			//event.preventDefault();
@@ -82,9 +107,9 @@ Site = Class.extend({
 						console.log('form invalid');
 					},
 					success: function() {
-						/* Everything is OK, continue */
+					/* Everything is OK, continue */		
 						$('form').submit();
-					},
+						},
 					error: function(fields) {
 						/* Missing info! 'fields' is a jQuery object with the offending fields */
 					}
@@ -156,24 +181,34 @@ Site = Class.extend({
 			if ($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
 				console.log('usd con suscr');
 				res= 'true';
-				$('#conekta, #PayPal').attr('disabled', true);
+				//$('#conekta, #PayPal').attr('disabled', true);
+				$('#StripeUSD, #lbstripeUSD').removeClass('hide');
+				$('#PayPalUSD, #lbpaypalUSD,#conekta, #lbconekta,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
+				
 				//alert("Not a valid character");
 			}
 			else if($('#currency').val() == 'usd' && $('#subscription').val() == '' ) {
-				$('#conekta').attr('disabled', true);
-				$('#PayPal').attr('disabled', false);
+				//$('#conekta').attr('disabled', true);
+				//$('#PayPal').attr('disabled', false);
+				$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD').removeClass('hide');
+				$('#conekta, #lbconekta,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
 				console.log('usd sin suscr');
 				res= 'true2';
 				//alert("Not a valid character");
 			}
 			else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
-				$('#conekta, #PayPal').attr('disabled', false);
+				//$('#conekta, #PayPal').attr('disabled', false);
+				$('#conekta,#lbconekta, #PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').removeClass('hide');
+				$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD').addClass('hide');
 				console.log('mxn sin suscr');
 				res= 'truemxn';
 				//alert("Not a valid character");
 			}
 			else if($('#currency').val() == 'mxn' && $('#subscription').val() == 'Yes' ) {
-				$('#conekta, #PayPal').attr('disabled', true);
+				//$('#conekta, #PayPal').attr('disabled', true);
+				$('#conekta, #lbconekta').removeClass('hide');
+				$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
+				
 				console.log('mxn con suscr');
 				res= 'truemxn2';
 				//alert("Not a valid character");
@@ -216,12 +251,13 @@ Site = Class.extend({
 				callbacks: {
 					start: function(item) {
 						attachments.html( attachment({ item: item }) );
-						//console.log(item);
+						console.log(item);
 					},
 					progress: function(item, percent) {
 						var attachment = $('#' + item.uid);
 						attachment.find('.attachment-percent').text(percent + '%');
 						attachment.find('.attachment-progress .progress-bar').css('width', percent + '%');
+						console.log(attachment);
 					},
 					complete: function(item, response) {
 	
