@@ -1,3 +1,7 @@
+<?php
+	$id_attachment = $item ? $item->getMeta('product_image') : false;
+	$attachment_image = $id_attachment ? Attachments::getById($id_attachment) : false;
+?>
 <form action="" method="post" enctype="multipart/form-data">
 	<div class="panel-wrapper fixed-right">
 		<div class="panel-fixed">
@@ -5,22 +9,19 @@
 				<div class="metabox-header">Properties</div>
 				<div class="metabox-body" id="formgeneral">
 					<div class="form-group">
-						
-						<?php
-							$id_attachment = $item ? $item->getMeta("product_image") : false;
-							if ($id_attachment):
-								$attachment_image = Attachments::getById($id_attachment);
-						?>
-							<label for="image" class="control-label">Current Image</label>
-							<img class="img-responsive" src="<?php echo($attachment_image->url);?>" alt="image_products">
-						<?php endif; ?>
+						<input type="hidden" name="product_image" value="<?php echo $attachment_image ? $attachment_image->id : ''; ?>">
 						<div class="form-group">
 								<div class="margins">
 									<form action="" method="post" enctype="multipart/form-data" class="form-upload hide">
 										<input type="file" name="file" id="file" class="hide">
 									</form>
-									<div class="uploader-area" data-input="[name=file]" data-target="<?php $site->urlTo('/backend/forms/check-image',true)     ?>">
-										<span class="cue-text">Drag and drop your files or click to add them</span>
+									<label for="image" class="control-label">Current Image</label>
+									<div class="uploader-area <?php echo $attachment_image ? 'has-loaded' : ''; ?>" data-input="[name=file]" data-target="<?php $site->urlTo('/backend/forms/check-image', true); ?>">
+										<?php if($attachment_image): ?>
+											<img class="img-responsive" src="<?php echo($attachment_image->url);?>" alt="image_products">
+										<?php else: ?>
+											<span class="cue-text">Drag and drop your files or click to add them</span>
+										<?php endif; ?>
 									</div>
 									<div class="attachments"></div>
 									<a href="#" class="button button-primary button-block js-clear hide"><i class="fa fa-fw fa-trash"></i> Limpiar lista</a>
@@ -45,7 +46,7 @@
 							<label for="total" class="control-label">Total</label>
 							<input type="number" name="total" id="total" class="form-control input-block" data-validate="required" value="<?php sanitized_print($item ? $item->total : ''); ?>">
 						</div>
-						
+
 						<div class="form-group">
 							<?php
 								$slug = $item ? $item->slug : false;
@@ -58,10 +59,10 @@
 										</div>
 							<?php endif; ?>
 						</div>
-						
+
 					</div>
 					<div class="text-right">
-						
+
 						<a href="<?php $site->urlTo("/backend/forms/", true); ?>" class="button button-link">Go back</a>
 						<button type="submit" id='submit' class="button button-primary">Save changes</button>
 					</div>
@@ -70,8 +71,7 @@
 		</div>
 		<div class="panel-fluid">
 			<div class="form-group">
-				<label for="name" class="control-label">Name</label>
-				<input type="text" name="name" id="name" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->name : ''); ?>">
+				<input placeholder="Add the name of your form" type="text" name="name" id="name" data-validate="required" class="form-control input-block form-control-xlarge" value="<?php sanitized_print($item ? $item->name : ''); ?>">
 			</div>
 			<div class="form-group">
 				<label for="slug" class="control-label">Slug</label>
@@ -96,9 +96,9 @@
 					<div class="metabox">
 						<div class="metabox-header">Generals</div>
 							<div class="metabox-body">
-								
+
 								<div class="form-group">
-									<?php 
+									<?php
 										$decode = isset($item) ? json_decode($item->products) : false;
 										$implode = isset($item) ? implode(',', $decode) : false;
 									?>
@@ -121,7 +121,7 @@
 									<option name="mxn" value="mxn" <?php echo($item && $item->currency == 'mxn' ? 'selected="selected"' : ''); ?> >MXN</option>
 								</select>
 								</div>
-								
+
 								<div class="form-group">
 									<label for="subscription" class="control-label">Subscription</label>
 									<select class="form-control input-block js-toggle-periodicity" name="subscription" id="subscription">
@@ -152,11 +152,11 @@
 										$obj = isset($item) ? json_decode($item->processor) : false;
 									?>
 									<label for="processor" class="control-label">Processor</label>
-									<label id="lbpaypalUSD"class="hide"><input type="checkbox" name="processor[]" data-validate="required"  id="PayPalUSD" value="PayPal"  <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">PayPal</label>
+									<label id="lbpaypalUSD"class="hide"><input type="checkbox" name="processor[]" id="PayPalUSD" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">PayPal</label>
 									<label id="lbstripeUSD"class="hide"><input type="checkbox" name="processor[]" id="StripeUSD" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control hide">Stripe</label>
 									<label id="lbpaypalMNX"class="hide"><input type="checkbox" name="processor[]" id="PayPalMNX" value="PayPal"  <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">PayPal</label>
 									<label id="lbstripeMNX"class="hide"><input type="checkbox" name="processor[]" id="StripeMNX" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control hide">Stripe</label>
-									
+
 									<label id="lbconekta"class="hide"><input type="checkbox" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">Conekta</label>
 								</div>
 							</div>
@@ -184,7 +184,7 @@
 								</div>
 								<div class="form-group">
 									<label for="product_description" class="control-label">Product Description</label>
-									<textarea name="product_description" id="product_description"  class="form-control input-block" rows="10"><?php sanitized_print($item ? $item->getMeta('product_description') : '');?></textarea> 
+									<textarea name="product_description" id="product_description"  class="form-control input-block" rows="10"><?php sanitized_print($item ? $item->getMeta('product_description') : '');?></textarea>
 								</div>
 							</div>
 					</div>
@@ -211,9 +211,9 @@
 						<div class="metabox-header">Discounts</div>
 							<div class="metabox-body">
 								<div class="repeater repeater-discount" data-partial="#partial-repeater-discount">
-										
+
 									<div class="repeater-items">
-										
+
 											<?php
 												$discounts = isset($item) ? $item->getMeta("discounts") : false;
 												$counter = 1;

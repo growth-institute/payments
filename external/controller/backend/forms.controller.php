@@ -12,41 +12,42 @@ class BackendFormsController extends Controller{
 		$request = $site->getRequest();
 		$response = $site->getResponse();
 		$dbh = $site->getDatabase();
-		$slug = $request->post('slug');
+		$name = $request->post('name');
+		$slug = $site->toAscii($name);
+		$data = [];
+		$data['name'] = $name;
 		$result = 'error';
-		//$data = [];
 		$message = 'This slug already exist';
-		//$data = $dbh->prepare("SELECT slug FROM payments_form WHERE slug = '$slug'");
-		$data = Forms::allBySlug($slug);
-		//$data->execute();
-		if (!count($data)) {
+		$form = Forms::getBySlug($slug);
+
+		if (!$form) {
 			$message = 'Need a new slug';
 			$result = 'success';
-
+			$data['slug'] = $slug;
 		}
 		return $response->ajaxRespond($result, $data, $message);
 	}
 /*Create endpoint to check the extension of image*/
 function checkImageAction(){
-		global $site; 
+		global $site;
 		$request = $site->getRequest();
 		$response = $site->getResponse();
 		$result = 'error';
 		$data = [];
 		$message = '';
 		$allowed = array('png','jpg','jpeg','gif');
-		$product_image = $request->files('product_image');
-		$ext = pathinfo($attachment, PATHINFO_EXTENSION);
+		$product_image = $request->files('file');
+		$ext = pathinfo($product_image['name'], PATHINFO_EXTENSION);
 		if (!in_array($ext, $allowed)) {
 			$message = "This file extension is not allowed";
 		}else{
 			$attachment = Attachments::upload($product_image);
 			if ($attachment) {
-				$data['attachment'] = $attachment;
+				$attachment_image = Attachments::getById($attachment->id);
+				$data['attachment'] = $attachment_image;
 				$result = "success";
 			}
 		}
-		
 		return $response->ajaxRespond($result, $data, $message);
 	}
 
@@ -75,24 +76,24 @@ function checkImageAction(){
 			$conditions .= $search_currency && in_array('usd', $search_currency) ? " AND (currency = 'usd')" : '';
 			$conditions .= $search_subscription == 'Yes' ? " AND (subscription = 'Yes')" : '';
 			$conditions .= $search_subscription == 'No' ? " AND (subscription = 'No')" : '';
-			
+
 			$params = [];
 			$params['show'] = $show;
 			$params['page'] = $page;
 			$params['conditions'] = $conditions;
 			$items = Forms::all($params);
 			$total = Forms::count($conditions);
-			
+
 			$data = [];
 			$data['items'] = $items;
 			$data['total'] = $total;
 			$data['search'] = $search;
-			$data['search_products'] = $search_products; 
+			$data['search_products'] = $search_products;
 			$data['search_language'] = $search_language;
 			$data['search_currency'] = $search_currency;
 			$data['search_subscription'] = $search_subscription;
 			$data['show'] = $show;
-			//redirect url to page index 
+			//redirect url to page index
 			$site->render('backend/forms/page-index', $data);
 			return $response->respond();
 	}
@@ -126,8 +127,7 @@ function checkImageAction(){
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
-				$product_image = $request->files('product_image');
-				$attachment = Attachments::upload($product_image);
+				$product_image = $request->post('product_image');
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				$installments = $request->post('installments');
@@ -155,7 +155,7 @@ function checkImageAction(){
 				->validate();
 				//check the result
 				if(! $validator->isValid() ){
-					//add Flasher class to show errors 
+					//add Flasher class to show errors
 					Flasher::notice('The following fields are required: ' . implode(', ', $validator->getErrors()));
 					$site->redirectTo($site->urlTo('/backend/forms/new'));
 				}
@@ -175,7 +175,7 @@ function checkImageAction(){
 				$form->processor = json_encode($processor);
 				$form->currency = $currency;
 				$form->total = $total;
-				$form->subscription = $subscription; 
+				$form->subscription = $subscription;
 				$form->save();
 				//Saving metas to DB
 				$form->updateMeta('quantity', $quantity);
@@ -183,7 +183,7 @@ function checkImageAction(){
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
-				$form->updateMeta('product_image', $attachment->id);
+				$form->updateMeta('product_image', $product_image);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);
@@ -218,7 +218,7 @@ function checkImageAction(){
 				$data['item'] = $form;
 				$data['notice'] = $notice;
 				$site->render('backend/forms/page-edit', $data);
-				
+
 			break;
 			case 'post':
 			//getting data post to send them DB
@@ -237,8 +237,7 @@ function checkImageAction(){
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
-				$product_image = $request->files('product_image');
-				$attachment = Attachments::upload($product_image);
+				$product_image = $request->post('product_image');
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				$installments = $request->post('installments');
@@ -266,10 +265,10 @@ function checkImageAction(){
 				->validate();
 				//check the result
 				if(! $validator->isValid() ){
-					//add Flasher class to send message with errors 
+					//add Flasher class to send message with errors
 					Flasher::notice('The following fields are required: ' . implode(',',$validator->getErrors()));
 					//redirect url to current form
-					$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}")); 
+					$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}"));
 				}
 				//updating data
 				$explode = explode(',', $products);
@@ -288,7 +287,7 @@ function checkImageAction(){
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
-				$form->updateMeta('product_image', $attachment->id);
+				$form->updateMeta('product_image', $product_image);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);

@@ -8,6 +8,16 @@ Site = Class.extend({
 			opts = _.defaults(options, {
 				// Add options here
 			});
+
+		// Button and spanish text + valign wrapper
+		$.extend(true, $.alert.defaults, {
+			markup: '<div class="alert-overlay"><div class="valign-wrapper"><div class="valign"><div class="alert"><div class="alert-message">{message}</div><div class="alert-buttons"></div></div></div></div></div>',
+			buttonMarkup: '<button class="button button-primary"></button>',
+			buttons: [
+				{ text: 'Got it', action: $.alert.close }
+			]
+		});
+
 		jQuery(document).ready(function($) {
 			obj.onDomReady($);
 		});
@@ -28,16 +38,24 @@ Site = Class.extend({
 	},
 	checkSlug: function(name){
 
-		return $.ajax({
+		var obj = this,
+			slugCheck = false;
+
+		$.ajax({
 			url: constants.siteUrl + 'backend/forms/slug-check',
+			async: false,
 			type: 'POST',
-			data: { method: 'method', name: 'name'}
+			data: { name: name },
+			success: function(response) {
+				slugCheck = response;
+			}
 		});
-					
+
+		return slugCheck;
 	},
 	onDomReady: function($) {
 		var obj = this;
-		
+
 		// Tabs Miniplugin
 		$('.tab-list li a').on('click', function(e) {
 			e.preventDefault();
@@ -47,7 +65,7 @@ Site = Class.extend({
 				li.addClass('selected').siblings('li').removeClass('selected');
 				target.addClass('active').siblings('.tab').removeClass('active');
 		});
-		
+
 		$('.tab-list').each(function() {
 			var el = $(this);
 			el.find('li a').first().trigger('click');
@@ -73,7 +91,7 @@ Site = Class.extend({
 			var el = $(this),
 				val = el.val();
 			obj.installments(val);
-			
+
 		});
 		$('#PayPal, #Stripe' ).change( function(){
 			console.log('checked2');
@@ -81,22 +99,30 @@ Site = Class.extend({
 				val = '';
 			obj.installments(val);
 		});
-		//validation slug
-		// $('#name').on('blur', function(e){
-		// 	var el = $(this),
-		// 		name = el.val();
-		// 	if (name) {
-		// 		var slug = obj.checkSlug(name);
-		// 		ajax.done(function (response){
-		// 			if (response.result == 'success') {
-		// 				$('#slug').val(response.data.slug);
-		// 			} else{
-		// 				obj.checkSlug(response.data.name + '-1');
-		// 			}
-			
-		// 		});
-		// 	}
-		// } );
+
+		$('#name').on('blur', function(e){
+			var el = $(this),
+				name = el.val();
+			console.log(name);
+			if (name) {
+				var slug = obj.checkSlug(name);
+				var clean = true;
+
+				while(slug.result == 'error') {
+					name = name + '-1';
+					clean = false;
+					slug = obj.checkSlug(name);
+				}
+
+				if(!clean) {
+
+					$.alert('The slug of the form already exists. Creating a new one.');
+				}
+
+				$('#slug').val(slug.data.slug);
+			}
+		});
+
 		//validation forms fronend
 		$('#submit').click( function(event) {
 			//event.preventDefault();
@@ -104,10 +130,11 @@ Site = Class.extend({
 				callbacks: {
 					fail: function(field, type, message) {
 						/* An item has failed validation, field has the jQuery object, type is the rule and message its description */
+						console.log(field);
 						console.log('form invalid');
 					},
 					success: function() {
-					/* Everything is OK, continue */		
+					/* Everything is OK, continue */
 						$('form').submit();
 						},
 					error: function(fields) {
@@ -138,7 +165,7 @@ Site = Class.extend({
 			newRow.fadeIn();
 			//obj.codeMirrorInit( newRow.find('.codemirror') );
 		});
-		
+
 		$('.repeater').on('click', '.js-repeater-delete', function(e) {
 			var el = $(this),
 				item = el.closest('.repeater-item'),
@@ -153,7 +180,7 @@ Site = Class.extend({
 				});
 			});
 		});
-		
+
 		$('.repeater').on('click', '.js-repeater-add', function(e) {
 			var el = $(this),
 				repeater = el.closest('.repeater'),
@@ -177,14 +204,14 @@ Site = Class.extend({
 		//processors conditionals
 		var res = '';
 		function processors(){
-			
+
 			if ($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
 				console.log('usd con suscr');
 				res= 'true';
 				//$('#conekta, #PayPal').attr('disabled', true);
 				$('#StripeUSD, #lbstripeUSD').removeClass('hide');
 				$('#PayPalUSD, #lbpaypalUSD,#conekta, #lbconekta,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
-				
+
 				//alert("Not a valid character");
 			}
 			else if($('#currency').val() == 'usd' && $('#subscription').val() == '' ) {
@@ -208,7 +235,7 @@ Site = Class.extend({
 				//$('#conekta, #PayPal').attr('disabled', true);
 				$('#conekta, #lbconekta').removeClass('hide');
 				$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
-				
+
 				console.log('mxn con suscr');
 				res= 'truemxn2';
 				//alert("Not a valid character");
@@ -216,7 +243,7 @@ Site = Class.extend({
 			else {
 				res= 'invalid';
 			}
-		}	
+		}
 		processors();
 		$('#subscription').change( function() {
 			processors();
@@ -235,7 +262,7 @@ Site = Class.extend({
 				attachments = el.next('.attachments'),
 				attachment = _.template( $('#partial-attachment').html() ),
 				loadzilla = new LoadzillaLite();
-	
+
 			// Existing buttons
 			attachments.find('.js-remove').on('click', function(e) {
 				e.preventDefault();
@@ -260,31 +287,29 @@ Site = Class.extend({
 						console.log(attachment);
 					},
 					complete: function(item, response) {
-	
+
 						var attachment = $('#' + item.uid),
 							buttonRemove = $('<a class="attachment-remove js-remove" href="#">Remove</a>'),
 							status = '';
-							console.log(response.result);
-						attachment.find('.attachment-percent').fadeOut();
-						attachment.find('.attachment-progress .progress-bar').fadeOut(function() {
+							console.log(response);
+							attachment.find('.attachment-percent').fadeOut();
+							attachment.find('.attachment-progress .progress-bar').fadeOut(function() {
+
 							if (response && response.result == 'success') {
-								
-								attachment.find('.attachment-percent').fadeOut(function() {
-									$(this).remove();
-								});
-	
-								status = response.data.ConsultaResult.CodigoEstatus + ' / ' + response.data.ConsultaResult.Estado;
+
+								$('[name=product_image]').val(response.data.attachment.id);
+								$('.uploader-area').html('<img class="img-responsive" src="' + response.data.attachment.url + '">').addClass('has-loaded');
+
+								attachment.find('.attachment-percent').fadeOut(function() { $(this).remove(); });
 								attachment.append('<i class="fa fa-fw fa-check"></i>');
 								attachment.addClass('has-success');
-								attachment.append('<div class="attachment-status">'+status+'</div>');
 							} else {
-	
 								// Error
 								attachment.append('<i class="fa fa-fw fa-warning"></i>');
 								attachment.addClass('has-error');
-								attachment.append('<div class="attachment-status">'+response.message||'Ha ocurrido un error'+'</div>');
+								attachment.append('<div class="attachment-status">' + response.message || 'Ha ocurrido un error' + '</div>');
 							}
-							//console.log(attachment);
+
 							$('.js-clear').removeClass('hide');
 						});
 					}

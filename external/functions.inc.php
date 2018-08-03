@@ -27,15 +27,16 @@
 	$site->registerStyle('google-fonts', get_google_fonts($fonts), true );
 	$site->registerStyle('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', true);
 	$site->registerStyle('reset', 'reset.css', false );
+	$site->registerStyle('plugins', 'plugins/plugins.css', false );
 	$site->registerStyle('print', 'print.css', false, array(), array('media' => 'print') );
-	$site->registerStyle('backend', 'backend.less', false, array('reset', 'google-fonts', 'font-awesome') );
+	$site->registerStyle('backend', 'backend.less', false, array('reset', 'google-fonts', 'font-awesome', 'plugins') );
 	$site->registerStyle('site', 'site.less', false, array('reset', 'google-fonts', 'font-awesome') );
 	$site->enqueueStyle('print');
 	//$site->enqueueStyle('backend');
 	//$site->registerScript('site', 'site.js', false);
 	$site->registerScript('backend', 'backend.js', false);
 	$site->registerScript('jquery.valid4tor', 'jquery.valid4tor.js', false);
-	$site->registerScript('plugins', 'plugins.js', false); 
+	$site->registerScript('plugins', 'plugins.js', false);
 	$site->registerScript('loadzilla', 'loadzilla-lite.js', false);
 	$site->registerScript('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js', true);
 	$site->registerScript('underscore', 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js', true);
@@ -43,7 +44,7 @@
 	$site->registerScript('site', 'site.js', false, array('class', 'jquery.valid4tor','plugins', 'loadzilla'));
 	$site->enqueueScript('site');
 	$site->registerScript('backend', 'backend.js',false);
-	
+
 
 
 	# General meta tags
