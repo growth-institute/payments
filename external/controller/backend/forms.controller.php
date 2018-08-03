@@ -12,49 +12,47 @@ class BackendFormsController extends Controller{
 		$request = $site->getRequest();
 		$response = $site->getResponse();
 		$dbh = $site->getDatabase();
-		$slug = $request->post('slug');
+		$name = $request->post('name');
+		$slug = $site->toAscii($name);
 		$data = [];
-		$message = '';
-		$data = $dbh->prepare("SELECT slug FROM payments_form WHERE slug = '$slug'");
-		//$data = Forms::getBySlug($slug);
-		$data->execute();
-		
-		if ($data->rowCount() > 0) {
-			$message = 'This slug already exist';
-			$result = 'error';
-
+		$data['name'] = $name;
+		$result = 'error';
+		$message = 'This slug already exist';
+		$form = Forms::getBySlug($slug);
+		if (!$form) {
+			$message = 'Need a new slug';
+			$result = 'success';
+			$data['slug'] = $slug;
 		}
 		return $response->ajaxRespond($result, $data, $message);
 	}
 /*Create endpoint to check the extension of image*/
-	function checkImageAction(){
-		global $site; 
+function checkImageAction(){
+		global $site;
 		$request = $site->getRequest();
 		$response = $site->getResponse();
 		$result = 'error';
 		$data = [];
 		$message = '';
 		$allowed = array('png','jpg','jpeg','gif');
-		$product_image = $request->files('product_image');
-		$ext = pathinfo($attachment, PATHINFO_EXTENSION);
+		$product_image = $request->files('file');
+		$ext = pathinfo($product_image['name'], PATHINFO_EXTENSION);
 		if (!in_array($ext, $allowed)) {
 			$message = "This file extension is not allowed";
 		}else{
 			$attachment = Attachments::upload($product_image);
 			if ($attachment) {
-				$data['attachment'] = $attachment;
+				$attachment_image = Attachments::getById($attachment->id);
+				$data['attachment'] = $attachment_image;
 				$result = "success";
 			}
 		}
-		
 		return $response->ajaxRespond($result, $data, $message);
 	}
-
 	function indexAction(){
 		global $site;
 			$request = $site->getRequest();
 			$response = $site->getResponse();
-
 			$this->requireUser();
 			$dbh = $site->getDatabase();
 			$search = $request->param('search', '');
@@ -75,28 +73,25 @@ class BackendFormsController extends Controller{
 			$conditions .= $search_currency && in_array('usd', $search_currency) ? " AND (currency = 'usd')" : '';
 			$conditions .= $search_subscription == 'Yes' ? " AND (subscription = 'Yes')" : '';
 			$conditions .= $search_subscription == 'No' ? " AND (subscription = 'No')" : '';
-			
 			$params = [];
 			$params['show'] = $show;
 			$params['page'] = $page;
 			$params['conditions'] = $conditions;
 			$items = Forms::all($params);
 			$total = Forms::count($conditions);
-			
 			$data = [];
 			$data['items'] = $items;
 			$data['total'] = $total;
 			$data['search'] = $search;
-			$data['search_products'] = $search_products; 
+			$data['search_products'] = $search_products;
 			$data['search_language'] = $search_language;
 			$data['search_currency'] = $search_currency;
 			$data['search_subscription'] = $search_subscription;
 			$data['show'] = $show;
-			//redirect url to page index 
+			//redirect url to page index
 			$site->render('backend/forms/page-index', $data);
 			return $response->respond();
 	}
-
 	function newAction(){
 		global $site;
 		$request = $site->getRequest();
@@ -126,21 +121,21 @@ class BackendFormsController extends Controller{
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
-				$product_image = $request->files('product_image');
-				$attachment = Attachments::upload($product_image);
+				$product_image = $request->post('product_image');
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				$installments = $request->post('installments');
-				$range = $request->post('range');
+				$from = $request->post('from');
+				$to = $request->post('to');
 				$val = $request->post('val');
 				$type = $request->post('type');
-				$lenght_array = count($range);
-				$array = [];
+				$lenght_array = count($from);
 				for($x = 0; $x < $lenght_array; $x++) {
 					$array_discount[] = [
-					"range" => $range[$x],
-					"val" => $val[$x],
-					"type" => $type[$x]
+						'from' => $from[$x],
+						'to' => $to[$x],
+						'val' => $val[$x],
+						'type' => $type[$x]
 					];
 				}
 				//creating an object validator and added some rules
@@ -155,7 +150,7 @@ class BackendFormsController extends Controller{
 				->validate();
 				//check the result
 				if(! $validator->isValid() ){
-					//add Flasher class to show errors 
+					//add Flasher class to show errors
 					Flasher::notice('The following fields are required: ' . implode(', ', $validator->getErrors()));
 					$site->redirectTo($site->urlTo('/backend/forms/new'));
 				}
@@ -175,7 +170,7 @@ class BackendFormsController extends Controller{
 				$form->processor = json_encode($processor);
 				$form->currency = $currency;
 				$form->total = $total;
-				$form->subscription = $subscription; 
+				$form->subscription = $subscription;
 				$form->save();
 				//Saving metas to DB
 				$form->updateMeta('quantity', $quantity);
@@ -183,7 +178,7 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
-				$form->updateMeta('product_image', $attachment->id);
+				$form->updateMeta('product_image', $product_image);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);
@@ -194,14 +189,11 @@ class BackendFormsController extends Controller{
 		}
 		return $response->respond();
 	}
-
 	function editAction($id){
 		global $site;
 		$request = $site->getRequest();
 		$response = $site->getResponse();
-
 		$this->requireUser();
-
 		$params = array();
 		//getting data with metas
 		$params['pdoargs'] = array('fetch_metas' => 1);
@@ -218,7 +210,6 @@ class BackendFormsController extends Controller{
 				$data['item'] = $form;
 				$data['notice'] = $notice;
 				$site->render('backend/forms/page-edit', $data);
-				
 			break;
 			case 'post':
 			//getting data post to send them DB
@@ -230,28 +221,27 @@ class BackendFormsController extends Controller{
 				$currency = $request->post('currency');
 				$total = $request->post('total');
 				$subscription = $request->post('subscription');
-
 				//MetaPost
 				$quantity = $request->post('quantity');
 				$extra_seats = $request->post('extra_seats');
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
-				$product_image = $request->files('product_image');
-				$attachment = Attachments::upload($product_image);
+				$product_image = $request->post('product_image');
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				$installments = $request->post('installments');
-				$range = $request->post('range');
+				$from = $request->post('from');
+				$to = $request->post('to');
 				$val = $request->post('val');
 				$type = $request->post('type');
-				$lenght_array = count($range);
-				$array = [];
+				$lenght_array = count($from);
 				for($x = 0; $x < $lenght_array; $x++) {
 					$array_discount[] = [
-					"range" => $range[$x],
-					"val" => $val[$x],
-					"type" => $type[$x]
+						'from' => $from[$x],
+						'to' => $to[$x],
+						'val' => $val[$x],
+						'type' => $type[$x]
 					];
 				}
 				//creating an object validator and added some rules
@@ -266,10 +256,10 @@ class BackendFormsController extends Controller{
 				->validate();
 				//check the result
 				if(! $validator->isValid() ){
-					//add Flasher class to send message with errors 
+					//add Flasher class to send message with errors
 					Flasher::notice('The following fields are required: ' . implode(',',$validator->getErrors()));
 					//redirect url to current form
-					$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}")); 
+					$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}"));
 				}
 				//updating data
 				$explode = explode(',', $products);
@@ -288,7 +278,7 @@ class BackendFormsController extends Controller{
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
-				$form->updateMeta('product_image', $attachment->id);
+				$form->updateMeta('product_image', $product_image);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);
@@ -298,7 +288,6 @@ class BackendFormsController extends Controller{
 		}
 		return $response->respond();
 	}
-
 	function deleteAction($id){
 		global $site;
 		$request = $site->getRequest();
@@ -324,5 +313,4 @@ class BackendFormsController extends Controller{
 		return $response->respond();
 	}
 }
-
 ?>

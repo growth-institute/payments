@@ -1,26 +1,27 @@
-<form action="" method="post" enctype="multipart/form-data">
+<?php
+	$id_attachment = $item ? $item->getMeta('product_image') : false;
+	$attachment_image = $id_attachment ? Attachments::getById($id_attachment) : false;
+?>
+<form id="payment-form" action="" method="post" enctype="multipart/form-data">
 	<div class="panel-wrapper fixed-right">
 		<div class="panel-fixed">
 			<div class="metabox">
 				<div class="metabox-header">Properties</div>
 				<div class="metabox-body" id="formgeneral">
 					<div class="form-group">
-						
-						<?php
-							$id_attachment = $item ? $item->getMeta("product_image") : false;
-							if ($id_attachment):
-								$attachment_image = Attachments::getById($id_attachment);
-						?>
-							<label for="image" class="control-label">Current Image</label>
-							<img class="img-responsive" src="<?php echo($attachment_image->url);?>" alt="image_products">
-						<?php endif; ?>
+						<input type="hidden" name="product_image" value="<?php echo $attachment_image ? $attachment_image->id : ''; ?>">
 						<div class="form-group">
 								<div class="margins">
 									<form action="" method="post" enctype="multipart/form-data" class="form-upload hide">
 										<input type="file" name="file" id="file" class="hide">
 									</form>
-									<div class="uploader-area" data-input="[name=file]" data-target="forms.controller.php">
-										<span class="cue-text">Drag and drop your files or click to add them</span>
+									<label for="image" class="control-label">Current Image</label>
+									<div class="uploader-area <?php echo $attachment_image ? 'has-loaded' : ''; ?>" data-input="[name=file]" data-target="<?php $site->urlTo('/backend/forms/check-image', true); ?>">
+										<?php if($attachment_image): ?>
+											<img class="img-responsive" src="<?php echo($attachment_image->url);?>" alt="image_products">
+										<?php else: ?>
+											<span class="cue-text">Drag and drop your files or click to add them</span>
+										<?php endif; ?>
 									</div>
 									<div class="attachments"></div>
 									<a href="#" class="button button-primary button-block js-clear hide"><i class="fa fa-fw fa-trash"></i> Limpiar lista</a>
@@ -39,13 +40,16 @@
 							</div>
 						<div class="form-group">
 							<label for="quantity" class="control-label">Quantity</label>
-							<input type="number" name="quantity" id="quantity" value="<?php sanitized_print($item ? $item->getMeta('quantity') : '');?>" class="form-control input-block">
+							<select name="quantity" id="quantity" class="form-control input-block">
+								<option value="">No</option>
+								<option value="1">Yes</option>
+							</select>
 						</div>
 						<div class="form-group">
 							<label for="total" class="control-label">Total</label>
 							<input type="number" name="total" id="total" class="form-control input-block" data-validate="required" value="<?php sanitized_print($item ? $item->total : ''); ?>">
 						</div>
-						
+
 						<div class="form-group">
 							<?php
 								$slug = $item ? $item->slug : false;
@@ -58,10 +62,10 @@
 										</div>
 							<?php endif; ?>
 						</div>
-						
+
 					</div>
 					<div class="text-right">
-						
+
 						<a href="<?php $site->urlTo("/backend/forms/", true); ?>" class="button button-link">Go back</a>
 						<button type="submit" id='submit' class="button button-primary">Save changes</button>
 					</div>
@@ -70,12 +74,11 @@
 		</div>
 		<div class="panel-fluid">
 			<div class="form-group">
-				<label for="name" class="control-label">Name</label>
-				<input type="text" name="name" id="email" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->name : ''); ?>">
+				<input placeholder="Add the name of your form" type="text" name="name" id="name" data-validate="required" class="form-control input-block form-control-xlarge" value="<?php sanitized_print($item ? $item->name : ''); ?>">
 			</div>
 			<div class="form-group">
 				<label for="slug" class="control-label">Slug</label>
-				<input type="text" id="login" name="slug" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
+				<input type="text" id="slug" name="slug" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
 			</div>
 			<ul class="tab-list">
 				<li class="selected">
@@ -96,9 +99,9 @@
 					<div class="metabox">
 						<div class="metabox-header">Generals</div>
 							<div class="metabox-body">
-								
+
 								<div class="form-group">
-									<?php 
+									<?php
 										$decode = isset($item) ? json_decode($item->products) : false;
 										$implode = isset($item) ? implode(',', $decode) : false;
 									?>
@@ -121,7 +124,7 @@
 									<option name="mxn" value="mxn" <?php echo($item && $item->currency == 'mxn' ? 'selected="selected"' : ''); ?> >MXN</option>
 								</select>
 								</div>
-								
+
 								<div class="form-group">
 									<label for="subscription" class="control-label">Subscription</label>
 									<select class="form-control input-block js-toggle-periodicity" name="subscription" id="subscription">
@@ -147,14 +150,16 @@
 										<div class="help-block" id="ocurrency_message">Zero ocurrency is unlimited</div>
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group form-group-processors">
 									<?php
 										$obj = isset($item) ? json_decode($item->processor) : false;
 									?>
 									<label for="processor" class="control-label">Processor</label>
-									<label><input type="radio" name="processor[]" data-validate="required"  id="PayPal" value="PayPal"  <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control">PayPal</label>
-									<label><input type="radio" name="processor[]" id="Stripe" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control">Stripe</label>
-									<label><input type="radio" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control">Conekta</label>
+									<label id="lbpaypalUSD"class="hide"><input type="checkbox" name="processor[]" id="PayPalUSD" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">PayPal</label>
+									<label id="lbstripeUSD"class="hide"><input type="checkbox" name="processor[]" id="StripeUSD" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control hide">Stripe</label>
+									<label id="lbpaypalMNX"class="hide"><input type="checkbox" name="processor[]" id="PayPalMNX" value="PayPal"  <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">PayPal</label>
+									<label id="lbstripeMNX"class="hide"><input type="checkbox" name="processor[]" id="StripeMNX" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control hide">Stripe</label>
+									<label id="lbconekta"class="hide"><input type="checkbox" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">Conekta</label>
 								</div>
 							</div>
 					</div>
@@ -181,7 +186,7 @@
 								</div>
 								<div class="form-group">
 									<label for="product_description" class="control-label">Product Description</label>
-									<textarea name="product_description" id="product_description"  class="form-control input-block" rows="10"><?php sanitized_print($item ? $item->getMeta('product_description') : '');?></textarea> 
+									<textarea name="product_description" id="product_description"  class="form-control input-block" rows="10"><?php sanitized_print($item ? $item->getMeta('product_description') : '');?></textarea>
 								</div>
 							</div>
 					</div>
@@ -208,9 +213,9 @@
 						<div class="metabox-header">Discounts</div>
 							<div class="metabox-body">
 								<div class="repeater repeater-discount" data-partial="#partial-repeater-discount">
-										
+
 									<div class="repeater-items">
-										
+
 											<?php
 												$discounts = isset($item) ? $item->getMeta("discounts") : false;
 												$counter = 1;
@@ -227,22 +232,31 @@
 														</div>
 														<div class="item-controls">
 															<div class="row row-md row-5">
-																<div class="col col-md-4 ">
+																<div class="col col-md-2">
 																	<div class="form-group">
-																		<label for="range_<%= number %>" class="control-label">Range</label>
-																		<input type="text" name="range[]" class="form-control input-block" value="<?php echo($value['range']);?>">
+																		<label for="range_<?php echo $counter; ?>" class="control-label">Range From</label>
+																		<input type="number" data-validate="required" min="0" name="from[]" id="from_<?php echo $counter; ?>" class="form-control input-block" value="<?php echo $value['from']; ?>">
+																	</div>
+																</div>
+																<div class="col col-md-2 ">
+																	<div class="form-group">
+																		<label for="range_<?php echo $counter; ?>" class="control-label">Range To</label>
+																		<input type="number" data-validate="required" min="0" name="to[]" id="to_<?php echo $counter; ?>" class="form-control input-block" value="<?php echo $value['to']; ?>">
 																	</div>
 																</div>
 																<div class="col col-md-4">
 																	<div class="form-group">
-																		<label for="val_<%= number %>" class="control-label">Value</label>
-																		<input type="text" name="val[]" class="form-control input-block" value="<?php echo($value['val']);?>">
+																		<label for="val_<?php echo $counter; ?>" class="control-label">Value</label>
+																		<input type="number" data-validate="required" min="0" name="val[]" id="val_<?php echo $counter; ?>" class="form-control input-block" value="<?php echo $value['val']; ?>">
 																	</div>
 																</div>
 																<div class="col col-md-4">
 																	<div class="form-group">
-																		<label for="type_<%= number %>" class="control-label">Type</label>
-																		<input type="text" name="type[]" class="form-control input-block" value="<?php echo($value['type']); ?>">
+																		<label for="type_<?php echo $counter; ?>" class="control-label">Type</label>
+																		<select name="type[]" data-validate="required" id="type_<?php echo $counter; ?>" class="form-control input-block">
+																			<option value="percentage" <?php echo $value['type'] == 'percentage' ? 'selected' : ''; ?>>Percentage</option>
+																			<option value="amount" <?php echo $value['type'] == 'amount' ? 'selected' : ''; ?>>Fixed Amount</option>
+																		</select>
 																	</div>
 																</div>
 															</div>
@@ -267,22 +281,31 @@
 											</div>
 											<div class="item-controls">
 												<div class="row row-md row-5">
-													<div class="col col-md-4 ">
+													<div class="col col-md-2">
 														<div class="form-group">
-															<label for="range_<%= number %>" class="control-label">Range</label>
-															<input type="text" name="range[]" id="range_<%= number %>" class="form-control input-block" value="">
+															<label for="range_<%= number %>" class="control-label">Range From</label>
+															<input type="number" data-validate="required" min="0" name="from[]" id="from_<%= number %>" class="form-control input-block" value="">
+														</div>
+													</div>
+													<div class="col col-md-2 ">
+														<div class="form-group">
+															<label for="range_<%= number %>" class="control-label">Range To</label>
+															<input type="number" data-validate="required" min="0" name="to[]" id="to_<%= number %>" class="form-control input-block" value="">
 														</div>
 													</div>
 													<div class="col col-md-4">
 														<div class="form-group">
 															<label for="val_<%= number %>" class="control-label">Value</label>
-															<input type="text" name="val[]" id="val_<%= number %>" class="form-control input-block" value="">
+															<input type="number" data-validate="required" min="0" name="val[]" id="val_<%= number %>" class="form-control input-block" value="">
 														</div>
 													</div>
 													<div class="col col-md-4">
 														<div class="form-group">
 															<label for="type_<%= number %>" class="control-label">Type</label>
-															<input type="text" name="type[]" id="type_<%= number %>" class="form-control input-block" value="">
+															<select name="type[]" data-validate="required" id="type_<%= number %>" class="form-control input-block">
+																<option value="percentage">Percentage</option>
+																<option value="amount">Fixed Amount</option>
+															</select>
 														</div>
 													</div>
 												</div>

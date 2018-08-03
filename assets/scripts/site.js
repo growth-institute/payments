@@ -8,6 +8,16 @@ Site = Class.extend({
 			opts = _.defaults(options, {
 				// Add options here
 			});
+
+		// Button and spanish text + valign wrapper
+		$.extend(true, $.alert.defaults, {
+			markup: '<div class="alert-overlay"><div class="valign-wrapper"><div class="valign"><div class="alert"><div class="alert-message">{message}</div><div class="alert-buttons"></div></div></div></div></div>',
+			buttonMarkup: '<button class="button button-primary"></button>',
+			buttons: [
+				{ text: 'Got it', action: $.alert.close }
+			]
+		});
+
 		jQuery(document).ready(function($) {
 			obj.onDomReady($);
 		});
@@ -20,15 +30,58 @@ Site = Class.extend({
 		}
 	},
 	installments: function(val) {
-		if (val){
+		if ($('#conekta').is(':checked')) {
 			$('#tab-installment').removeClass('hide');
 		} else {
 			$('#tab-installment').addClass('hide');
 		}
 	},
+	checkSlug: function(name){
+
+		var obj = this,
+			slugCheck = false;
+
+		$.ajax({
+			url: constants.siteUrl + 'backend/forms/slug-check',
+			async: false,
+			type: 'POST',
+			data: { name: name },
+			success: function(response) {
+				slugCheck = response;
+			}
+		});
+
+		return slugCheck;
+	},
+	processors: function() {
+
+		console.log($('#currency').val());
+		console.log($('#subscription').val());
+
+		if ($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
+
+			$('#StripeUSD, #lbstripeUSD').removeClass('hide');
+			$('#PayPalUSD, #lbpaypalUSD,#conekta, #lbconekta,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
+
+		} else if($('#currency').val() == 'usd' && $('#subscription').val() == '' ) {
+
+			$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD').removeClass('hide');
+			$('#conekta, #lbconekta,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
+
+		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
+
+			$('#conekta,#lbconekta, #PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').removeClass('hide');
+			$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD').addClass('hide');
+
+		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == 'Yes' ) {
+
+			$('#StripeMNX, #lbstripeMNX').removeClass('hide');
+			$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD,#PayPalMNX, #lbpaypalMNX, #conekta, #lbconekta').addClass('hide');
+		}
+	},
 	onDomReady: function($) {
 		var obj = this;
-		
+
 		// Tabs Miniplugin
 		$('.tab-list li a').on('click', function(e) {
 			e.preventDefault();
@@ -38,7 +91,7 @@ Site = Class.extend({
 				li.addClass('selected').siblings('li').removeClass('selected');
 				target.addClass('active').siblings('.tab').removeClass('active');
 		});
-		
+
 		$('.tab-list').each(function() {
 			var el = $(this);
 			el.find('li a').first().trigger('click');
@@ -59,12 +112,12 @@ Site = Class.extend({
 				val = el.val();
 			obj.showPeriodicity(val);
 		}).trigger('change');
-		$('#conekta' ).change( function(){
+		$('#conekta').change( function(){
 			console.log('checked');
 			var el = $(this),
 				val = el.val();
 			obj.installments(val);
-			
+
 		});
 		$('#PayPal, #Stripe' ).change( function(){
 			console.log('checked2');
@@ -72,22 +125,53 @@ Site = Class.extend({
 				val = '';
 			obj.installments(val);
 		});
-		//validation forms fronend
-		$('#submit').click( function(event) {
-			//event.preventDefault();
-			return $('form').validate({
+
+		$('#name').on('blur', function(e){
+			var el = $(this),
+				name = el.val();
+			console.log(name);
+			if (name) {
+				var slug = obj.checkSlug(name);
+				var clean = true;
+
+				while(slug.result == 'error') {
+					name = name + '-1';
+					clean = false;
+					slug = obj.checkSlug(name);
+				}
+
+				if(!clean) {
+
+					$.alert('The slug of the form already exists. Creating a new one.');
+				}
+
+				$('#slug').val(slug.data.slug);
+			}
+		});
+
+		// Validation forms fronend
+		$('#payment-form').on('submit', function() {
+			var form = $(this);
+
+			var processorChecked = $('.form-group-processors input:checked').length;
+			if(!processorChecked) {
+				$.alert('You must select at least one payment processor');
+				return false;
+			}
+
+			return form.validate({
 				callbacks: {
 					fail: function(field, type, message) {
 						/* An item has failed validation, field has the jQuery object, type is the rule and message its description */
 						console.log('form invalid');
+						field.closest('.form-group').addClass('has-error');
+						field.on('focus', function() {
+							field.closest('.form-group').removeClass('has-error');
+							field.off('focus');
+						});
 					},
-					success: function() {
-						/* Everything is OK, continue */
-						$('form').submit();
-					},
-					error: function(fields) {
-						/* Missing info! 'fields' is a jQuery object with the offending fields */
-					}
+					success: function() {},
+					error: function(fields) {}
 				}
 			});
 		});
@@ -113,7 +197,7 @@ Site = Class.extend({
 			newRow.fadeIn();
 			//obj.codeMirrorInit( newRow.find('.codemirror') );
 		});
-		
+
 		$('.repeater').on('click', '.js-repeater-delete', function(e) {
 			var el = $(this),
 				item = el.closest('.repeater-item'),
@@ -128,7 +212,7 @@ Site = Class.extend({
 				});
 			});
 		});
-		
+
 		$('.repeater').on('click', '.js-repeater-add', function(e) {
 			var el = $(this),
 				repeater = el.closest('.repeater'),
@@ -149,48 +233,15 @@ Site = Class.extend({
 			});
 			newRow.fadeIn();
 		});
-		//processors conditionals
-		var res = '';
-		function processors(){
-			
-			if ($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
-				console.log('usd con suscr');
-				res= 'true';
-				$('#conekta, #PayPal').attr('disabled', true);
-				//alert("Not a valid character");
-			}
-			else if($('#currency').val() == 'usd' && $('#subscription').val() == '' ) {
-				$('#conekta').attr('disabled', true);
-				$('#PayPal').attr('disabled', false);
-				console.log('usd sin suscr');
-				res= 'true2';
-				//alert("Not a valid character");
-			}
-			else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
-				$('#conekta, #PayPal').attr('disabled', false);
-				console.log('mxn sin suscr');
-				res= 'truemxn';
-				//alert("Not a valid character");
-			}
-			else if($('#currency').val() == 'mxn' && $('#subscription').val() == 'Yes' ) {
-				$('#conekta, #PayPal').attr('disabled', true);
-				console.log('mxn con suscr');
-				res= 'truemxn2';
-				//alert("Not a valid character");
-			}
-			else {
-				res= 'invalid';
-			}
-		}	
-		processors();
+
+		//Processors conditionals
+		obj.processors();
 		$('#subscription').change( function() {
-			processors();
-			//processors(res);
-			console.log(res);
+			obj.processors();
+
 		});
 		$('#currency').change( function() {
-			processors();
-			console.log(res);
+			obj.processors();
 		});
 
 		//Loadzilla
@@ -200,7 +251,7 @@ Site = Class.extend({
 				attachments = el.next('.attachments'),
 				attachment = _.template( $('#partial-attachment').html() ),
 				loadzilla = new LoadzillaLite();
-	
+
 			// Existing buttons
 			attachments.find('.js-remove').on('click', function(e) {
 				e.preventDefault();
@@ -216,39 +267,38 @@ Site = Class.extend({
 				callbacks: {
 					start: function(item) {
 						attachments.html( attachment({ item: item }) );
-						//console.log(item);
+						console.log(item);
 					},
 					progress: function(item, percent) {
 						var attachment = $('#' + item.uid);
 						attachment.find('.attachment-percent').text(percent + '%');
 						attachment.find('.attachment-progress .progress-bar').css('width', percent + '%');
+						console.log(attachment);
 					},
 					complete: function(item, response) {
-	
+
 						var attachment = $('#' + item.uid),
 							buttonRemove = $('<a class="attachment-remove js-remove" href="#">Remove</a>'),
 							status = '';
-							console.log(response.result);
-						attachment.find('.attachment-percent').fadeOut();
-						attachment.find('.attachment-progress .progress-bar').fadeOut(function() {
+							console.log(response);
+							attachment.find('.attachment-percent').fadeOut();
+							attachment.find('.attachment-progress .progress-bar').fadeOut(function() {
+
 							if (response && response.result == 'success') {
-								
-								attachment.find('.attachment-percent').fadeOut(function() {
-									$(this).remove();
-								});
-	
-								status = response.data.ConsultaResult.CodigoEstatus + ' / ' + response.data.ConsultaResult.Estado;
+
+								$('[name=product_image]').val(response.data.attachment.id);
+								$('.uploader-area').html('<img class="img-responsive" src="' + response.data.attachment.url + '">').addClass('has-loaded');
+
+								attachment.find('.attachment-percent').fadeOut(function() { $(this).remove(); });
 								attachment.append('<i class="fa fa-fw fa-check"></i>');
 								attachment.addClass('has-success');
-								attachment.append('<div class="attachment-status">'+status+'</div>');
 							} else {
-	
 								// Error
 								attachment.append('<i class="fa fa-fw fa-warning"></i>');
 								attachment.addClass('has-error');
-								attachment.append('<div class="attachment-status">'+response.message||'Ha ocurrido un error'+'</div>');
+								attachment.append('<div class="attachment-status">' + response.message || 'Ha ocurrido un error' + '</div>');
 							}
-							//console.log(attachment);
+
 							$('.js-clear').removeClass('hide');
 						});
 					}
