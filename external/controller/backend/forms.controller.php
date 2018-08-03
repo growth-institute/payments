@@ -18,6 +18,7 @@ class BackendFormsController extends Controller{
 		$data = $dbh->prepare("SELECT slug FROM payments_form WHERE slug = '$slug'");
 		//$data = Forms::getBySlug($slug);
 		$data->execute();
+		
 		if ($data->rowCount() > 0) {
 			$message = 'This slug already exist';
 			$result = 'error';
@@ -26,7 +27,7 @@ class BackendFormsController extends Controller{
 		return $response->ajaxRespond($result, $data, $message);
 	}
 /*Create endpoint to check the extension of image*/
-function checkImageAction(){
+	function checkImageAction(){
 		global $site; 
 		$request = $site->getRequest();
 		$response = $site->getResponse();
