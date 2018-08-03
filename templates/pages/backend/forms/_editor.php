@@ -2,7 +2,7 @@
 	$id_attachment = $item ? $item->getMeta('product_image') : false;
 	$attachment_image = $id_attachment ? Attachments::getById($id_attachment) : false;
 ?>
-<form action="" method="post" enctype="multipart/form-data">
+<form id="payment-form" action="" method="post" enctype="multipart/form-data">
 	<div class="panel-wrapper fixed-right">
 		<div class="panel-fixed">
 			<div class="metabox">
@@ -40,7 +40,10 @@
 							</div>
 						<div class="form-group">
 							<label for="quantity" class="control-label">Quantity</label>
-							<input type="number" name="quantity" id="quantity" value="<?php sanitized_print($item ? $item->getMeta('quantity') : '');?>" class="form-control input-block">
+							<select name="quantity" id="quantity" class="form-control input-block">
+								<option value="">No</option>
+								<option value="1">Yes</option>
+							</select>
 						</div>
 						<div class="form-group">
 							<label for="total" class="control-label">Total</label>
@@ -147,7 +150,7 @@
 										<div class="help-block" id="ocurrency_message">Zero ocurrency is unlimited</div>
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group form-group-processors">
 									<?php
 										$obj = isset($item) ? json_decode($item->processor) : false;
 									?>
@@ -156,7 +159,6 @@
 									<label id="lbstripeUSD"class="hide"><input type="checkbox" name="processor[]" id="StripeUSD" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control hide">Stripe</label>
 									<label id="lbpaypalMNX"class="hide"><input type="checkbox" name="processor[]" id="PayPalMNX" value="PayPal"  <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">PayPal</label>
 									<label id="lbstripeMNX"class="hide"><input type="checkbox" name="processor[]" id="StripeMNX" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control hide">Stripe</label>
-
 									<label id="lbconekta"class="hide"><input type="checkbox" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">Conekta</label>
 								</div>
 							</div>
@@ -230,22 +232,31 @@
 														</div>
 														<div class="item-controls">
 															<div class="row row-md row-5">
-																<div class="col col-md-4 ">
+																<div class="col col-md-2">
 																	<div class="form-group">
-																		<label for="range_<%= number %>" class="control-label">Range</label>
-																		<input type="text" name="range[]" class="form-control input-block" value="<?php echo($value['range']);?>">
+																		<label for="range_<?php echo $counter; ?>" class="control-label">Range From</label>
+																		<input type="number" data-validate="required" min="0" name="from[]" id="from_<?php echo $counter; ?>" class="form-control input-block" value="<?php echo $value['from']; ?>">
+																	</div>
+																</div>
+																<div class="col col-md-2 ">
+																	<div class="form-group">
+																		<label for="range_<?php echo $counter; ?>" class="control-label">Range To</label>
+																		<input type="number" data-validate="required" min="0" name="to[]" id="to_<?php echo $counter; ?>" class="form-control input-block" value="<?php echo $value['to']; ?>">
 																	</div>
 																</div>
 																<div class="col col-md-4">
 																	<div class="form-group">
-																		<label for="val_<%= number %>" class="control-label">Value</label>
-																		<input type="text" name="val[]" class="form-control input-block" value="<?php echo($value['val']);?>">
+																		<label for="val_<?php echo $counter; ?>" class="control-label">Value</label>
+																		<input type="number" data-validate="required" min="0" name="val[]" id="val_<?php echo $counter; ?>" class="form-control input-block" value="<?php echo $value['val']; ?>">
 																	</div>
 																</div>
 																<div class="col col-md-4">
 																	<div class="form-group">
-																		<label for="type_<%= number %>" class="control-label">Type</label>
-																		<input type="text" name="type[]" class="form-control input-block" value="<?php echo($value['type']); ?>">
+																		<label for="type_<?php echo $counter; ?>" class="control-label">Type</label>
+																		<select name="type[]" data-validate="required" id="type_<?php echo $counter; ?>" class="form-control input-block">
+																			<option value="percentage" <?php echo $value['type'] == 'percentage' ? 'selected' : ''; ?>>Percentage</option>
+																			<option value="amount" <?php echo $value['type'] == 'amount' ? 'selected' : ''; ?>>Fixed Amount</option>
+																		</select>
 																	</div>
 																</div>
 															</div>
@@ -270,22 +281,31 @@
 											</div>
 											<div class="item-controls">
 												<div class="row row-md row-5">
-													<div class="col col-md-4 ">
+													<div class="col col-md-2">
 														<div class="form-group">
-															<label for="range_<%= number %>" class="control-label">Range</label>
-															<input type="text" name="range[]" id="range_<%= number %>" class="form-control input-block" value="">
+															<label for="range_<%= number %>" class="control-label">Range From</label>
+															<input type="number" data-validate="required" min="0" name="from[]" id="from_<%= number %>" class="form-control input-block" value="">
+														</div>
+													</div>
+													<div class="col col-md-2 ">
+														<div class="form-group">
+															<label for="range_<%= number %>" class="control-label">Range To</label>
+															<input type="number" data-validate="required" min="0" name="to[]" id="to_<%= number %>" class="form-control input-block" value="">
 														</div>
 													</div>
 													<div class="col col-md-4">
 														<div class="form-group">
 															<label for="val_<%= number %>" class="control-label">Value</label>
-															<input type="text" name="val[]" id="val_<%= number %>" class="form-control input-block" value="">
+															<input type="number" data-validate="required" min="0" name="val[]" id="val_<%= number %>" class="form-control input-block" value="">
 														</div>
 													</div>
 													<div class="col col-md-4">
 														<div class="form-group">
 															<label for="type_<%= number %>" class="control-label">Type</label>
-															<input type="text" name="type[]" id="type_<%= number %>" class="form-control input-block" value="">
+															<select name="type[]" data-validate="required" id="type_<%= number %>" class="form-control input-block">
+																<option value="percentage">Percentage</option>
+																<option value="amount">Fixed Amount</option>
+															</select>
 														</div>
 													</div>
 												</div>

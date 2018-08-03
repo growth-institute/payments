@@ -53,6 +53,32 @@ Site = Class.extend({
 
 		return slugCheck;
 	},
+	processors: function() {
+
+		console.log($('#currency').val());
+		console.log($('#subscription').val());
+
+		if ($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
+
+			$('#StripeUSD, #lbstripeUSD').removeClass('hide');
+			$('#PayPalUSD, #lbpaypalUSD,#conekta, #lbconekta,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
+
+		} else if($('#currency').val() == 'usd' && $('#subscription').val() == '' ) {
+
+			$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD').removeClass('hide');
+			$('#conekta, #lbconekta,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
+
+		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
+
+			$('#conekta,#lbconekta, #PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').removeClass('hide');
+			$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD').addClass('hide');
+
+		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == 'Yes' ) {
+
+			$('#StripeMNX, #lbstripeMNX').removeClass('hide');
+			$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD,#PayPalMNX, #lbpaypalMNX, #conekta, #lbconekta').addClass('hide');
+		}
+	},
 	onDomReady: function($) {
 		var obj = this;
 
@@ -123,23 +149,29 @@ Site = Class.extend({
 			}
 		});
 
-		//validation forms fronend
-		$('#submit').click( function(event) {
-			//event.preventDefault();
-			return $('form').validate({
+		// Validation forms fronend
+		$('#payment-form').on('submit', function() {
+			var form = $(this);
+
+			var processorChecked = $('.form-group-processors input:checked').length;
+			if(!processorChecked) {
+				$.alert('You must select at least one payment processor');
+				return false;
+			}
+
+			return form.validate({
 				callbacks: {
 					fail: function(field, type, message) {
 						/* An item has failed validation, field has the jQuery object, type is the rule and message its description */
-						console.log(field);
 						console.log('form invalid');
+						field.closest('.form-group').addClass('has-error');
+						field.on('focus', function() {
+							field.closest('.form-group').removeClass('has-error');
+							field.off('focus');
+						});
 					},
-					success: function() {
-					/* Everything is OK, continue */
-						$('form').submit();
-						},
-					error: function(fields) {
-						/* Missing info! 'fields' is a jQuery object with the offending fields */
-					}
+					success: function() {},
+					error: function(fields) {}
 				}
 			});
 		});
@@ -201,58 +233,15 @@ Site = Class.extend({
 			});
 			newRow.fadeIn();
 		});
-		//processors conditionals
-		var res = '';
-		function processors(){
 
-			if ($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
-				console.log('usd con suscr');
-				res= 'true';
-				//$('#conekta, #PayPal').attr('disabled', true);
-				$('#StripeUSD, #lbstripeUSD').removeClass('hide');
-				$('#PayPalUSD, #lbpaypalUSD,#conekta, #lbconekta,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
-
-				//alert("Not a valid character");
-			}
-			else if($('#currency').val() == 'usd' && $('#subscription').val() == '' ) {
-				//$('#conekta').attr('disabled', true);
-				//$('#PayPal').attr('disabled', false);
-				$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD').removeClass('hide');
-				$('#conekta, #lbconekta,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
-				console.log('usd sin suscr');
-				res= 'true2';
-				//alert("Not a valid character");
-			}
-			else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
-				//$('#conekta, #PayPal').attr('disabled', false);
-				$('#conekta,#lbconekta, #PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').removeClass('hide');
-				$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD').addClass('hide');
-				console.log('mxn sin suscr');
-				res= 'truemxn';
-				//alert("Not a valid character");
-			}
-			else if($('#currency').val() == 'mxn' && $('#subscription').val() == 'Yes' ) {
-				//$('#conekta, #PayPal').attr('disabled', true);
-				$('#conekta, #lbconekta').removeClass('hide');
-				$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
-
-				console.log('mxn con suscr');
-				res= 'truemxn2';
-				//alert("Not a valid character");
-			}
-			else {
-				res= 'invalid';
-			}
-		}
-		processors();
+		//Processors conditionals
+		obj.processors();
 		$('#subscription').change( function() {
-			processors();
-			//processors(res);
-			console.log(res);
+			obj.processors();
+
 		});
 		$('#currency').change( function() {
-			processors();
-			console.log(res);
+			obj.processors();
 		});
 
 		//Loadzilla

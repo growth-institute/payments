@@ -131,16 +131,18 @@ function checkImageAction(){
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				$installments = $request->post('installments');
-				$range = $request->post('range');
+
+				$from = $request->post('from');
+				$to = $request->post('to');
 				$val = $request->post('val');
 				$type = $request->post('type');
-				$lenght_array = count($range);
-				$array = [];
+				$lenght_array = count($from);
 				for($x = 0; $x < $lenght_array; $x++) {
 					$array_discount[] = [
-					"range" => $range[$x],
-					"val" => $val[$x],
-					"type" => $type[$x]
+						'from' => $from[$x],
+						'to' => $to[$x],
+						'val' => $val[$x],
+						'type' => $type[$x]
 					];
 				}
 				//creating an object validator and added some rules
@@ -241,16 +243,17 @@ function checkImageAction(){
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				$installments = $request->post('installments');
-				$range = $request->post('range');
+				$from = $request->post('from');
+				$to = $request->post('to');
 				$val = $request->post('val');
 				$type = $request->post('type');
-				$lenght_array = count($range);
-				$array = [];
+				$lenght_array = count($from);
 				for($x = 0; $x < $lenght_array; $x++) {
 					$array_discount[] = [
-					"range" => $range[$x],
-					"val" => $val[$x],
-					"type" => $type[$x]
+						'from' => $from[$x],
+						'to' => $to[$x],
+						'val' => $val[$x],
+						'type' => $type[$x]
 					];
 				}
 				//creating an object validator and added some rules
