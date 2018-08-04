@@ -11,11 +11,11 @@
 					<div class="form-group">
 						<input type="hidden" name="product_image" value="<?php echo $attachment_image ? $attachment_image->id : ''; ?>">
 						<div class="form-group">
-								<div class="margins">
+								<div class="margins-vert">
 									<form action="" method="post" enctype="multipart/form-data" class="form-upload hide">
 										<input type="file" name="file" id="file" class="hide">
 									</form>
-									<label for="image" class="control-label">Current Image</label>
+									<label for="image" class="control-label">Product Image</label>
 									<div class="uploader-area <?php echo $attachment_image ? 'has-loaded' : ''; ?>" data-input="[name=file]" data-target="<?php $site->urlTo('/backend/forms/check-image', true); ?>">
 										<?php if($attachment_image): ?>
 											<img class="img-responsive" src="<?php echo($attachment_image->url);?>" alt="image_products">
@@ -24,7 +24,6 @@
 										<?php endif; ?>
 									</div>
 									<div class="attachments"></div>
-									<a href="#" class="button button-primary button-block js-clear hide"><i class="fa fa-fw fa-trash"></i> Limpiar lista</a>
 
 									<script type="text/template" id="partial-attachment">
 										<div class="attachment" id="<%= item.uid %>">
@@ -77,8 +76,7 @@
 				<input placeholder="Add the name of your form" type="text" name="name" id="name" data-validate="required" class="form-control input-block form-control-xlarge" value="<?php sanitized_print($item ? $item->name : ''); ?>">
 			</div>
 			<div class="form-group">
-				<label for="slug" class="control-label">Slug</label>
-				<input type="text" id="slug" name="slug" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
+				<p><?php $site->urlTo('/', true); ?> <input type="text" id="slug" name="slug" data-validate="required" class="form-control" readonly="readonly" value="<?php sanitized_print($item ? $item->slug : ''); ?>"></p>
 			</div>
 			<ul class="tab-list">
 				<li class="selected">
@@ -94,7 +92,7 @@
 					<a href="#tab-four">Discounts</a>
 				</li>
 			</ul>
-			<div class="tabs tabs-border">
+			<div class="tabs">
 				<div class="tab" id="tab-one">
 					<div class="metabox">
 						<div class="metabox-header">Generals</div>

@@ -290,13 +290,13 @@ Site = Class.extend({
 								$('.uploader-area').html('<img class="img-responsive" src="' + response.data.attachment.url + '">').addClass('has-loaded');
 
 								attachment.find('.attachment-percent').fadeOut(function() { $(this).remove(); });
-								attachment.append('<i class="fa fa-fw fa-check"></i>');
+								//attachment.append('<i class="fa fa-fw fa-check"></i>');
 								attachment.addClass('has-success');
 							} else {
 								// Error
 								attachment.append('<i class="fa fa-fw fa-warning"></i>');
 								attachment.addClass('has-error');
-								attachment.append('<div class="attachment-status">' + response.message || 'Ha ocurrido un error' + '</div>');
+								attachment.append('<div class="attachment-status">' + response.message || 'An error has ocurred' + '</div>');
 							}
 
 							$('.js-clear').removeClass('hide');
