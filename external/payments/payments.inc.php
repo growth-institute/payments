@@ -32,7 +32,9 @@
 
 		static function init() {
 			global $site;
+			#
 			$site->enqueueStyle('site');
+			$site->enqueueScript('site');
 		}
 
 		protected function __construct() {

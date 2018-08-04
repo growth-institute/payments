@@ -19,6 +19,7 @@
 	include $site->baseDir('/external/pagination.inc.php');
 	include $site->baseDir('/external/cacher.inc.php');
 	include $site->baseDir('/external/curly.inc.php');
+
 	# Include Google Fonts
 	$fonts = array(
 		'Open Sans' => array(400, '400italic', 700, '700italic'),
@@ -32,20 +33,15 @@
 	$site->registerStyle('backend', 'backend.less', false, array('reset', 'google-fonts', 'font-awesome', 'plugins') );
 	$site->registerStyle('site', 'site.less', false, array('reset', 'google-fonts', 'font-awesome') );
 	$site->enqueueStyle('print');
-	//$site->enqueueStyle('backend');
-	//$site->registerScript('site', 'site.js', false);
-	$site->registerScript('backend', 'backend.js', false);
+
 	$site->registerScript('jquery.valid4tor', 'jquery.valid4tor.js', false);
 	$site->registerScript('plugins', 'plugins.js', false);
 	$site->registerScript('loadzilla', 'loadzilla-lite.js', false);
 	$site->registerScript('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js', true);
 	$site->registerScript('underscore', 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js', true);
 	$site->registerScript('class', 'class.js', false, array('jquery', 'underscore'));
-	$site->registerScript('site', 'site.js', false, array('class', 'jquery.valid4tor','plugins', 'loadzilla'));
-	$site->enqueueScript('site');
-	$site->registerScript('backend', 'backend.js',false);
-
-
+	$site->registerScript('site', 'site.js', false, array('class', 'jquery.valid4tor','plugins'));
+	$site->registerScript('backend', 'backend.js', false, array('class', 'jquery.valid4tor','plugins', 'loadzilla'));
 
 	# General meta tags
 	$site->addMeta('UTF-8', '', 'charset');
@@ -100,11 +96,11 @@
 
 	# Restore manager session (check for Managers module first)
 	if ( class_exists('Managers') ) {
-	 Managers::init();
-	 Managers::checkLogin();
-	 $site->manager = Managers::getCurrentUser();
+		Managers::init();
+		Managers::checkLogin();
+	$site->manager = Managers::getCurrentUser();
 	} else {
-	 $site->manager = null;
+		$site->manager = null;
 	}
 	//Saving user with the next code
 	/*$user = Managers::getByLogin('user');

@@ -1,241 +1,179 @@
-Site = Class.extend({
+ /**
+ * backend.js
+ * Base logic, feel free to replace with your own and/or use the libraries of your choice
+ */
+Backend = Class.extend({
 	init: function(options) {
 		var obj = this,
 			opts = _.defaults(options, {
 				// Add options here
 			});
+
+		$.extend(true, $.alert.defaults, {
+			markup: '<div class="alert-overlay"><div class="valign-wrapper"><div class="valign"><div class="alert"><div class="alert-message">{message}</div><div class="alert-buttons"></div></div></div></div></div>',
+			buttonMarkup: '<button class="button button-primary"></button>',
+			buttons: [
+				{ text: 'Got it', action: $.alert.close }
+			]
+		});
+
 		jQuery(document).ready(function($) {
 			obj.onDomReady($);
 		});
 	},
-	onDomReady: function($) {
+	showPeriodicity: function(val) {
+		if (val) {
+			$('#periodicity-group').removeClass('hide');
+		} else {
+			$('#periodicity-group').addClass('hide');
+		}
+	},
+	showInstallments: function(val) {
+		if ($('#conekta').is(':checked')) {
+			$('#tab-installment').removeClass('hide');
+		} else {
+			$('#tab-installment').addClass('hide');
+		}
+	},
+	checkSlug: function(name){
+
 		var obj = this,
-			body = $('body');
+			slugCheck = false;
 
-		$.extend(true, $.alert.defaults, {
-			buttonMarkup: '<button class="button button-primary"></button>',
-			buttons: [
-				{ text: 'Close', action: $.alert.close }
-			]
+		$.ajax({
+			url: constants.siteUrl + 'backend/forms/slug-check',
+			async: false,
+			type: 'POST',
+			data: { name: name },
+			success: function(response) {
+				slugCheck = response;
+			}
 		});
 
-		$('[data-value]').each(function() {
-			var el = $(this),
-				value = el.data('value');
-			el.val(value);
-		});
+		return slugCheck;
+	},
+	processors: function() {
 
-		// var select = $('[name=correct]'),
-		// 	textarea = $('[name=options]');
-		// if (select.length) {
-		// 	textarea.on('change', function() {
-		// 		obj.updateOptionSelect(select, textarea);
-		// 	});
-		// 	obj.updateOptionSelect(select, textarea);
-		// }
+		console.log($('#currency').val());
+		console.log($('#subscription').val());
 
-		// $('form[data-submit=validate]').on('submit', function() {
-		// 	var form = $(this);
-		// 	return form.validate({
-		// 		callbacks: {
-		// 			fail: function(field, type, message) {
-		// 				field.closest('.form-group').addClass('has-error');
-		// 				field.on('focus', function() {
-		// 					field.closest('.form-group').removeClass('has-error');
-		// 					field.off('focus');
-		// 				});
-		// 			},
-		// 			error: function(fields) {
-		// 				$.alert('Please fill all the required fields');
-		// 			}
-		// 		}
-		// 	});
-		// });
+		if ($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
 
-		// $('.async-paginated').on('click', '.pagination a', function(e) {
-		// 	var el = $(this),
-		// 		href = el.attr('href'),
-		// 		target = el.closest('.async-paginated');
-		// 	target.loading();
-		// 	$.ajax({
-		// 		url: href,
-		// 		type: 'get',
-		// 		success: function(responseBody) {
-		// 			var replacement = $(responseBody).find( '#' + target.attr('id') );
-		// 			if (replacement.length) {
-		// 				target.html( replacement.html() );
-		// 			}
-		// 		}
-		// 	});
-		// 	e.preventDefault();
-		// });
+			$('#StripeUSD, #lbstripeUSD').removeClass('hide');
+			$('#PayPalUSD, #lbpaypalUSD,#conekta, #lbconekta,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
 
-		// $('.js-file-input').on('click', function(e) {
-		// 	e.preventDefault();
-		// 	var el = $(this),
-		// 		group = el.closest('.form-group'),
-		// 		input = group.find('input[type=file]');
-		// 	input.trigger('click');
-		// });
+		} else if($('#currency').val() == 'usd' && $('#subscription').val() == '' ) {
 
-		// $('input[type=file]').on('change', function(e) {
-		// 	e.preventDefault();
-		// 	var el = $(this),
-		// 		group = el.closest('.form-group'),
-		// 		label = group.find('.js-file-name');
-		// 	if (label.length == 0) {
-		// 		label = $('<span class="help-block js-file-name"></span>');
-		// 		group.find('.js-file-input').after(label);
-		// 	}
-		// 	label.text( el.get(0).files[0].name );
-		// });
+			$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD').removeClass('hide');
+			$('#conekta, #lbconekta,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
 
+		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
+
+			$('#conekta,#lbconekta, #PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').removeClass('hide');
+			$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD').addClass('hide');
+
+		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == 'Yes' ) {
+
+			$('#StripeMNX, #lbstripeMNX').removeClass('hide');
+			$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD,#PayPalMNX, #lbpaypalMNX, #conekta, #lbconekta').addClass('hide');
+		}
+	},
+	onDomReady: function($) {
+		var obj = this;
+
+		// Tabs Miniplugin
 		$('.tab-list li a').on('click', function(e) {
+			e.preventDefault();
 			var el = $(this),
 				li = el.closest('li'),
-				href = el.attr('href'),
-				target = $(href);
-			e.preventDefault();
-			li.addClass('selected').siblings('li').removeClass('selected');
-			target.addClass('active').siblings('.tab').removeClass('active');
-			$('.codemirror').each(function() {
-				var el = $(this),
-					textarea = el.find('textarea'),
-					editor = textarea.data('cm');
-				editor.refresh();
-			});
+				target = $( el.attr('href') );
+				li.addClass('selected').siblings('li').removeClass('selected');
+				target.addClass('active').siblings('.tab').removeClass('active');
 		});
 
-		var hash = window.location.hash.match(/^#\/([a-z_-]+)$/i);
-		if ( hash && hash.length > 1 ) {
-			$('[href="#tab-'+ hash[1] +'"]').trigger('click');
-		}
-
-		if ( body.hasClass('has-graphs') ) {
-
-			var createStatsChart = function() {
-				var ctx = $('#chart-stats');
-				var src = $.parseJSON( $('[name=stats]').val() );
-				var labels = [];
-				var data = [];
-				_.each(src, function(value, key) {
-					labels.push(key);
-					data.push(value);
-				});
-				var statsChart = new Chart(ctx, {
-					type: 'line',
-					data: {
-						labels: labels,
-						datasets: [{
-							label: 'Total entries',
-							data: data,
-							fill: false,
-							lineTension: 0,
-							borderColor: '#12AFCB',
-							pointBackgroundColor: '#12AFCB',
-							borderWidth: 1
-						}]
-					},
-					options: {
-						legend: {
-							display: false
-						},
-						scales: {
-							xAxes: [{
-								gridLines: {
-									display: false
-								},
-								type: 'time',
-								time: {
-									displayFormats: {
-										day: 'MMM D'
-									},
-									unit: 'day'
-								}
-							}]
-						}
-					}
-				});
-			};
-
-		// 	var createDetailedChart = function() {
-		// 		var ctx = $('#chart-detailed');
-		// 		var src = $.parseJSON( $('[name=detailed]').val() );
-		// 		var labels = [];
-		// 		var data = {};
-		// 		var dataSets = [];
-		// 		_.each(src, function(value, key) {
-		// 			labels.push(key);
-		// 			_.each(value, function(value, key) {
-		// 				if ( typeof data[key] === 'undefined' ) {
-		// 					data[key] = [];
-		// 				}
-		// 				data[key].push( Number(value) );
-		// 				var color = obj.stringToColour(key);
-		// 				// console.log(key, color);
-		// 				dataSets.push({
-		// 					label: key,
-		// 					data: data[key],
-		// 					fill: false,
-		// 					lineTension: 0,
-		// 					borderColor: color,
-		// 					pointBackgroundColor: color,
-		// 					borderWidth: 1
-		// 				});
-		// 			});
-		// 		});
-		// 		var statsChart = new Chart(ctx, {
-		// 			type: 'line',
-		// 			data: {
-		// 				labels: labels,
-		// 				datasets: dataSets
-		// 			},
-		// 			options: {
-		// 				legend: {
-		// 					display: false
-		// 				},
-		// 				scales: {
-		// 					xAxes: [{
-		// 						gridLines: {
-		// 							display: false
-		// 						},
-		// 						type: 'time',
-		// 						time: {
-		// 							displayFormats: {
-		// 								day: 'MMM D'
-		// 							},
-		// 							unit: 'day'
-		// 						}
-		// 					}]
-		// 				}
-		// 			}
-		// 		});
-		// 	};
-
-			createStatsChart();
-		// 	createDetailedChart();
-
-		}
-
-		$('[data-check]').each(function() {
+		$('.tab-list').each(function() {
+			var el = $(this);
+			el.find('li a').first().trigger('click');
+		});
+		/**Clipboard function */
+		$('.span').css("display","none");
+		$('.js-copy').on('click', function(e) {
+			e.preventDefault();
+			var copy = $('.input').select();
+			document.execCommand("copy");
+			$( '.span' ).css( "display", "inline" ).fadeOut( 2000 );
+		});
+		//set default 0 value in ocurrency
+		$('#ocurrency').val('0');
+		//call function show periodicty
+		$('.js-toggle-periodicity').on('change', function() {
 			var el = $(this),
-				check = el.data('check');
-			$.ajax({
-				url: constants.siteUrl + 'backend/clients/check/' + check,
-				type: 'get',
-				success: function(response) {
-					if (response && response.result == 'success') {
-						var resultText = response.data.status.code == '200' ? '<i class="led led-green"></i> Available' : '<i class="led led-red"></i> Unavailable',
-							resultClass = response.data.status.code == '200' ? 'text-success' : 'text-error';
-						var availability = '<span>' + resultText + '</span>' + ' - HTTP ' + response.data.status.code + ' (' + response.data.status.time + ' seconds)';
-						el.html(availability);
-					} else {
-						el.text('Unable to get availability');
-					}
+				val = el.val();
+			obj.showPeriodicity(val);
+		}).trigger('change');
+		$('#conekta').change( function(){
+			console.log('checked');
+			var el = $(this),
+				val = el.val();
+			obj.showInstallments(val);
+
+		});
+		$('#PayPal, #Stripe' ).change( function(){
+			console.log('checked2');
+			var el = $(this),
+				val = '';
+			obj.showInstallments(val);
+		});
+
+		$('#name').on('blur', function(e){
+			var el = $(this),
+				name = el.val();
+			console.log(name);
+			if (name) {
+				var slug = obj.checkSlug(name);
+				var clean = true;
+
+				while(slug.result == 'error') {
+					name = name + '-1';
+					clean = false;
+					slug = obj.checkSlug(name);
+				}
+
+				if(!clean) {
+
+					$.alert('The slug of the form already exists. Creating a new one.');
+				}
+
+				$('#slug').val(slug.data.slug);
+			}
+		});
+
+		// Validation forms fronend
+		$('#payment-form').on('submit', function() {
+			var form = $(this);
+
+			var processorChecked = $('.form-group-processors input:checked').length;
+			if(!processorChecked) {
+				$.alert('You must select at least one payment processor');
+				return false;
+			}
+
+			return form.validate({
+				callbacks: {
+					fail: function(field, type, message) {
+						/* An item has failed validation, field has the jQuery object, type is the rule and message its description */
+						console.log('form invalid');
+						field.closest('.form-group').addClass('has-error');
+						field.on('focus', function() {
+							field.closest('.form-group').removeClass('has-error');
+							field.off('focus');
+						});
+					},
+					success: function() {},
+					error: function(fields) {}
 				}
 			});
 		});
-
 		$('.repeater').on('click', '.js-repeater-insert', function(e) {
 			var el = $(this),
 				item = el.closest('.repeater-item'),
@@ -256,7 +194,7 @@ Site = Class.extend({
 				row.find('.grip-number > span').text(index + 1);
 			});
 			newRow.fadeIn();
-			obj.codeMirrorInit( newRow.find('.codemirror') );
+			//obj.codeMirrorInit( newRow.find('.codemirror') );
 		});
 
 		$('.repeater').on('click', '.js-repeater-delete', function(e) {
@@ -293,57 +231,82 @@ Site = Class.extend({
 				row.find('.grip-number > span').text(index + 1);
 			});
 			newRow.fadeIn();
-			obj.codeMirrorInit( newRow.find('.codemirror') );
 		});
 
-		obj.codeMirrorInit();
+		//Processors conditionals
+		obj.processors();
+		$('#subscription').change( function() {
+			obj.processors();
 
-	},
-	codeMirrorInit: function(scope) {
-		var scope = scope || $('.codemirror');
-		scope.each(function() {
+		});
+		$('#currency').change( function() {
+			obj.processors();
+		});
+
+		//Loadzilla
+		$('.uploader-area').each(function() {
 			var el = $(this),
-				textarea = el.find('textarea'),
-				form = textarea.closest('form'),
-				editor = null;
-			//
-			editor = CodeMirror.fromTextArea(textarea.get(0), {
-				lineNumbers: true,
-				mode: 'text/javascript',
-				matchBrackets: true,
-				lineWrapping: true,
-				theme: 'seti'
+				target = el.data('target'),
+				attachments = el.next('.attachments'),
+				attachment = _.template( $('#partial-attachment').html() ),
+				loadzilla = new LoadzillaLite();
+
+			// Existing buttons
+			attachments.find('.js-remove').on('click', function(e) {
+				e.preventDefault();
+				var el = $(this);
+				el.closest('.attachment').fadeOut(function() {
+					$(this).remove();
+				});
 			});
-			//
-			textarea.data('cm', editor);
-			//
-			form.on('submit', function() {
-				textarea.val( editor.getValue() );
+			// Initialize Loadzilla instance
+			loadzilla.init({
+				element: el,
+				target: target,
+				callbacks: {
+					start: function(item) {
+						attachments.html( attachment({ item: item }) );
+						console.log(item);
+					},
+					progress: function(item, percent) {
+						var attachment = $('#' + item.uid);
+						attachment.find('.attachment-percent').text(percent + '%');
+						attachment.find('.attachment-progress .progress-bar').css('width', percent + '%');
+						console.log(attachment);
+					},
+					complete: function(item, response) {
+
+						var attachment = $('#' + item.uid),
+							buttonRemove = $('<a class="attachment-remove js-remove" href="#">Remove</a>'),
+							status = '';
+							console.log(response);
+							attachment.find('.attachment-percent').fadeOut();
+							attachment.find('.attachment-progress .progress-bar').fadeOut(function() {
+
+							if (response && response.result == 'success') {
+
+								$('[name=product_image]').val(response.data.attachment.id);
+								$('.uploader-area').html('<img class="img-responsive" src="' + response.data.attachment.url + '">').addClass('has-loaded');
+
+								attachment.find('.attachment-percent').fadeOut(function() { $(this).remove(); });
+								//attachment.append('<i class="fa fa-fw fa-check"></i>');
+								attachment.addClass('has-success');
+							} else {
+								// Error
+								attachment.append('<i class="fa fa-fw fa-warning"></i>');
+								attachment.addClass('has-error');
+								attachment.append('<div class="attachment-status">' + response.message || 'An error has ocurred' + '</div>');
+							}
+
+							$('.js-clear').removeClass('hide');
+						});
+					}
+			 }
 			});
+			// Bind events
+			loadzilla.onDomReady();
 		});
 	}
-	/*updateOptionSelect: function(select, textarea) {
-		var options = $(textarea).val(),
-			values = options.split(/\r\n|\r|\n/),
-			prevVal = select.val() || select.data('value');
-		select.empty();
-		_.each(values, function(value, index) {
-			select.append('<option value="'+ index +'">'+ value +'</option>');
-		});
-		select.val(prevVal);
-	},
-	stringToColour: function(str) {
-		var hash = 0;
-		for (var i = 0; i < str.length; i++) {
-			hash = str.charCodeAt(i) + ((hash << 5) - hash);
-		}
-		var colour = '#';
-		for (var i = 0; i < 3; i++) {
-			var value = (hash >> (i * 8)) & 0xFF;
-			colour += ('00' + value.toString(16)).substr(-2);
-		}
-		return colour;
-	}*/
 });
 
-var site = new Site();
+var site = new Backend();

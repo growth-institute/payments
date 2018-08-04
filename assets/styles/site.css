@@ -2254,6 +2254,12 @@ section {
   border-color: #2d67b1;
   color: #ffffff;
 }
+.tabs .tab {
+  display: none;
+}
+.tabs .tab.active {
+  display: block;
+}
 /* Header */
 /* ------------------------------------------------------------------------------------------ */
 .site-header {
@@ -2439,7 +2445,6 @@ section {
   line-height: 1.5;
 }
 .payment-content .product-info .product-total {
-  border-top: 2px solid white;
   font-size: 1.3em;
 }
 .payment-content .product-info .product-total .total-total h3 {
