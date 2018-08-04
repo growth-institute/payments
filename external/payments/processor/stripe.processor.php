@@ -41,10 +41,11 @@
 			\Stripe\Stripe::setApiKey($stripe_secret);
 			# Charge the user's card
 			$options = array(
-				'amount' => $order->total,
+				'amount' => $order->total*100,
 				'currency' => $order->currency,
 				'description' => $order->getMeta('concept'),
-				'source' => $token
+				'source' => $token,
+				'metadata' => (array)$order->getMetas()
 			);
 			try {
 				$charge = \Stripe\Charge::create($options);
