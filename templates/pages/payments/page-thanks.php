@@ -1,7 +1,7 @@
-<?php $this->partial('header-html'); ?>
-	<?php $this->partial('header'); ?>
+<?php $this->partial('payments/header-html'); ?>
+	<?php $this->partial('payments/header'); ?>
 
-		<section class="section section-home">
+		<section class="section section-thanks">
 			<div class="inner boxfix-vert">
 				<div class="margins">
 					<div class="the-content">
@@ -19,5 +19,5 @@
 			</div>
 		</section>
 
-	<?php $this->partial('footer'); ?>
-<?php $this->partial('footer-html'); ?>
+	<?php $this->partial('payments/footer'); ?>
+<?php $this->partial('payments/footer-html'); ?>

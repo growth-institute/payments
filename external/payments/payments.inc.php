@@ -232,9 +232,9 @@
 
 		static function routeThanks($args) {
 			global $site;
-			#
 			$request = $site->getRequest();
 			$response = $site->getResponse();
+			Payments::init();
 			#
 			$req_order = get_item($args, 1);
 			$order = PaymentsOrders::getByUid($req_order);
