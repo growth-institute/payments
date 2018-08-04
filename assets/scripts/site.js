@@ -38,6 +38,24 @@ Site = Class.extend({
 			var el = $(this);
 			el.find('li a').first().trigger('click');
 		});
+
+		$('form[data-submit=validate]').on('submit', function() {
+			var form = $(this);
+			return form.validate({
+				callbacks: {
+					fail: function(field, type, message) {
+						field.closest('.form-group').addClass('has-error');
+						field.on('focus', function() {
+							field.closest('.form-group').removeClass('has-error');
+							field.off('focus');
+						});
+					},
+					error: function(fields) {
+						$.alert('Por favor llena todos los campos requeridos');
+					}
+				}
+			});
+		});
 	}
 });
 
