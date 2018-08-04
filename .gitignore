@@ -1,4 +1,3 @@
-
 .htaccess
 php_error.log
 web.config
@@ -6,3 +5,5 @@ framework/config.inc.php
 upload/*
 log/*
 *.log
+assets/styles/backend.css
+assets/styles/site.css
