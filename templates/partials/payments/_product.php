@@ -18,12 +18,32 @@
 			</div>
 
 			<div class="product-total">
+
+				<?php if($form->getMeta('quantity')): ?>
+					<div class="row row-md">
+						<div class="col col-6 total-total">
+							<h3>Price:</h3>
+						</div>
+						<div class="col col-6 total-prices">
+							<span class="total-price">$<?php echo number_format($form->total, 2); ?> <?php echo strtoupper($form->currency); ?></span>
+						</div>
+					</div>
+					<div class="row row-md">
+						<div class="col col-6 total-total">
+							<h3><?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 'Extra Seats' : 'Quantity'; ?>:</h3>
+						</div>
+						<div class="col col-6 total-prices">
+							<span class="total-price js-quantity"><?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 0 : 1; ?><?php if($form->getMeta('extra_seats_price') && !$form->getMeta('discounts')): ?>  &times;  <?php echo number_format($form->getMeta('extra_seats_price'), 2); ?> <?php echo strtoupper($form->currency); ?><?php endif; ?></span>
+						</div>
+					</div>
+				<?php endif; ?>
+
 				<div class="row row-md">
 					<div class="col col-6 total-total">
 						<h3>Total:</h3>
 					</div>
 					<div class="col col-6 total-prices">
-						<span class="new-price total-price">$<?php echo number_format($form->total, 2); ?> <?php echo strtoupper($form->currency); ?></span>
+						<span class="total-price js-total-price">$<?php echo number_format($form->total, 2); ?> <?php echo strtoupper($form->currency); ?></span>
 					</div>
 				</div>
 			</div>

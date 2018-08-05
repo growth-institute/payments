@@ -2,7 +2,7 @@
 	<h2>Payment Detail</h2>
 
 	<?php if(count($processors) > 0): ?>
-		<ul class="tab-list payment-method">
+		<ul class="tab-list payment-method <?php echo count($processors) == 1 ? 'hide' : ''; ?>">
 			<?php foreach ($processors as $name => $processor): ?>
 				<li><a href="#tab-<?php sanitized_print( strtolower($name) ); ?>"><?php sanitized_print( $processor->getTitle() ); ?></a></li>
 			<?php endforeach; ?>

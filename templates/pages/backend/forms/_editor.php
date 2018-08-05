@@ -41,7 +41,7 @@
 							<label for="quantity" class="control-label">Quantity</label>
 							<select name="quantity" id="quantity" class="form-control input-block">
 								<option value="">No</option>
-								<option value="1">Yes</option>
+								<option value="Yes" <?php echo( $item && $item->getMeta('quantity') == 'Yes' ? 'selected="selected"' :  ''); ?>>Yes</option>
 							</select>
 						</div>
 						<div class="form-group">
@@ -110,8 +110,8 @@
 									<label for="language" class="control-label">Language</label>
 									<select class="form-control input-block" name="language" data-validate="required">
 										<option disabled selected>Select</option>
-										<option name="English"  value="English" <?php echo( $item && $item->language == 'English' ? 'selected="selected"' :  ''); ?> >English</option>
-										<option name="Spanish"  value="Spanish" <?php echo( $item && $item->language == 'Spanish' ? 'selected="selected"' : ''); ?> >Spanish</option>
+										<option name="English"  value="en" <?php echo( $item && $item->language == 'en' ? 'selected="selected"' :  ''); ?> >English</option>
+										<option name="Spanish"  value="es" <?php echo( $item && $item->language == 'es' ? 'selected="selected"' : ''); ?> >Spanish</option>
 									</select>
 								</div>
 								<div class="form-group">
@@ -127,7 +127,7 @@
 									<label for="subscription" class="control-label">Subscription</label>
 									<select class="form-control input-block js-toggle-periodicity" name="subscription" id="subscription">
 										<option value="">No</option>
-										<option value="Yes" <?php echo( $item && $item->subscription == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
+										<option value="Yes" <?php echo( $item && $item->subscription == 'Yes' ? 'selected="selected"' :  ''); ?>>Yes</option>
 									</select>
 								</div>
 								<div class="hide" id="periodicity-group">
@@ -167,12 +167,8 @@
 						<div class="metabox-header">Additional Information</div>
 							<div class="metabox-body">
 								<div class="form-group">
-									<label for="extra_seats" class="control-label">Extra Seats</label>
-									<select class="form-control input-block" name="extra_seats">
-										<option disabled selected>Select</option>
-										<option value="Yes" <?php echo( $item && $item->getMeta('extra_seats') == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
-										<option value="No" <?php echo( $item && $item->getMeta('extra_seats') == 'No' ? 'selected="selected"' : ''); ?> >No</option>
-									</select>
+									<label for="extra_seats_price" class="control-label">Extra Seats Price</label>
+									<input type="text" name="extra_seats_price" id="extra_seats_price" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('extra_seats_price') : ''); ?>">
 								</div>
 								<div class="form-group">
 									<label for="time_to_live" class="control-label">Time to live in days - leave empty for no limit</label>

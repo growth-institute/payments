@@ -10,9 +10,9 @@
 						<p>We will send you an email once the payment has been verified.</p>
 						<p>Payment details</p>
 						<ul>
-							<li>Order #<?php sanitized_print($order->id); ?></li>
+							<!-- <li>Order #<?php sanitized_print($order->id); ?></li> -->
 							<li>Concept: <?php sanitized_print( $order->getMeta('concept') ); ?></li>
-							<li>Amount: <?php sanitized_print( strtoupper($order->currency) ); ?> <?php sanitized_print($order->total); ?></li>
+							<li>Amount: $<?php sanitized_print(number_format($order->total, 2)); ?> <?php sanitized_print( strtoupper($order->currency) ); ?></li>
 						</ul>
 					</div>
 				</div>

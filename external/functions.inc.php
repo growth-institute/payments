@@ -90,7 +90,7 @@
 	include $site->baseDir('/external/payments/payments.inc.php');
 
 	$site->payments->enableConnector('hubspot', new HubSpotConnector);
-	$site->payments->enableConnector('hummingbird', new HubSpotConnector);
+	$site->payments->enableConnector('hummingbird', new HummingbirdConnector);
 
 	# Start session
 	//session_start();

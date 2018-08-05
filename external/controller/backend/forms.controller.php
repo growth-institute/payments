@@ -112,12 +112,13 @@ function checkImageAction(){
 				$products = $request->post('products');
 				$language = $request->post('language');
 				$processor = $request->post('processor');
+				$processor = array_unique($processor);
 				$currency = $request->post('currency');
 				$total = $request->post('total');
 				$subscription = $request->post('subscription');
 				//MetaPost
 				$quantity = $request->post('quantity');
-				$extra_seats = $request->post('extra_seats');
+				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
@@ -129,14 +130,17 @@ function checkImageAction(){
 				$to = $request->post('to');
 				$val = $request->post('val');
 				$type = $request->post('type');
-				$lenght_array = count($from);
-				for($x = 0; $x < $lenght_array; $x++) {
-					$array_discount[] = [
-						'from' => $from[$x],
-						'to' => $to[$x],
-						'val' => $val[$x],
-						'type' => $type[$x]
-					];
+				$array_discount = false;
+				if(is_array($from)) {
+					$array_discount = [];
+					for($x = 0; $x < count($from); $x++) {
+						$array_discount[] = [
+							'from' => $from[$x],
+							'to' => $to[$x],
+							'val' => $val[$x],
+							'type' => $type[$x]
+						];
+					}
 				}
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
@@ -174,7 +178,7 @@ function checkImageAction(){
 				$form->save();
 				//Saving metas to DB
 				$form->updateMeta('quantity', $quantity);
-				$form->updateMeta('extra_seats', $extra_seats);
+				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
@@ -218,12 +222,13 @@ function checkImageAction(){
 				$products = $request->post('products');
 				$language = $request->post('language');
 				$processor = $request->post('processor');
+				$processor = array_unique($processor);
 				$currency = $request->post('currency');
 				$total = $request->post('total');
 				$subscription = $request->post('subscription');
 				//MetaPost
 				$quantity = $request->post('quantity');
-				$extra_seats = $request->post('extra_seats');
+				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
@@ -235,14 +240,17 @@ function checkImageAction(){
 				$to = $request->post('to');
 				$val = $request->post('val');
 				$type = $request->post('type');
-				$lenght_array = count($from);
-				for($x = 0; $x < $lenght_array; $x++) {
-					$array_discount[] = [
-						'from' => $from[$x],
-						'to' => $to[$x],
-						'val' => $val[$x],
-						'type' => $type[$x]
-					];
+				$array_discount = false;
+				if(is_array($from)) {
+					$array_discount = [];
+					for($x = 0; $x < count($from); $x++) {
+						$array_discount[] = [
+							'from' => $from[$x],
+							'to' => $to[$x],
+							'val' => $val[$x],
+							'type' => $type[$x]
+						];
+					}
 				}
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
@@ -274,7 +282,7 @@ function checkImageAction(){
 				$form->save();
 				//Updating metas to DB
 				$form->updateMeta('quantity',$quantity);
-				$form->updateMeta('extra_seats', $extra_seats);
+				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);

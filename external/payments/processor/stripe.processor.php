@@ -32,21 +32,46 @@
 			global $site;
 			#
 			$token = get_item($fields, 'stripeToken');
+			$quantity = get_item($fields, 'quantity', 1);
 			#
 			$stripe_opts_cur = $site->getOption('stripe');
 			$stripe_opts = get_item($stripe_opts_cur, $order->currency);
 			$stripe_secret = get_item($stripe_opts, 'secret_key');
+			$form = Forms::getById($order->getMeta('form'));
+			$extra_seats_price = $form->getMeta('extra_seats_price');
+			$discounts = $form->getMeta('discounts');
 			#
 			include $site->baseDir('/external/lib/Stripe/init.php');
 			\Stripe\Stripe::setApiKey($stripe_secret);
+
 			# Charge the user's card
+			$charge_amount = ($order->total)*$quantity;
+			$charge_description = $order->getMeta('concept') . ($quantity > 1 ? " × {$quantity}" : '');
+
+			if($discounts) {
+				foreach($discounts as $discount) {
+					if($quantity >= $discount['from'] && $quantity <= $discount['to']) {
+						if($discount['type'] == 'percentage') {
+
+							$discount_amount = 1-($discount['val']/100);
+							$charge_amount *= $discount_amount;
+							$charge_description .= " ({$discount['val']}% off)";
+						}
+					}
+				}
+			} elseif($extra_seats_price) {
+				$charge_amount = $order->total+($quantity*$extra_seats_price);
+				$charge_description = $order->getMeta('concept') . ($quantity > 1 ? " + {$quantity} Extra Seats" : '');
+			}
+
 			$options = array(
-				'amount' => $order->total*100,
+				'amount' => $charge_amount*100,
 				'currency' => $order->currency,
-				'description' => $order->getMeta('concept'),
+				'description' => $charge_description,
 				'source' => $token,
 				'metadata' => (array)$order->getMetas()
 			);
+
 			try {
 				$charge = \Stripe\Charge::create($options);
 				if ($charge && $charge->status == 'succeeded') {
@@ -54,8 +79,10 @@
 					$order->payment_processor = 'Stripe';
 					$order->payment_ticket = $charge->id;
 					$order->payment_date = date('Y-m-d H:i:s');
+					$order->total = $charge_amount;
 					$order->save();
 					$order->updateMeta('installments', 0);
+					$order->updateMeta('quantity', $quantity);
 					# Reset the cart
 					$site->payments->cart->reset();
 					# Notify the payments system
