@@ -1,7 +1,7 @@
 	<h2>User details</h2>
 	<div class="tabs">
 		<div class="tab active">
-			<form action="" method="post">
+			<form data-submit="validate" action="" method="post">
 				<div class="form-fields">
 					<div class="row row-md row-5">
 						<div class="col col-md-6">

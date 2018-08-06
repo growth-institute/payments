@@ -2,7 +2,15 @@
 /* Loadzilla*/
 /* ---------------------------------------------------------------------------------------------- */
 .uploader-area {
-    text-align: center;
-    padding: 100px 50px;
-    border: 1px dashed #BBB;
+
+	text-align: center;
+	padding: 100px 50px;
+	border: 1px dashed @border_1;
+	margin-bottom: 15px;
+
+	&.has-loaded {
+
+		border: none;
+		padding: 0;
+	}
 }

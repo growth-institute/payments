@@ -32,7 +32,9 @@
 
 		static function init() {
 			global $site;
+			#
 			$site->enqueueStyle('site');
+			$site->enqueueScript('site');
 		}
 
 		protected function __construct() {
@@ -137,6 +139,21 @@
 			$params['pdoargs'] = ['fetch_metas'];
 			$form = PaymentsForms::getById($order->getMeta('form', 0), $params);
 			#
+			if($form->getMeta('quantity')) {
+
+				$quantity_script = [];
+				$quantity_script['price'] = $form->total;
+				$quantity_script['currency'] = strtoupper($form->currency);
+
+				if($form->getMeta('extra_seats_price')) {
+					$quantity_script['discounts'] = $form->getMeta('discounts');
+				} elseif($form->getMeta('extra_seats_price')) {
+					$quantity_script['extraSeatPrice'] = $form->getMeta('extra_seats_price');
+				}
+
+				$site->addScriptVar( 'quantity', $quantity_script );
+			}
+			#
 			if ($order && $form) {
 				if ($order->payment_status == 'Pending') {
 					switch ($request->type) {
@@ -230,9 +247,9 @@
 
 		static function routeThanks($args) {
 			global $site;
-			#
 			$request = $site->getRequest();
 			$response = $site->getResponse();
+			Payments::init();
 			#
 			$req_order = get_item($args, 1);
 			$order = PaymentsOrders::getByUid($req_order);

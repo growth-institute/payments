@@ -2243,6 +2243,23 @@ section {
     height: 70px;
   }
 }
+.button.button-primary {
+  background-color: #2d67b1;
+  border-color: #2d67b1;
+  color: #ffffff;
+}
+.button.button-primary:hover,
+.button.button-primary.checked {
+  background-color: #568ed4;
+  border-color: #2d67b1;
+  color: #ffffff;
+}
+.tabs .tab {
+  display: none;
+}
+.tabs .tab.active {
+  display: block;
+}
 /* Header */
 /* ------------------------------------------------------------------------------------------ */
 .site-header {
@@ -2255,7 +2272,8 @@ section {
   }
 }
 .site-header img {
-  max-width: 200px;
+  max-width: 250px;
+  margin: 10px 0;
 }
 /* Footer */
 /* ------------------------------------------------------------------------------------------ */
@@ -2420,8 +2438,13 @@ section {
   background-color: #F5F5F5;
   border-radius: 10px;
 }
+.payment-content .product-info .product-image {
+  margin-bottom: 15px;
+}
+.payment-content .product-info .the-content {
+  line-height: 1.5;
+}
 .payment-content .product-info .product-total {
-  border-top: 2px solid white;
   font-size: 1.3em;
 }
 .payment-content .product-info .product-total .total-total h3 {
@@ -2434,7 +2457,7 @@ section {
   color: #CECECE;
   text-decoration: line-through;
 }
-.payment-content .product-info .product-total .total-prices .new-price {
+.payment-content .product-info .product-total .total-prices .total-price {
   font-size: 1.2em;
   color: #2d67b1;
 }

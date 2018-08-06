@@ -11,11 +11,11 @@
 					<div class="form-group">
 						<input type="hidden" name="product_image" value="<?php echo $attachment_image ? $attachment_image->id : ''; ?>">
 						<div class="form-group">
-								<div class="margins">
+								<div class="margins-vert">
 									<form action="" method="post" enctype="multipart/form-data" class="form-upload hide">
 										<input type="file" name="file" id="file" class="hide">
 									</form>
-									<label for="image" class="control-label">Current Image</label>
+									<label for="image" class="control-label">Product Image</label>
 									<div class="uploader-area <?php echo $attachment_image ? 'has-loaded' : ''; ?>" data-input="[name=file]" data-target="<?php $site->urlTo('/backend/forms/check-image', true); ?>">
 										<?php if($attachment_image): ?>
 											<img class="img-responsive" src="<?php echo($attachment_image->url);?>" alt="image_products">
@@ -24,7 +24,6 @@
 										<?php endif; ?>
 									</div>
 									<div class="attachments"></div>
-									<a href="#" class="button button-primary button-block js-clear hide"><i class="fa fa-fw fa-trash"></i> Limpiar lista</a>
 
 									<script type="text/template" id="partial-attachment">
 										<div class="attachment" id="<%= item.uid %>">
@@ -42,7 +41,7 @@
 							<label for="quantity" class="control-label">Quantity</label>
 							<select name="quantity" id="quantity" class="form-control input-block">
 								<option value="">No</option>
-								<option value="1">Yes</option>
+								<option value="Yes" <?php echo( $item && $item->getMeta('quantity') == 'Yes' ? 'selected="selected"' :  ''); ?>>Yes</option>
 							</select>
 						</div>
 						<div class="form-group">
@@ -57,7 +56,7 @@
 							?>
 										<div class="field">
 											<span class="field-name">Link</span>
-											<span class="field-value"><input type="text" readonly  class="form-control input" value="<?php echo('https://payments.growthinstitute.com/form/'.$item->slug); ?>"> <a href="#" class="button button-primary js-copy"><i class="fa fa-fw fa-copy"></i></a></span>
+											<span class="field-value"><input type="text" readonly  class="form-control input" value="<?php $site->urlTo('/form/', true); echo($item->slug); ?>"> <a href="#" class="button button-primary js-copy"><i class="fa fa-fw fa-copy"></i></a></span>
 											<span class="span">Text copied!</span>
 										</div>
 							<?php endif; ?>
@@ -77,8 +76,7 @@
 				<input placeholder="Add the name of your form" type="text" name="name" id="name" data-validate="required" class="form-control input-block form-control-xlarge" value="<?php sanitized_print($item ? $item->name : ''); ?>">
 			</div>
 			<div class="form-group">
-				<label for="slug" class="control-label">Slug</label>
-				<input type="text" id="slug" name="slug" data-validate="required" class="form-control input-block" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
+				<p><?php $site->urlTo('/', true); ?> <input type="text" id="slug" name="slug" data-validate="required" class="form-control" readonly="readonly" value="<?php sanitized_print($item ? $item->slug : ''); ?>"></p>
 			</div>
 			<ul class="tab-list">
 				<li class="selected">
@@ -94,7 +92,7 @@
 					<a href="#tab-four">Discounts</a>
 				</li>
 			</ul>
-			<div class="tabs tabs-border">
+			<div class="tabs">
 				<div class="tab" id="tab-one">
 					<div class="metabox">
 						<div class="metabox-header">Generals</div>
@@ -112,8 +110,8 @@
 									<label for="language" class="control-label">Language</label>
 									<select class="form-control input-block" name="language" data-validate="required">
 										<option disabled selected>Select</option>
-										<option name="English"  value="English" <?php echo( $item && $item->language == 'English' ? 'selected="selected"' :  ''); ?> >English</option>
-										<option name="Spanish"  value="Spanish" <?php echo( $item && $item->language == 'Spanish' ? 'selected="selected"' : ''); ?> >Spanish</option>
+										<option name="English"  value="en" <?php echo( $item && $item->language == 'en' ? 'selected="selected"' :  ''); ?> >English</option>
+										<option name="Spanish"  value="es" <?php echo( $item && $item->language == 'es' ? 'selected="selected"' : ''); ?> >Spanish</option>
 									</select>
 								</div>
 								<div class="form-group">
@@ -129,7 +127,7 @@
 									<label for="subscription" class="control-label">Subscription</label>
 									<select class="form-control input-block js-toggle-periodicity" name="subscription" id="subscription">
 										<option value="">No</option>
-										<option value="Yes" <?php echo( $item && $item->subscription == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
+										<option value="Yes" <?php echo( $item && $item->subscription == 'Yes' ? 'selected="selected"' :  ''); ?>>Yes</option>
 									</select>
 								</div>
 								<div class="hide" id="periodicity-group">
@@ -169,12 +167,8 @@
 						<div class="metabox-header">Additional Information</div>
 							<div class="metabox-body">
 								<div class="form-group">
-									<label for="extra_seats" class="control-label">Extra Seats</label>
-									<select class="form-control input-block" name="extra_seats">
-										<option disabled selected>Select</option>
-										<option value="Yes" <?php echo( $item && $item->getMeta('extra_seats') == 'Yes' ? 'selected="selected"' :  ''); ?> >Yes</option>
-										<option value="No" <?php echo( $item && $item->getMeta('extra_seats') == 'No' ? 'selected="selected"' : ''); ?> >No</option>
-									</select>
+									<label for="extra_seats_price" class="control-label">Extra Seats Price</label>
+									<input type="text" name="extra_seats_price" id="extra_seats_price" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('extra_seats_price') : ''); ?>">
 								</div>
 								<div class="form-group">
 									<label for="time_to_live" class="control-label">Time to live in days - leave empty for no limit</label>

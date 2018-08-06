@@ -7,7 +7,7 @@
 			$this->addActionAlias('dashboard', 'indexAction');
 			#
 			$site->enqueueStyle('backend');
-			//$site->enqueueScript('backend');
+			$site->enqueueScript('backend');
 		}
 
 		function getSubControllerName($base_name) {
@@ -59,7 +59,7 @@
 			#
 			if ($site->manager) {
 				$site->redirectTo( $site->urlTo('/backend/dashboard') );
-			
+
 			}
 			#
 			switch ($request->type) {

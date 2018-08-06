@@ -4,7 +4,9 @@
 
 		function init() {
 			$this->addActionAlias('home', 'indexAction');
+			#
 			$site->enqueueStyle('site');
+			$site->enqueueScript('site');
 		}
 
 		function indexAction() {
