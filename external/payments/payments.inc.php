@@ -55,6 +55,8 @@
 			#
 			$request = $site->getRequest();
 			$response = $site->getResponse();
+			$test = $request->get('test');
+			$test = $test && $test == $site->getGlobal('test_password');
 			Payments::init();
 			#
 			$params = [];

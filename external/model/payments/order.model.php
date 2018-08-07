@@ -32,8 +32,8 @@
 			$now = date('Y-m-d H:i:s');
 
 			$this->table = 					'payments_order';
-			$this->table_fields = 			array('id', 'id_user', 'uid', 'total', 'currency', 'payment_status', 'payment_processor', 'payment_date', 'payment_ticket', 'sandbox' 'created', 'modified');
-			$this->update_fields = 			array('id_user', 'uid', 'total', 'currency', 'payment_status', 'payment_processor', 'payment_date', 'payment_ticket', 'sandbox' 'modified');
+			$this->table_fields = 			array('id', 'id_user', 'uid', 'total', 'currency', 'payment_status', 'payment_processor', 'payment_date', 'payment_ticket', 'sandbox', 'created', 'modified');
+			$this->update_fields = 			array('id_user', 'uid', 'total', 'currency', 'payment_status', 'payment_processor', 'payment_date', 'payment_ticket', 'sandbox', 'modified');
 			$this->singular_class_name = 	'PaymentsOrder';
 			$this->plural_class_name = 		'PaymentsOrders';
 
