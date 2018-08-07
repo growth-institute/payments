@@ -19,6 +19,7 @@
 		public $payment_processor;
 		public $payment_date;
 		public $payment_ticket;
+		public $sandbox;
 		public $created;
 		public $modified;
 
@@ -31,8 +32,8 @@
 			$now = date('Y-m-d H:i:s');
 
 			$this->table = 					'payments_order';
-			$this->table_fields = 			array('id', 'id_user', 'uid', 'total', 'currency', 'payment_status', 'payment_processor', 'payment_date', 'payment_ticket', 'created', 'modified');
-			$this->update_fields = 			array('id_user', 'uid', 'total', 'currency', 'payment_status', 'payment_processor', 'payment_date', 'payment_ticket', 'modified');
+			$this->table_fields = 			array('id', 'id_user', 'uid', 'total', 'currency', 'payment_status', 'payment_processor', 'payment_date', 'payment_ticket', 'sandbox' 'created', 'modified');
+			$this->update_fields = 			array('id_user', 'uid', 'total', 'currency', 'payment_status', 'payment_processor', 'payment_date', 'payment_ticket', 'sandbox' 'modified');
 			$this->singular_class_name = 	'PaymentsOrder';
 			$this->plural_class_name = 		'PaymentsOrders';
 
@@ -51,6 +52,7 @@
 				$this->payment_processor = '';
 				$this->payment_date = '';
 				$this->payment_ticket = '';
+				$this->sandbox = false;
 				$this->created = $now;
 				$this->modified = $now;
 				$this->metas = new stdClass();
@@ -85,7 +87,7 @@
 	class PaymentsOrders extends NORM {
 
 		protected static $table = 					'payments_order';
-		protected static $table_fields = 			array('id', 'id_user', 'uid', 'total', 'currency', 'payment_status', 'payment_processor', 'payment_date', 'payment_ticket', 'created', 'modified');
+		protected static $table_fields = 			array('id', 'id_user', 'uid', 'total', 'currency', 'payment_status', 'payment_processor', 'payment_date', 'payment_ticket', 'sandbox', 'created', 'modified');
 		protected static $singular_class_name = 	'PaymentsOrder';
 		protected static $plural_class_name = 		'PaymentsOrders';
 	}
