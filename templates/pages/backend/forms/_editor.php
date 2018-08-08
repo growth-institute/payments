@@ -76,7 +76,10 @@
 				<input placeholder="Add the name of your form" type="text" name="name" id="name" data-validate="required" class="form-control input-block form-control-xlarge" value="<?php sanitized_print($item ? $item->name : ''); ?>">
 			</div>
 			<div class="form-group">
-				<p><?php $site->urlTo('/', true); ?> <input type="text" id="slug" name="slug" data-validate="required" class="form-control" readonly="readonly" value="<?php sanitized_print($item ? $item->slug : ''); ?>"></p>
+				<p><?php $site->urlTo('/', true); ?> <input type="text" id="slug" name="slug" data-validate="required" class="form-control" readonly="readonly" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
+				<span class="field-value"><a href="#" class="button button-primary js-copy"><i class="fa fa-fw fa-copy"></i></a></span>
+				<span class="field-value"><a href="#" class="button button-primary js-copy"><i class="fa fa-fw fa-external-link"></i></a></span>
+				</p>
 			</div>
 			<ul class="tab-list">
 				<li class="selected">
@@ -106,23 +109,28 @@
 									<label for="products" class="control-label">Products</label>
 									<input type="text" name="products" id="products" data-validate="required" class="form-control input-block" value="<?php sanitized_print($decode && $implode ? $implode : '');?>">
 								</div>
-								<div class="form-group">
-									<label for="language" class="control-label">Language</label>
-									<select class="form-control input-block" name="language" data-validate="required">
-										<option disabled selected>Select</option>
-										<option name="English"  value="en" <?php echo( $item && $item->language == 'en' ? 'selected="selected"' :  ''); ?> >English</option>
-										<option name="Spanish"  value="es" <?php echo( $item && $item->language == 'es' ? 'selected="selected"' : ''); ?> >Spanish</option>
-									</select>
+								<div class="row row-md">
+									<div class="col col-6 col-md-6">
+										<div class="form-group">
+											<label for="language" class="control-label">Language</label>
+											<select class="form-control input-block" name="language" data-validate="required">
+												<option disabled selected>Select</option>
+												<option name="English"  value="en" <?php echo( $item && $item->language == 'en' ? 'selected="selected"' :  ''); ?> >English</option>
+												<option name="Spanish"  value="es" <?php echo( $item && $item->language == 'es' ? 'selected="selected"' : ''); ?> >Spanish</option>
+											</select>
+										</div>
+									</div>	
+									<div class="col col-6 col-md-6">	
+										<div class="form-group">
+										<label for="currency" class="control-label">Currency</label>
+										<select class="form-control input-block" name="currency" id="currency" data-validate="required">
+											<option selected disabled>Select</option>
+											<option name="usd" value="usd" <?php echo($item && $item->currency == 'usd' ? 'selected="selected"' : ''); ?> >USD</option>
+											<option name="mxn" value="mxn" <?php echo($item && $item->currency == 'mxn' ? 'selected="selected"' : ''); ?> >MXN</option>
+										</select>
+										</div>
+									</div>
 								</div>
-								<div class="form-group">
-								<label for="currency" class="control-label">Currency</label>
-								<select class="form-control input-block" name="currency" id="currency" data-validate="required">
-									<option selected disabled>Select</option>
-									<option name="usd" value="usd" <?php echo($item && $item->currency == 'usd' ? 'selected="selected"' : ''); ?> >USD</option>
-									<option name="mxn" value="mxn" <?php echo($item && $item->currency == 'mxn' ? 'selected="selected"' : ''); ?> >MXN</option>
-								</select>
-								</div>
-
 								<div class="form-group">
 									<label for="subscription" class="control-label">Subscription</label>
 									<select class="form-control input-block js-toggle-periodicity" name="subscription" id="subscription">
@@ -153,11 +161,9 @@
 										$obj = isset($item) ? json_decode($item->processor) : false;
 									?>
 									<label for="processor" class="control-label">Processor</label>
-									<label id="lbpaypalUSD"class="hide"><input type="checkbox" name="processor[]" id="PayPalUSD" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">PayPal</label>
-									<label id="lbstripeUSD"class="hide"><input type="checkbox" name="processor[]" id="StripeUSD" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control hide">Stripe</label>
-									<label id="lbpaypalMNX"class="hide"><input type="checkbox" name="processor[]" id="PayPalMNX" value="PayPal"  <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">PayPal</label>
-									<label id="lbstripeMNX"class="hide"><input type="checkbox" name="processor[]" id="StripeMNX" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control hide">Stripe</label>
-									<label id="lbconekta"class="hide"><input type="checkbox" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control hide">Conekta</label>
+									<label id="lbpaypal"class="hide"><input type="checkbox" name="processor[]" id="PayPal" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control ">PayPal</label>
+									<label id="lbstripe"class="hide"><input type="checkbox" name="processor[]" id="Stripe" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control ">Stripe</label>
+									<label id="lbconekta"class="hide"><input type="checkbox" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control ">Conekta</label>
 								</div>
 							</div>
 					</div>
