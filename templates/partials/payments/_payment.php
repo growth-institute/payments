@@ -15,7 +15,7 @@
 		?>
 			<div class="tab" id="tab-<?php sanitized_print( strtolower($name) ); ?>">
 				<h3><?php sanitized_print( $processor->getTitle() ); ?></h3>
-				<?php $processor->getMarkup($form); ?>
+				<?php $processor->getMarkup($form, $order); ?>
 			</div>
 		<?php
 				endforeach;

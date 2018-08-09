@@ -83,6 +83,7 @@
 							$order->uid = $site->payments->cart->uid;
 							$order->total = $form->total;
 							$order->currency = $form->currency;
+							$order->sandbox = $test;
 							$order->save();
 							$order->updateMeta('form', $form->id);
 							$order->updateMeta('concept', $form->name);
@@ -167,7 +168,7 @@
 								foreach ($processors_json as $processor) {
 									$processor_class = "{$processor}Processor";
 									$processors[$processor] = new $processor_class;
-									$processors[$processor]->includeDependencies($form);
+									$processors[$processor]->includeDependencies($form, $order);
 								}
 							}
 							#

@@ -6,14 +6,14 @@
 			return 'Credit card';
 		}
 
-		function getMarkup($form) {
+		function getMarkup($form, $order) {
 			global $site;
 			$data = [];
 			$data['form'] = $form;
 			$site->partial('payments/form-stripe', $data);
 		}
 
-		function includeDependencies($form) {
+		function includeDependencies($form, $order) {
 			global $site;
 			$site->registerStyle('stripe-front', 'payments/stripe.css', false);
 			$site->enqueueStyle('stripe-front');
@@ -23,6 +23,7 @@
 			$site->enqueueScript('stripe-front');
 			#
 			$stripe_opts_cur = $site->getOption('stripe');
+			$stripe_opts = get_item($stripe_opts_cur, $order->sandbox ? 'sandbox' : 'production');
 			$stripe_opts = get_item($stripe_opts_cur, $form->currency);
 			$stripe_publishable = get_item($stripe_opts, 'publishable_key');
 			$site->addScriptVar('stripePublishableKey', $stripe_publishable);
@@ -35,7 +36,8 @@
 			$quantity = get_item($fields, 'quantity', 1);
 			#
 			$stripe_opts_cur = $site->getOption('stripe');
-			$stripe_opts = get_item($stripe_opts_cur, $order->currency);
+			$stripe_opts = get_item($stripe_opts_cur, $order->sandbox ? 'sandbox' : 'production');
+			$stripe_opts = get_item($stripe_opts_cur, $form->currency);
 			$stripe_secret = get_item($stripe_opts, 'secret_key');
 			$form = Forms::getById($order->getMeta('form'));
 			$extra_seats_price = $form->getMeta('extra_seats_price');

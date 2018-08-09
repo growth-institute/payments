@@ -6,11 +6,12 @@
 			return 'PayPal';
 		}
 
-		function getMarkup($form) {
+		function getMarkup($form, $order) {
 			global $site;
 			#
 			$paypal_opts = $site->getOption('paypal');
 			$paypal_account = get_item($paypal_opts, 'account');
+			$paypal_opts = get_item($paypal_opts, $order->sandbox ? 'sandbox' : 'production');
 			$paypal_sandbox = get_item($paypal_opts, 'sandbox');
 			$paypal_url = $paypal_sandbox ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
 			#
@@ -18,10 +19,11 @@
 			$data['form'] = $form;
 			$data['paypal_account'] = $paypal_account;
 			$data['paypal_url'] = $paypal_url;
+			print_a($data);
 			$site->partial('payments/form-paypal', $data);
 		}
 
-		function includeDependencies($form) {
+		function includeDependencies($form, $order) {
 			return false;
 		}
 
@@ -88,6 +90,7 @@
 			global $site;
 			#
 			$paypal_opts = $site->getOption('paypal');
+			$paypal_opts = get_item($paypal_opts, $order->sandbox ? 'sandbox' : 'production');
 			$paypal_sandbox = get_item($paypal_opts, 'sandbox');
 			$paypal_url = $paypal_sandbox ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
 			# Tell PayPal we're going to validate the payment
