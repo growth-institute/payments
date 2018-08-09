@@ -1,6 +1,5 @@
 <?php $this->partial('header-html'); ?>
-
-	<section class="section section-login">
+	<section class="section section-dashboard">
 		<div class="inner boxfix-vert">
 			<div class="margins">
 				<div class="row row-md">
@@ -8,7 +7,7 @@
 						<div class="metabox">
 							<div class="metabox-body">
 								<div class="the-content text-center">
-									<h1 class="section-title has-tagline"><img src="<?php $site->img('branding/logo.svg'); ?>" alt="" class="img-responsive" width="144"></h1>
+									<h1 class="section-title has-tagline"><img src="<?php $site->img('backend/logo-Blue.png'); ?>" alt="Growth Institute" class="img-responsive" width="250"></h1>
 									<p class="section-tagline">Please enter your credentials below to continue.</p>
 									<form action="" method="post">
 										<div class="form-fields margin-bottom">

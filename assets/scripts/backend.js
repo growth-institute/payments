@@ -59,23 +59,31 @@ Backend = Class.extend({
 
 		if ($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
 
-			$('#StripeUSD, #lbstripeUSD').removeClass('hide');
-			$('#PayPalUSD, #lbpaypalUSD,#conekta, #lbconekta,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
+			$('#lbstripe').removeClass('hide');
+			$('#conekta, #PayPal').attr('disabled', true);
+			$('#lbpaypal').addClass('hide');
 
 		} else if($('#currency').val() == 'usd' && $('#subscription').val() == '' ) {
 
-			$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD').removeClass('hide');
-			$('#conekta, #lbconekta,#PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').addClass('hide');
+			$('#lbpaypal, #lbstripe').removeClass('hide');
+			$('#lbconekta').addClass('hide');
+			$('#conekta').attr('disabled', true);
+			$('#PayPal, #Stripe').attr('disabled', false);
+			
 
 		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
 
-			$('#conekta,#lbconekta, #PayPalMNX, #lbpaypalMNX, #StripeMNX, #lbstripeMNX').removeClass('hide');
-			$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD').addClass('hide');
+			$('#lbconekta, #lbpaypal, #lbstripe').removeClass('hide');
+			$('#conekta, #PayPal, #Stripe').attr('disabled', false);
+
 
 		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == 'Yes' ) {
 
-			$('#StripeMNX, #lbstripeMNX').removeClass('hide');
-			$('#PayPalUSD, #lbpaypalUSD,#StripeUSD, #lbstripeUSD,#PayPalMNX, #lbpaypalMNX, #conekta, #lbconekta').addClass('hide');
+			$('#lbstripe').removeClass('hide');
+			$('#lbpaypal, #lbconekta').addClass('hide');
+			$('#conekta, #PayPal').attr('disabled', true);
+			$('#Stripe').attr('disabled', false);
+			
 		}
 	},
 	onDomReady: function($) {
