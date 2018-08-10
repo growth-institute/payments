@@ -107,9 +107,9 @@ Backend = Class.extend({
 		$('.span').css("display","none");
 		$('.js-copy').on('click', function(e) {
 			e.preventDefault();
-			var copy = $('.input').select();
+			var copy = $('#slug').select();
 			document.execCommand("copy");
-			$( '.span' ).css( "display", "inline" ).fadeOut( 2000 );
+			$('.span' ).css( "display", "inline" ).fadeOut( 2000 );
 		});
 		//set default 0 value in ocurrency
 		$('#ocurrency').val('0');

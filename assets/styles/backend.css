@@ -2709,7 +2709,7 @@ ul.tab-list.tab-list-border > li > a {
 }
 .backend-setup,
 .page-error {
-  background: #4463a6 url('http://localhost/GI/payment/assets/less/images/template/bg-night.png') center top no-repeat;
+  background: #4463a6 url('http://localhost/payment/assets/less/images/template/bg-night.png') center top no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;

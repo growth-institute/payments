@@ -48,20 +48,6 @@
 							<label for="total" class="control-label">Total</label>
 							<input type="number" name="total" id="total" class="form-control input-block" data-validate="required" value="<?php sanitized_print($item ? $item->total : ''); ?>">
 						</div>
-
-						<div class="form-group">
-							<?php
-								$slug = $item ? $item->slug : false;
-									if($slug):
-							?>
-										<div class="field">
-											<span class="field-name">Link</span>
-											<span class="field-value"><input type="text" readonly  class="form-control input" value="<?php $site->urlTo('/form/', true); echo($item->slug); ?>"> <a href="#" class="button button-primary js-copy"><i class="fa fa-fw fa-copy"></i></a></span>
-											<span class="span">Text copied!</span>
-										</div>
-							<?php endif; ?>
-						</div>
-
 					</div>
 					<div class="text-right">
 
@@ -77,8 +63,14 @@
 			</div>
 			<div class="form-group">
 				<p><?php $site->urlTo('/', true); ?> <input type="text" id="slug" name="slug" data-validate="required" class="form-control" readonly="readonly" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
-				<span class="field-value"><a href="#" class="button button-primary js-copy"><i class="fa fa-fw fa-copy"></i></a></span>
-				<span class="field-value"><a href="#" class="button button-primary js-copy"><i class="fa fa-fw fa-external-link"></i></a></span>
+				<?php
+					$slug = $item ? $item->slug : false;
+						if($slug):
+				?>
+						<span class="field-value"><a href="#" class="button button-primary js-copy"><i class="fa fa-fw fa-copy"></i></a></span>
+						<span class="field-value"><a href="<?php $site->urlTo("/form/{$item->slug}", true) ?>" target="_blank" class="button button-primary"><i class="fa fa-fw fa-external-link"></i></a></span>
+				<?php endif; ?>
+				<span class="span">Text copied!</span>
 				</p>
 			</div>
 			<ul class="tab-list">
