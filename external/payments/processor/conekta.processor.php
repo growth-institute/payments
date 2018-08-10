@@ -10,7 +10,7 @@
 			global $site;
 			$data = [];
 			$data['form'] = $form;
-			print_a($data);
+			//print_a($data);
 			$site->partial('payments/form-conekta', $data);
 		}
 
@@ -23,8 +23,8 @@
 			$site->enqueueScript('conekta-js');
 			$site->enqueueScript('conekta-front');
 			#
-			$conekta_opts_cur = $site->getOption('conekta');
-			$conekta_opts = get_item($conekta_opts_cur, $order->sandbox ? 'sandbox' : 'production');
+			$conekta_opts = $site->getOption('conekta');
+			$conekta_opts = get_item($conekta_opts, $order->sandbox ? 'sandbox' : 'production');
 			$conekta_public = get_item($conekta_opts, 'public_key');
 			$site->addScriptVar('conektaPublicKey', $conekta_public);
 		}
@@ -35,8 +35,8 @@
 			$token = get_item($fields, 'conektaTokenId');
 			$installments = get_item($fields, 'installments');
 			#
-			$conekta_opts_cur = $site->getOption('conekta');
-			$conekta_opts = get_item($conekta_opts_cur, $order->sandbox ? 'sandbox' : 'production');
+			$conekta_opts = $site->getOption('conekta');
+			$conekta_opts = get_item($conekta_opts, $order->sandbox ? 'sandbox' : 'production');
 			$conekta_private = get_item($conekta_opts, 'private_key');
 			#
 			include $site->baseDir('/external/lib/Conekta/Conekta.php');

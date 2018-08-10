@@ -103,6 +103,7 @@
 						$data = [];
 						$data['form'] = $form;
 						$data['order'] = $order;
+						//print_a($data);
 						$site->setPageTitle( $site->getPageTitle($form->name) );
 						$site->render('payments/page-form', $data);
 					break;
@@ -176,6 +177,7 @@
 							$data['form'] = $form;
 							$data['order'] = $order;
 							$data['processors'] = $processors;
+							//print_a($data);
 							$site->setPageTitle( $site->getPageTitle($form->name) );
 							$site->render('payments/page-review', $data);
 						break;
