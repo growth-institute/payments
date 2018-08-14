@@ -182,6 +182,8 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label"><input class="form-control" type="checkbox" name="growsumo" <?php  echo(isset($item) && $item->getMeta('growsumo') == 'on' ? 'checked="checked"' : false); ?> >Activate GrowSumo</label>
+								</div><div class="form-group">
+									<label class="control-label"><input class="form-control" type="checkbox" name="gdpr" <?php  echo(isset($item) && $item->getMeta('gdpr') == 'on' ? 'checked="checked"' : false); ?> >Activate GDPR</label>
 								</div>
 							</div>
 					</div>

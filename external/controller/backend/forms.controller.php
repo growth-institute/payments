@@ -123,6 +123,7 @@ function checkImageAction(){
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
 				$growsumo = $request->post('growsumo'); 
+				$gdpr = $request->post('gdpr');
 				$product_image = $request->post('product_image');
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
@@ -184,6 +185,7 @@ function checkImageAction(){
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
 				$form->updateMeta('growsumo', $growsumo); 
+				$form->updateMeta('gdpr', $gdpr);
 				$form->updateMeta('product_image', $product_image);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
@@ -235,6 +237,7 @@ function checkImageAction(){
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
 				$growsumo = $request->post('growsumo');
+				$gdpr = $request->post('gdpr');
 				$product_image = $request->post('product_image');
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
@@ -290,6 +293,7 @@ function checkImageAction(){
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
 				$form->updateMeta('growsumo', $growsumo);
+				$form->updateMeta('gdpr', $gdpr);
 				$form->updateMeta('product_image', $product_image);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);

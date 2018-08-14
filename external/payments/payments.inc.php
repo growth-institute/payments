@@ -67,7 +67,10 @@
 				#
 				switch ($request->type) {
 					case 'get':
-
+						if($form->getMeta('growsumo')) {
+							$site->registerScript('growsumo', 'payment-form-growsumo.js', false);
+							$site->enqueueScript('growsumo');
+						}
 						if($form->getMeta('quantity')) {
 
 							$quantity_script = [];

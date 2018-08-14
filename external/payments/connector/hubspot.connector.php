@@ -28,7 +28,13 @@
 			$properties['company'] = $order->getMeta('company');
 			$properties['phone'] = $order->getMeta('phone');
 			$res = $hubspot->contactsUpsert($properties['email'], $properties);
-
+			# GDPR Implementation
+			if ($form->getMeta('gdpr')) {
+				$properties = [];
+				$properties['email'] = $order->getMeta('email');
+				$properties['hs_legal_basis'] = 'Freely given consent from contact';
+				$res = $hubspot->contactsUpsert($properties['email'], $properties);
+			}
 			# Create the deal
 			# Price, Product Name, SKU (If aplicable), Number of Installments (if applicable)
 			if ($res) {
