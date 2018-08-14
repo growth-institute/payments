@@ -35,6 +35,10 @@
 						<label for="company" class="control-label">Company <span class="required">*</span></label>
 						<input type="text" name="company" id="company" class="form-control input-block" value="<?php sanitized_print($order ? $order->getMeta('company') : ''); ?>" data-validate="required">
 					</div>
+					<?php if($form->getMeta('growsumo')): ?>
+							<input type="hidden" name="growsumo" value="1">
+							<input type="hidden" name="growsumo-partner-key" value="">
+					<?php endif; ?>
 				</div>
 				<div class="form-actions">
 					<button type="submit" class="button button-primary">Continue</button>

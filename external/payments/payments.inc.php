@@ -94,6 +94,7 @@
 							} else {
 								$order->total = $form->total;
 								$order->currency = $form->currency;
+								$order->sandbox = $test;
 								$order->save();
 								$order->updateMeta('form', $form->id);
 								$order->updateMeta('concept', $form->name);
@@ -125,6 +126,7 @@
 					break;
 				}
 			} else {
+				exit;
 				$site->redirectTo( $site->urlTo('/error') );
 			}
 			return $response->respond();

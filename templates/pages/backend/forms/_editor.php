@@ -112,7 +112,7 @@
 											</select>
 										</div>
 									</div>	
-									<div class="col col-6 col-md-6">	
+									<div class="col col-6 col-md-6">
 										<div class="form-group">
 										<label for="currency" class="control-label">Currency</label>
 										<select class="form-control input-block" name="currency" id="currency" data-validate="required">
@@ -179,6 +179,9 @@
 								<div class="form-group">
 									<label for="product_description" class="control-label">Product Description</label>
 									<textarea name="product_description" id="product_description"  class="form-control input-block" rows="10"><?php sanitized_print($item ? $item->getMeta('product_description') : '');?></textarea>
+								</div>
+								<div class="form-group">
+									<label class="control-label"><input class="form-control" type="checkbox" name="growsumo" <?php  echo(isset($item) && $item->getMeta('growsumo') == 'on' ? 'checked="checked"' : false); ?> >Activate GrowSumo</label>
 								</div>
 							</div>
 					</div>

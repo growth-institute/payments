@@ -107,7 +107,7 @@ Backend = Class.extend({
 		$('.span').css("display","none");
 		$('.js-copy').on('click', function(e) {
 			e.preventDefault();
-			var copy = $('#slug').select();
+			var copy = $('#slug-hidden').select();
 			document.execCommand("copy");
 			$('.span' ).css( "display", "inline" ).fadeOut( 2000 );
 		});
