@@ -24,7 +24,7 @@
 			#
 			$stripe_opts_cur = $site->getOption('stripe');
 			$stripe_opts = get_item($stripe_opts_cur, $order->sandbox ? 'sandbox' : 'production');
-			$stripe_opts = get_item($stripe_opts_cur, $form->currency);
+			$stripe_opts = get_item($stripe_opts, 'usd');
 			$stripe_publishable = get_item($stripe_opts, 'publishable_key');
 			$site->addScriptVar('stripePublishableKey', $stripe_publishable);
 		}
@@ -33,11 +33,11 @@
 			global $site;
 			#
 			$token = get_item($fields, 'stripeToken');
-			$quantity = get_item($fields, 'quantity', 1);
+			$quantity = get_item($fields, 'quantity', 0);
 			#
 			$stripe_opts_cur = $site->getOption('stripe');
 			$stripe_opts = get_item($stripe_opts_cur, $order->sandbox ? 'sandbox' : 'production');
-			$stripe_opts = get_item($stripe_opts_cur, $form->currency);
+			$stripe_opts = get_item($stripe_opts, $order->currency);
 			$stripe_secret = get_item($stripe_opts, 'secret_key');
 			$form = Forms::getById($order->getMeta('form'));
 			$extra_seats_price = $form->getMeta('extra_seats_price');
