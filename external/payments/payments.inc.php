@@ -67,6 +67,22 @@
 				#
 				switch ($request->type) {
 					case 'get':
+
+						if($form->getMeta('quantity')) {
+
+							$quantity_script = [];
+							$quantity_script['price'] = $form->total;
+							$quantity_script['currency'] = strtoupper($form->currency);
+
+							if($form->getMeta('extra_seats_price')) {
+								$quantity_script['discounts'] = $form->getMeta('discounts');
+							} elseif($form->getMeta('extra_seats_price')) {
+								$quantity_script['extraSeatPrice'] = $form->getMeta('extra_seats_price');
+							}
+
+							$site->addScriptVar( 'quantity', $quantity_script );
+						}
+
 						# Initialize cart
 						$products_json = json_decode($form->products);
 						if ($products_json) {
@@ -114,13 +130,17 @@
 						$email = $request->post('email');
 						$phone = $request->post('phone');
 						$company = $request->post('company');
+						$quantity = $request->post('quantity', 1);
 						#
 						$order = PaymentsOrders::getByUid($site->payments->cart->uid);
-						$order->updateMeta('first_name', $first_name);
-						$order->updateMeta('last_name', $last_name);
-						$order->updateMeta('email', $email);
-						$order->updateMeta('phone', $phone);
-						$order->updateMeta('company', $company);
+						if($order) {
+							$order->updateMeta('first_name', $first_name);
+							$order->updateMeta('last_name', $last_name);
+							$order->updateMeta('email', $email);
+							$order->updateMeta('phone', $phone);
+							$order->updateMeta('company', $company);
+							$order->updateMeta('quantity', $quantity);
+						}
 						#
 						$site->redirectTo( $site->urlTo("/review/{$order->uid}") );
 					break;
@@ -144,21 +164,6 @@
 			$params = [];
 			$params['pdoargs'] = ['fetch_metas'];
 			$form = PaymentsForms::getById($order->getMeta('form', 0), $params);
-			#
-			if($form->getMeta('quantity')) {
-
-				$quantity_script = [];
-				$quantity_script['price'] = $form->total;
-				$quantity_script['currency'] = strtoupper($form->currency);
-
-				if($form->getMeta('extra_seats_price')) {
-					$quantity_script['discounts'] = $form->getMeta('discounts');
-				} elseif($form->getMeta('extra_seats_price')) {
-					$quantity_script['extraSeatPrice'] = $form->getMeta('extra_seats_price');
-				}
-
-				$site->addScriptVar( 'quantity', $quantity_script );
-			}
 			#
 			if ($order && $form) {
 				if ($order->payment_status == 'Pending') {

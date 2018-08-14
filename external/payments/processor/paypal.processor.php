@@ -10,9 +10,10 @@
 			global $site;
 			#
 			$paypal_opts = $site->getOption('paypal');
-			$paypal_account = get_item($paypal_opts, 'account');
 			$paypal_opts = get_item($paypal_opts, $order->sandbox ? 'sandbox' : 'production');
+			$paypal_account = get_item($paypal_opts, 'account');
 			$paypal_sandbox = get_item($paypal_opts, 'sandbox');
+			print_a($paypal_opts);
 			$paypal_url = $paypal_sandbox ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
 			#
 			$data = [];
@@ -24,6 +25,10 @@
 		}
 
 		function includeDependencies($form, $order) {
+			global $site;
+			#
+			$site->registerScript('paypal-front', 'payments/paypal.js', false);
+			$site->enqueueScript('paypal-front');
 			return false;
 		}
 
