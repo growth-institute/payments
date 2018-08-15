@@ -108,14 +108,14 @@ Backend = Class.extend({
 					for(var i = 0; i < ranges.length; i++) {
 						//console.log(ranges[i]);
 						if(i == 0 && ranges[i].from < 2) {
-						alert('El primer rango no puede comenzar en 1');
+						alert('1 is an invalid range of discount');
 						return false;
 					}
 					
 					if(ranges[i].from >= ranges[i].to) {
 						//   console.log(ranges[i].from);
 						//   console.log(ranges[i].to);
-						alert('Un rango no puede tener un from mayor a un to');
+						alert('Range from is bigger than a Range to');
 						return false;
 					}
 					
@@ -128,7 +128,7 @@ Backend = Class.extend({
 					}
 					}
 					
-					alert('Todo chido');
+					console.log('Todo chido');
 				}
 				ranges.sort(compare);
 				validateRanges(ranges);
@@ -204,7 +204,7 @@ Backend = Class.extend({
 			}
 		});
 
-		// Validation forms fronend
+		// Validation forms frontend
 		$('#payment-form').on('submit', function() {
 			var form = $(this);
 
@@ -213,6 +213,11 @@ Backend = Class.extend({
 				$.alert('You must select at least one payment processor');
 				return false;
 			}
+			var hasDiscount = $('.repeater-item').length;
+			if(hasDiscount >= 1) {
+				console.log(hasDiscount)
+				obj.ranges();
+				}
 
 			return form.validate({
 				callbacks: {
