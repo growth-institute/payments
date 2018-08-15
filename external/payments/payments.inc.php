@@ -134,6 +134,7 @@
 						$phone = $request->post('phone');
 						$company = $request->post('company');
 						$quantity = $request->post('quantity', 1);
+						$gdpr = $request->post('gdpr');
 						#
 						$order = PaymentsOrders::getByUid($site->payments->cart->uid);
 						if($order) {
@@ -147,6 +148,7 @@
 							$order->updateMeta('phone', $phone);
 							$order->updateMeta('company', $company);
 							$order->updateMeta('quantity', $quantity);
+							$order->updateMeta('gdpr', $gdpr);
 						}
 						#
 						$site->redirectTo( $site->urlTo("/review/{$order->uid}") );

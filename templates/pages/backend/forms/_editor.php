@@ -69,6 +69,7 @@
 				?>
 						<span class="field-value"><a href="#" class="button button-primary js-copy"><i class="fa fa-fw fa-copy"></i></a></span>
 						<span class="field-value"><a href="<?php $site->urlTo("/form/{$item->slug}", true) ?>" target="_blank" class="button button-primary"><i class="fa fa-fw fa-external-link"></i></a></span>
+						<span class="field-value"><a href="<?php $site->urlTo("/form/{$item->slug}?test=ggi2018", true) ?>" target="_blank" class="button button-error"><i class="fa fa-fw fa-external-link"></i></a></span>
 				<?php endif; ?>
 				<span class="span">Text copied!</span>
 				</p>

@@ -1,3 +1,6 @@
+<?php if ($order->sandbox): ?>
+	<div class="message message-error"><strong>Testing Mode</strong></div>
+<?php endif; ?>
 	<h2>User details</h2>
 	<div class="tabs">
 		<div class="tab active">
@@ -35,11 +38,11 @@
 						<label for="company" class="control-label">Company <span class="required">*</span></label>
 						<input type="text" name="company" id="company" class="form-control input-block" value="<?php sanitized_print($order ? $order->getMeta('company') : ''); ?>" data-validate="required">
 					</div>
-					<?php if($form->getMeta('growsumo')): ?>
+					<?php if ($form->getMeta('growsumo')): ?>
 							<input type="hidden" name="growsumo" value="1">
 							<input type="hidden" name="growsumo-partner-key" value="">
 					<?php endif; ?>
-					<?php if($form->getMeta('quantity')): ?>
+					<?php if ($form->getMeta('quantity')): ?>
 						<div class="form-group">
 							<label for="quantity" class="control-label">
 								<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 'Extra seats' : 'Quantity'; ?>
@@ -48,6 +51,12 @@
 								<?php endif; ?>
 							</label>
 							<input type="number" min="<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 0 : 1; ?>" name="quantity" id="quantity" value="<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 0 : 1; ?>" class="input-block form-control">
+						</div>
+					<?php endif; ?>
+					<?php if ($form->getMeta('gdpr')): ?>
+						<div class="form-group">
+							<label class="control-label">&nbsp;</label>
+							<div class="input-checkbox"><input type="checkbox" name="gdpr" id="gdpr" class="form-control"> <span>Please click here if you would like us to contact you with information about Growth Institute which is related to your request. We will process your data in accordance with our <a href="https://www.growthinstitute.com/privacy-notice/" target="_blank">Privacy Notice</a>, and you can withdraw this consent at any time by emailing us at <a href="mailto:support@growthinstitute.com">support@growthinstitute.com</a>.</span></div>
 						</div>
 					<?php endif; ?>
 				</div>

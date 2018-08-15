@@ -32,7 +32,7 @@
 			if ($form->getMeta('gdpr')) {
 				$properties = [];
 				$properties['email'] = $order->getMeta('email');
-				$properties['hs_legal_basis'] = 'Freely given consent from contact';
+				$properties['hs_legal_basis'] = 'Freely given consent from contact;Legitimate interest – existing customer';
 				$res = $hubspot->contactsUpsert($properties['email'], $properties);
 			}
 			# Create the deal
