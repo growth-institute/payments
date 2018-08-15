@@ -86,6 +86,54 @@ Backend = Class.extend({
 			
 		}
 	},
+		// Validation ranges
+		ranges: function() {
+			var ranges = [];
+			froms = $('.repeater-item input[name^="from"]').map(function () { return this.value; }).get();
+			tos = $('.repeater-item input[name="to[]"').map(function () { return this.value; }).get();
+			// console.log(froms);
+			// console.log(tos);
+			ranges = $.map(froms, function(from, i) {
+				return {from:froms[i], to:tos[i]};
+			  });
+			  console.log(ranges);
+		function compare(a,b) {
+			if (a.from < b.from)
+			  return -1;
+			if (a.from > b.from)
+			  return 1;
+			return 0;
+		  }
+		  function validateRanges(ranges) {
+					for(var i = 0; i < ranges.length; i++) {
+						//console.log(ranges[i]);
+						if(i == 0 && ranges[i].from < 2) {
+						alert('El primer rango no puede comenzar en 1');
+						return false;
+					}
+					
+					if(ranges[i].from >= ranges[i].to) {
+						//   console.log(ranges[i].from);
+						//   console.log(ranges[i].to);
+						alert('Un rango no puede tener un from mayor a un to');
+						return false;
+					}
+					
+					if(i+1 < ranges.length) {
+						//alert(ranges[i].to + ' ' + (ranges[i+1].from));
+						if(ranges[i].to != ranges[i+1].from-1) {
+						alert('Existen huecos entre los rangos');
+						return false;
+						}
+					}
+					}
+					
+					alert('Todo chido');
+				}
+				ranges.sort(compare);
+				validateRanges(ranges);
+				
+		},
 	onDomReady: function($) {
 		var obj = this;
 
