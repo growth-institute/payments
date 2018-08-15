@@ -137,6 +137,10 @@
 						#
 						$order = PaymentsOrders::getByUid($site->payments->cart->uid);
 						if($order) {
+
+							$order->total = $form->total*$quantity;
+							$order->save();
+
 							$order->updateMeta('first_name', $first_name);
 							$order->updateMeta('last_name', $last_name);
 							$order->updateMeta('email', $email);

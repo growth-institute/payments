@@ -23,7 +23,7 @@
 								</div>
 							</div>
 							<div class="col col-4 col-md-4">
-								<?php $site->partial('payments/product', ['form' => $form, 'order' => $order]); ?>
+								<?php $site->partial('payments/product', ['form' => $form ]); ?>
 							</div>
 						</div>
 					</div>

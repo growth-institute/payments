@@ -39,6 +39,7 @@
 			$stripe_opts = get_item($stripe_opts_cur, $order->sandbox ? 'sandbox' : 'production');
 			$stripe_opts = get_item($stripe_opts, $order->currency);
 			$stripe_secret = get_item($stripe_opts, 'secret_key');
+
 			$form = Forms::getById($order->getMeta('form'));
 			$extra_seats_price = $form->getMeta('extra_seats_price');
 			$discounts = $form->getMeta('discounts');
@@ -47,7 +48,7 @@
 			\Stripe\Stripe::setApiKey($stripe_secret);
 
 			# Charge the user's card
-			$charge_amount = ($order->total)*$quantity;
+			$charge_amount = ($order->total)*($quantity ?: 1);
 			$charge_description = $order->getMeta('concept') . ($quantity > 1 ? " × {$quantity}" : '');
 
 			if($discounts) {
@@ -73,7 +74,6 @@
 				'source' => $token,
 				'metadata' => (array)$order->getMetas()
 			);
-
 			try {
 				$charge = \Stripe\Charge::create($options);
 				if ($charge && $charge->status == 'succeeded') {
