@@ -189,7 +189,7 @@ Backend = Class.extend({
 				var slug = obj.checkSlug(name);
 				var clean = true;
 
-				while (slug.result == 'error') {
+				while(slug.result == 'error') {
 					name = name + '-1';
 					clean = false;
 					slug = obj.checkSlug(name);
@@ -215,7 +215,7 @@ Backend = Class.extend({
 			}
 			var hasDiscount = $('.repeater-item').length;
 			if(hasDiscount >= 1) {
-				console.log(hasDiscount)
+				console.log(hasDiscount);
 				obj.ranges();
 				}
 
