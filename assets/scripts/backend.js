@@ -87,7 +87,7 @@ Backend = Class.extend({
 		}
 	},
 		// Validation ranges
-		ranges: function() {
+		ranges: function(rangesresponse) {
 			var ranges = [];
 			froms = $('.repeater-item input[name^="from"]').map(function () { return this.value; }).get();
 			tos = $('.repeater-item input[name="to[]"').map(function () { return this.value; }).get();
@@ -96,7 +96,8 @@ Backend = Class.extend({
 			ranges = $.map(froms, function(from, i) {
 				return {from:froms[i], to:tos[i]};
 			  });
-			  console.log(ranges);
+			rr = rangesresponse;
+			  //console.log(ranges);
 		function compare(a,b) {
 			if (a.from < b.from)
 			  return -1;
@@ -104,35 +105,62 @@ Backend = Class.extend({
 			  return 1;
 			return 0;
 		  }
-		  function validateRanges(ranges) {
+		  function validateRanges(ranges, rr) {
+					//   console.log('rr0' + rangesresponse);
 					for(var i = 0; i < ranges.length; i++) {
+						// console.log('rr1' + rangesresponse);
 						//console.log(ranges[i]);
 						if(i == 0 && ranges[i].from < 2) {
 						alert('1 is an invalid range of discount');
-						return false;
-					}
-					
-					if(ranges[i].from >= ranges[i].to) {
-						//   console.log(ranges[i].from);
-						//   console.log(ranges[i].to);
-						alert('Range from is bigger than a Range to');
-						return false;
-					}
-					
-					if(i+1 < ranges.length) {
-						//alert(ranges[i].to + ' ' + (ranges[i+1].from));
-						if(ranges[i].to != ranges[i+1].from-1) {
-						alert('Existen huecos entre los rangos');
-						return false;
+						rangesresponse = false;
+						// console.log('rrn1'+ rr);
+						return rangesresponse;
 						}
-					}
-					}
 					
-					console.log('Todo chido');
+						if(ranges[i].from >= ranges[i].to) {
+							//   console.log(ranges[i].from);
+							//   console.log(ranges[i].to);
+							alert('Range from is bigger than a Range to');
+							rangesresponse = false;
+							// console.log('rrn2'+ rr);
+							return rangesresponse;
+						}
+						if(i+1 < ranges.length) {
+							//alert(ranges[i].to + ' ' + (ranges[i+1].from));
+							if(ranges[i].to != ranges[i+1].from-1) {
+							alert('Missing numbers in the discounts ranges');
+							rangesresponse = false;
+							// console.log('rrn3'+ rangesresponse);
+							return rangesresponse;
+							}
+						}
+						else{
+							rangesresponse = true;
+							// console.log('rrp1'+ rr);
+							return rangesresponse;
+						}
+						console.log('rr2'+ rr);
+
+					}
+
+					// console.log('Todo chido');
+					// console.log('rr3'+ rangesresponse);
+					//return rr;
+					
 				}
+
 				ranges.sort(compare);
-				validateRanges(ranges);
-				
+				validateRanges(ranges, rr);
+				if (rangesresponse == true ) {
+					rangesresponse = true;
+					// console.log('respuesta pos'+ rangesresponse);
+					return true;
+				}
+				else{
+					rangesresponse = false;
+					// console.log('respuesta neg'+ rangesresponse);
+					return false;
+				}		
 		},
 	onDomReady: function($) {
 		var obj = this;
@@ -191,7 +219,7 @@ Backend = Class.extend({
 				var slug = obj.checkSlug(name);
 				var clean = true;
 
-				while (slug.result == 'error') {
+				while(slug.result == 'error') {
 					name = name + '-1';
 					clean = false;
 					slug = obj.checkSlug(name);
@@ -209,7 +237,6 @@ Backend = Class.extend({
 		// Validation forms frontend
 		$('#payment-form').on('submit', function() {
 			var form = $(this);
-
 			var processorChecked = $('.form-group-processors input:checked').length;
 			if(!processorChecked) {
 				$.alert('You must select at least one payment processor');
@@ -217,9 +244,17 @@ Backend = Class.extend({
 			}
 			var hasDiscount = $('.repeater-item').length;
 			if(hasDiscount >= 1) {
-				console.log(hasDiscount)
-				obj.ranges();
+				//console.log(hasDiscount);
+				var rangesresponse = false;
+				//obj.ranges(rangesresponse);
+				 respfinal = obj.ranges(rangesresponse);
+				console.log('resp funcion' + respfinal);
+					if(respfinal == false) {
+						console.log('error en los rangos');
+						return false;
+					}
 				}
+
 
 			return form.validate({
 				callbacks: {
