@@ -160,7 +160,9 @@ Backend = Class.extend({
 			$('.span' ).css( "display", "inline" ).fadeOut( 2000 );
 		});
 		//set default 0 value in ocurrency
-		$('#ocurrency').val('0');
+		if ($('#ocurrency').val() == '') {
+			$('#ocurrency').val('0');
+		}
 		//call function show periodicty
 		$('.js-toggle-periodicity').on('change', function() {
 			var el = $(this),

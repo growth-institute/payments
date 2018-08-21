@@ -135,13 +135,15 @@
 						$company = $request->post('company');
 						$quantity = $request->post('quantity', 1);
 						$gdpr = $request->post('gdpr');
+						$growsumo = $request->post('growsumo');
+						$partner_key = $request->post('growsumo-partner-key'); 
+						//$customer_key = $request->post('growsumo-customer-key');
 						#
 						$order = PaymentsOrders::getByUid($site->payments->cart->uid);
 						if($order) {
 
 							$order->total = $form->total*$quantity;
 							$order->save();
-
 							$order->updateMeta('first_name', $first_name);
 							$order->updateMeta('last_name', $last_name);
 							$order->updateMeta('email', $email);
@@ -149,13 +151,15 @@
 							$order->updateMeta('company', $company);
 							$order->updateMeta('quantity', $quantity);
 							$order->updateMeta('gdpr', $gdpr);
+							$order->updateMeta('growsumo', $growsumo);
+							$order->updateMeta('growsumo-partner-key', $partner_key);
+							$order->updateMeta('growsumo-customer-key', $email);
 						}
 						#
 						$site->redirectTo( $site->urlTo("/review/{$order->uid}") );
 					break;
 				}
 			} else {
-				exit;
 				$site->redirectTo( $site->urlTo('/error') );
 			}
 			return $response->respond();
@@ -193,7 +197,7 @@
 							$data['form'] = $form;
 							$data['order'] = $order;
 							$data['processors'] = $processors;
-							//print_a($data);
+							print_a($data);
 							$site->setPageTitle( $site->getPageTitle($form->name) );
 							$site->render('payments/page-review', $data);
 						break;

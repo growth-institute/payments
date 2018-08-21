@@ -26,36 +26,24 @@ GrowSumo = Class.extend({
 		}
 		return "";
 	},
-	growSumoSignup: function(event) {
-		// prevent the form from submitting temporarily
-		event.preventDefault();
+	growSumoSignup: function() {
 		// find the name and email input fields by Name and store
-		var first_name = $('#first_name').value();
-		var last_name = $('#last_name').value();
-		var email = $('#email').value();
-		var phone = $('#phone').value;
-		var company = $('#company').value;
+		var name = $('#first_name').val();
+		var email = $('#email').val();
 		// assign values to growsumo object
-		growsumo.data.first_name = first_name;
-		growsumo.data.last_name= last_name;
+		growsumo.data.name = name;
 		growsumo.data.email = email;
-		growsumo.data.phone = phone;
-		growsumo.data.company= company;
-		growsumo.data.customer_key = email;
+ 		growsumo.data.customer_key = email;
 		growsumo.createSignup(function() {
-		// use callback function to print to console to debug
-		console.log(first_name);
-		console.log(last_name);
-		console.log(email);
-		console.log(phone);
-		console.log(company);
-		console.log('signup successful');
+			// use callback function to print to console to debug
+			console.log(name);
+			console.log(email);
+			console.log('signup successful');
 		});
 		return true;
 	},
 	onDomReady: function($) {
 		var obj = this;
-		obj.growSumoSignup();
 		var growSumoPartnerKey = obj.getCookie('growSumoPartnerKey');
 			if (typeof growSumoPartnerKey !== 'undefined') {
 				$('[name=growsumo-partner-key]').val(growSumoPartnerKey);

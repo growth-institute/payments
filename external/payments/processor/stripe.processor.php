@@ -9,7 +9,9 @@
 		function getMarkup($form, $order) {
 			global $site;
 			$data = [];
+			$data['metadata'] = $order->getMetas();
 			$data['form'] = $form;
+			print_a($data);
 			$site->partial('payments/form-stripe', $data);
 		}
 
@@ -74,6 +76,7 @@
 				'source' => $token,
 				'metadata' => (array)$order->getMetas()
 			);
+
 			try {
 				$charge = \Stripe\Charge::create($options);
 				if ($charge && $charge->status == 'succeeded') {

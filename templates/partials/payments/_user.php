@@ -41,6 +41,7 @@
 					<?php if ($form->getMeta('growsumo')): ?>
 							<input type="hidden" name="growsumo" value="1">
 							<input type="hidden" name="growsumo-partner-key" value="">
+							<!-- <input type="hidden" name="growsumo-customer-key" value""> -->
 					<?php endif; ?>
 					<?php if ($form->getMeta('quantity')): ?>
 						<div class="form-group">
