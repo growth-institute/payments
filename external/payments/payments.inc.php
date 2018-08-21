@@ -1,7 +1,6 @@
 <?php
 
 	# Include models
-	include $site->baseDir('/external/model/payments/form.model.php');
 	include $site->baseDir('/external/model/payments/order.model.php');
 	include $site->baseDir('/external/model/payments/order-items.model.php');
 
@@ -197,7 +196,7 @@
 							$data['form'] = $form;
 							$data['order'] = $order;
 							$data['processors'] = $processors;
-							print_a($data);
+							//print_a($data);
 							$site->setPageTitle( $site->getPageTitle($form->name) );
 							$site->render('payments/page-review', $data);
 						break;

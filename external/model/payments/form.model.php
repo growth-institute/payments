@@ -18,6 +18,7 @@
 		public $processor;
 		public $currency;
 		public $total;
+		public $subscription;
 		public $created;
 		public $modified;
 
@@ -30,8 +31,8 @@
 			$now = date('Y-m-d H:i:s');
 
 			$this->table = 					'payments_form';
-			$this->table_fields = 			array('id', 'name', 'slug', 'products', 'language', 'processor', 'currency', 'total', 'created', 'modified');
-			$this->update_fields = 			array('name', 'slug', 'products', 'language', 'processor', 'currency', 'total', 'modified');
+			$this->table_fields = 			array('id', 'name', 'slug', 'products', 'language', 'processor', 'currency', 'total', 'subscription', 'created', 'modified');
+			$this->update_fields = 			array('name', 'slug', 'products', 'language', 'processor', 'currency', 'total', 'subscription', 'modified');
 			$this->singular_class_name = 	'PaymentsForm';
 			$this->plural_class_name = 		'PaymentsForms';
 
@@ -49,6 +50,7 @@
 				$this->processor = '';
 				$this->currency = '';
 				$this->total = 0;
+				$this->subscription;
 				$this->created = $now;
 				$this->modified = $now;
 				$this->metas = new stdClass();
@@ -83,7 +85,7 @@
 	class PaymentsForms extends NORM {
 
 		protected static $table = 					'payments_form';
-		protected static $table_fields = 			array('id', 'name', 'slug', 'products', 'language', 'processor', 'currency', 'total', 'created', 'modified');
+		protected static $table_fields = 			array('id', 'name', 'slug', 'products', 'language', 'processor', 'currency', 'total','subscription','created', 'modified');
 		protected static $singular_class_name = 	'PaymentsForm';
 		protected static $plural_class_name = 		'PaymentsForms';
 	}

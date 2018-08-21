@@ -18,7 +18,7 @@ class BackendFormsController extends Controller{
 		$data['name'] = $name;
 		$result = 'error';
 		$message = 'This slug already exist';
-		$form = Forms::getBySlug($slug);
+		$form = PaymentsForms::getBySlug($slug);
 		if (!$form) {
 			$message = 'Need a new slug';
 			$result = 'success';
@@ -77,8 +77,8 @@ function checkImageAction(){
 			$params['show'] = $show;
 			$params['page'] = $page;
 			$params['conditions'] = $conditions;
-			$items = Forms::all($params);
-			$total = Forms::count($conditions);
+			$items = PaymentsForms::all($params);
+			$total = PaymentsForms::count($conditions);
 			$data = [];
 			$data['items'] = $items;
 			$data['total'] = $total;
@@ -160,7 +160,7 @@ function checkImageAction(){
 					Flasher::notice('The following fields are required: ' . implode(', ', $validator->getErrors()));
 					$site->redirectTo($site->urlTo('/backend/forms/new'));
 				}
-				$form = new Form();
+				$form = new PaymentsForm();
 				$form->name = $name;
 				$form->slug = $slug;
 				$explode = explode(',', $products);
@@ -205,7 +205,7 @@ function checkImageAction(){
 		$params = array();
 		//getting data with metas
 		$params['pdoargs'] = array('fetch_metas' => 1);
-		$form = Forms::getById($id, $params);
+		$form = PaymentsForms::getById($id, $params);
 		//Validate if there isn't data redirect to index forms
 		if(!$form) {
 			$site->redirectTo( $site->urlTo('/backend/forms/') );
@@ -309,7 +309,7 @@ function checkImageAction(){
 		$request = $site->getRequest();
 		$response = $site->getResponse();
 		//getting all data per id
-		$form = Forms::getById($id);
+		$form = PaymentsForms::getById($id);
 		if (! $form){
 			$site->redirectTo($site->urlTo('/backend/forms/'));
 		}

@@ -77,9 +77,9 @@
 
 	# Models
 	include $site->baseDir('/external/model/attachment.model.php');
+	include $site->baseDir('/external/model/payments/form.model.php');
 	include $site->baseDir('/external/model/user.model.php');
 	include $site->baseDir('/external/model/manager.model.php');
-	include $site->baseDir('/external/model/form.model.php');
 	#Validator Class
 	include $site->baseDir('/external/validator.inc.php');
 	#Flasher Library
