@@ -6,7 +6,7 @@
 			global $site;
 			$order->fetchMetas();
 
-			$form = Forms::getById($order->getMeta('form'));
+			$form = PaymentsForms::getById($order->getMeta('form'));
 			$form->fetchMetas();
 
 			$params = [];

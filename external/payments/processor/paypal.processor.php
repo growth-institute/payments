@@ -19,7 +19,6 @@
 			$data['form'] = $form;
 			$data['paypal_account'] = $paypal_account;
 			$data['paypal_url'] = $paypal_url;
-			//print_a($data);
 			$site->partial('payments/form-paypal', $data);
 		}
 
@@ -41,7 +40,6 @@
 			$paypal_opts = $site->getOption('paypal');
 			$paypal_account = get_item($paypal_opts, 'account');
 			#
-			// print_a($fields); exit;
 			$res = $this->validate($fields);
 			# Get values
 			$item_name = get_item($fields, 'item_name');

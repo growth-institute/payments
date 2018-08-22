@@ -28,7 +28,7 @@ GrowSumo = Class.extend({
 	},
 	growSumoSignup: function() {
 		// find the name and email input fields by Name and store
-		var name = $('#first_name').val();
+		var name = $('#first_name').val() + ' ' + $('#last_name').val();
 		var email = $('#email').val();
 		// assign values to growsumo object
 		growsumo.data.name = name;
@@ -45,9 +45,13 @@ GrowSumo = Class.extend({
 	onDomReady: function($) {
 		var obj = this;
 		var growSumoPartnerKey = obj.getCookie('growSumoPartnerKey');
-			if (typeof growSumoPartnerKey !== 'undefined') {
-				$('[name=growsumo-partner-key]').val(growSumoPartnerKey);
-			}
+		if (typeof growSumoPartnerKey !== 'undefined') {
+			$('[name=growsumo-partner-key]').val(growSumoPartnerKey);
+		}
+
+		$('#user-data-form').on('submit', function(event) {
+			obj.growSumoSignup();
+		});
 	}
 });
 

@@ -4,7 +4,7 @@
 	<h2>User details</h2>
 	<div class="tabs">
 		<div class="tab active">
-			<form data-submit="validate" action="" method="post">
+			<form data-submit="validate" id="user-data-form" action="" method="post">
 				<div class="form-fields">
 					<div class="row row-md row-5">
 						<div class="col col-md-6">
@@ -41,7 +41,6 @@
 					<?php if ($form->getMeta('growsumo')): ?>
 							<input type="hidden" name="growsumo" value="1">
 							<input type="hidden" name="growsumo-partner-key" value="">
-							<!-- <input type="hidden" name="growsumo-customer-key" value""> -->
 					<?php endif; ?>
 					<?php if ($form->getMeta('quantity')): ?>
 						<div class="form-group">
@@ -61,7 +60,7 @@
 						</div>
 					<?php endif; ?>
 				</div>
-				<div class="form-actions">
+				<div class="form-actions text-right">
 					<button type="submit" class="button button-primary">Continue</button>
 				</div>
 			</form>

@@ -135,7 +135,7 @@
 						$quantity = $request->post('quantity', 1);
 						$gdpr = $request->post('gdpr');
 						$growsumo = $request->post('growsumo');
-						$partner_key = $request->post('growsumo-partner-key'); 
+						$partner_key = $request->post('growsumo-partner-key');
 						//$customer_key = $request->post('growsumo-customer-key');
 						#
 						$order = PaymentsOrders::getByUid($site->payments->cart->uid);
@@ -196,7 +196,7 @@
 							$data['form'] = $form;
 							$data['order'] = $order;
 							$data['processors'] = $processors;
-							//print_a($data);
+
 							$site->setPageTitle( $site->getPageTitle($form->name) );
 							$site->render('payments/page-review', $data);
 						break;

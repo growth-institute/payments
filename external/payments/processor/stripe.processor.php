@@ -10,8 +10,9 @@
 			global $site;
 			$data = [];
 			$data['metadata'] = $order->getMetas();
+
 			$data['form'] = $form;
-			print_a($data);
+			if(get_item($_GET, 'getdata')) print_a($data);
 			$site->partial('payments/form-stripe', $data);
 		}
 
@@ -42,7 +43,7 @@
 			$stripe_opts = get_item($stripe_opts, $order->currency);
 			$stripe_secret = get_item($stripe_opts, 'secret_key');
 
-			$form = Forms::getById($order->getMeta('form'));
+			$form = PaymentsForms::getById($order->getMeta('form'));
 			$extra_seats_price = $form->getMeta('extra_seats_price');
 			$discounts = $form->getMeta('discounts');
 			#
@@ -69,11 +70,41 @@
 				$charge_description = $order->getMeta('concept') . ($quantity > 1 ? " + {$quantity} Extra Seats" : '');
 			}
 
+			$user_metadata = array(
+				'name' => $order->getMeta('first_name'),
+				'last_name' => $order->getMeta('last_name'),
+				'phone_number' => $order->getMeta('phone'),
+				'company' => $order->getMeta('company')
+			);
+
+			if($form->getMeta('growsumo')) {
+
+				if($order->getMeta('growsumo-customer-key')) $user_metadata['customer_key'] = $order->getMeta('growsumo-customer-key');
+				if($order->getMeta('growsumo-partner-key')) $user_metadata['partner_key'] = $order->getMeta('growsumo-partner-key');
+			}
+
+			$options = array(
+				'email' => $order->getMeta('email'),
+				'source' => $token,
+				'metadata' => $user_metadata,
+				'description' => $order->getMeta('first_name') . ' ' . $order->getMeta('last_name') . ' (' . $order->getMeta('email') . ')'
+			);
+
+			try {
+
+				$customer = \Stripe\Customer::create($options);
+
+			} catch (Exception $e) {
+				log_to_file($e->getMessage(), 'stripe_error');
+				$site->redirectTo( $site->urlTo('/error') ); // TBD: Show proper error page
+			}
+
 			$options = array(
 				'amount' => $charge_amount*100,
 				'currency' => $order->currency,
 				'description' => $charge_description,
-				'source' => $token,
+				//'source' => $token,
+				'customer' => $customer->id,
 				'metadata' => (array)$order->getMetas()
 			);
 
