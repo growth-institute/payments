@@ -99,40 +99,48 @@
 				$site->redirectTo( $site->urlTo('/error') ); // TBD: Show proper error page
 			}
 
-			$options = array(
-				'amount' => $charge_amount*100,
-				'currency' => $order->currency,
-				'description' => $charge_description,
-				//'source' => $token,
-				'customer' => $customer->id,
-				'metadata' => (array)$order->getMetas()
-			);
-
 			try {
-				$charge = \Stripe\Charge::create($options);
-				if ($charge && $charge->status == 'succeeded') {
-					$order->payment_status = 'Paid';
-					$order->payment_processor = 'Stripe';
-					$order->payment_ticket = $charge->id;
-					$order->payment_date = date('Y-m-d H:i:s');
-					$order->total = $charge_amount;
-					$order->save();
-					$order->updateMeta('installments', 0);
-					$order->updateMeta('quantity', $quantity);
-					# Reset the cart
-					$site->payments->cart->reset();
-					# Notify the payments system
-					$site->payments->notifyProcessed($order);
-					#
-					$form = PaymentsForms::getById( $order->getMeta('form', 0) );
-					$url = '';
-					if ($form) {
-						$url = $form->getMeta('thank_you_page');
-					}
-					$url = $url ?: $site->urlTo("/thanks/{$order->uid}");
-					$site->redirectTo($url);
-				} else {
+
+				if($form->subscription) {
+
+					//Subscription Mike
 					//
+				} else {
+
+					$options = array(
+						'amount' => $charge_amount*100,
+						'currency' => $order->currency,
+						'description' => $charge_description,
+						//'source' => $token,
+						'customer' => $customer->id,
+						'metadata' => (array)$order->getMetas()
+					);
+
+					$charge = \Stripe\Charge::create($options);
+					if ($charge && $charge->status == 'succeeded') {
+						$order->payment_status = 'Paid';
+						$order->payment_processor = 'Stripe';
+						$order->payment_ticket = $charge->id;
+						$order->payment_date = date('Y-m-d H:i:s');
+						$order->total = $charge_amount;
+						$order->save();
+						$order->updateMeta('installments', 0);
+						$order->updateMeta('quantity', $quantity);
+						# Reset the cart
+						$site->payments->cart->reset();
+						# Notify the payments system
+						$site->payments->notifyProcessed($order);
+						#
+						$form = PaymentsForms::getById( $order->getMeta('form', 0) );
+						$url = '';
+						if ($form) {
+							$url = $form->getMeta('thank_you_page');
+						}
+						$url = $url ?: $site->urlTo("/thanks/{$order->uid}");
+						$site->redirectTo($url);
+					} else {
+						//
+					}
 				}
 			} catch (Exception $e) {
 				log_to_file($e->getMessage(), 'stripe_error');
