@@ -91,25 +91,22 @@ Backend = Class.extend({
 			var ranges = [];
 			froms = $('.repeater-item input[name^="from"]').map(function () { return this.value; }).get();
 			tos = $('.repeater-item input[name="to[]"').map(function () { return this.value; }).get();
-			// console.log(froms);
-			// console.log(tos);
 			ranges = $.map(froms, function(from, i) {
-				return {from:froms[i], to:tos[i]};
+				return {from:parseInt(froms[i]), to:parseInt(tos[i])};
 			  });
 			rr = rangesresponse;
-			  //console.log(ranges);
+
 		function compare(a,b) {
-			if (a.from < b.from)
-			  return -1;
-			if (a.from > b.from)
-			  return 1;
+			var x = a.from;
+			var y = b.from;
+			if (x < y) {return -1;}
+			if (x > y) {return 1;}
 			return 0;
 		  }
 		  function validateRanges(ranges, rr) {
-					//   console.log('rr0' + rangesresponse);
+					
 					for(var i = 0; i < ranges.length; i++) {
-						// console.log('rr1' + rangesresponse);
-						//console.log(ranges[i]);
+						//console.log(ranges[i].from + ' ' + ranges[i].to);
 						if(i == 0 && ranges[i].from < 2) {
 						alert('1 is an invalid range of discount');
 						rangesresponse = false;
@@ -118,11 +115,11 @@ Backend = Class.extend({
 						}
 					
 						if(ranges[i].from >= ranges[i].to) {
-							//   console.log(ranges[i].from);
-							//   console.log(ranges[i].to);
+							//   console.log(ranges[i].from + ranges[i].to);
+							   console.log(ranges[i]);
 							alert('Range from is bigger than a Range to');
 							rangesresponse = false;
-							// console.log('rrn2'+ rr);
+							// console.log('rrn2'+ rr);	
 							return rangesresponse;
 						}
 						if(i+1 < ranges.length) {
@@ -139,26 +136,20 @@ Backend = Class.extend({
 							// console.log('rrp1'+ rr);
 							return rangesresponse;
 						}
-						console.log('rr2'+ rr);
+						//console.log('rr2'+ rr);
 
 					}
-
-					// console.log('Todo chido');
-					// console.log('rr3'+ rangesresponse);
-					//return rr;
 					
 				}
-
+				
 				ranges.sort(compare);
 				validateRanges(ranges, rr);
 				if (rangesresponse == true ) {
 					rangesresponse = true;
-					// console.log('respuesta pos'+ rangesresponse);
 					return true;
 				}
 				else{
 					rangesresponse = false;
-					// console.log('respuesta neg'+ rangesresponse);
 					return false;
 				}		
 		},
