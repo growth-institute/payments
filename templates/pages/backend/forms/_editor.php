@@ -137,10 +137,10 @@
 										<select name="periodicity" id="periodicity" class="form-control input-block">
 											<option disabled selected>Select</option>
 
-											<option name="monthly" value="monthly" <?php echo( $item && $item->getMeta('periodicity') == 'monthly' ? 'selected="selected"' : ''); ?> >Monthly</option>
-											<option name="3_months" value="3_months" <?php echo( $item && $item->getMeta('periodicity') == '3_months' ? 'selected="slected"' : ''); ?> >Every 3 months</option>
-											<option name="6_months" value="6_months" <?php echo( $item && $item->getMeta('periodicity') == '6_months' ? 'selected="selected"' : ''); ?> >Every 6 months</option>
-											<option name="annual" value="annual" <?php echo( $item && $item->getMeta('periodicity') == 'annual' ? 'selected="selected"' : ''); ?> >Annual</option>
+											<option name="monthly" value="1" <?php echo( $item && $item->getMeta('periodicity') == '1' ? 'selected="selected"' : ''); ?> >Monthly</option>
+											<option name="3_months" value="3" <?php echo( $item && $item->getMeta('periodicity') == '3' ? 'selected="slected"' : ''); ?> >Every 3 months</option>
+											<option name="6_months" value="6" <?php echo( $item && $item->getMeta('periodicity') == '6' ? 'selected="selected"' : ''); ?> >Every 6 months</option>
+											<option name="annual" value="12" <?php echo( $item && $item->getMeta('periodicity') == '12' ? 'selected="selected"' : ''); ?> >Annual</option>
 										</select>
 									</div>
 									<div class="form-group">

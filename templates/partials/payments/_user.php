@@ -56,7 +56,7 @@
 					<?php if ($form->getMeta('gdpr')): ?>
 						<div class="form-group">
 							<label class="control-label">&nbsp;</label>
-							<div class="input-checkbox"><input type="checkbox" name="gdpr" id="gdpr" class="form-control"> <span>Please click here if you would like us to contact you with information about Growth Institute which is related to your request. We will process your data in accordance with our <a href="https://www.growthinstitute.com/privacy-notice/" target="_blank">Privacy Notice</a>, and you can withdraw this consent at any time by emailing us at <a href="mailto:support@growthinstitute.com">support@growthinstitute.com</a>.</span></div>
+							<div class="input-checkbox"><input type="checkbox" name="gdpr" id="gdpr" class="form-control" data-validate="required"> <span>Please click here if you would like us to contact you with information about Growth Institute which is related to your request. We will process your data in accordance with our <a href="https://www.growthinstitute.com/privacy-notice/" target="_blank">Privacy Notice</a>, and you can withdraw this consent at any time by emailing us at <a href="mailto:support@growthinstitute.com">support@growthinstitute.com</a>.</span></div>
 						</div>
 					<?php endif; ?>
 				</div>

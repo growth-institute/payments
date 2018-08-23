@@ -100,35 +100,54 @@
 			}
 
 			try {
-
 				if ($form->subscription) {
-					$plan = \Stripe\Plan::retrieve($form->slug);
-					if (! isset($plan) ) {
-						$options_plan = array(
-							'id' => $form->slug,
-							'object' => 'plan',
-							'active' => true,
-							'amount' => $charge_amount,
-							'currency' => $form->currency,
-							'interval' => $form->getMeta('periodicity'),
-							'created' => $form->created,
-							'metadata' => (array)$form->getMetas(),
-							'nickname' => $form->name
-						);
-						$plan = \Stripe\Plan::create($options_plan);
+					try{
+						$plan = \Stripe\Plan::retrieve($form->slug);
+					} catch (\Stripe\Error\InvalidRequest $e) {
+						if (! isset($plan) ) {
+							$options_plan = array(
+								'id' => $form->slug,
+								//'object' => 'plan',
+								'active' => true,
+								'amount' => $charge_amount*100,
+								'currency' => $form->currency,
+								'interval' => 'month',
+								'interval_count' => $form->getMeta('periodicity'),
+								//'created' => $form->created,
+								'metadata' => (array)$form->getMetas(),
+								'name' => $form->name
+							);
+							$plan = \Stripe\Plan::create($options_plan);
+						}
 					}
-					print_a($plan);
-					exit;
 					$options_subscription = array(
-						'object' => 'subscription',
-						'active' => true,
-						'created' => $form->created,
-						'amount' => $charge_amount,
-						'quantity' => $form->slug,
-						'nickname' => $form->name,
+						//'quantity' => $quantity,
+						'items' => [['plan' => $plan->id]],
 						'customer' => $customer->id
 					);
 					$subscription = \Stripe\Subscription::create($options_subscription);
+					if ($subscription && $subscription->status == 'active') {
+						$order->payment_status = 'Paid';
+						$order->payment_processor = 'Stripe';
+						$order->payment_ticket = $subscription->id;
+						$order->payment_date = date('Y-m-d H:i:s');
+						$order->total = $charge_amount;
+						$order->save();
+						$order->updateMeta('installments', 0);
+						$order->updateMeta('quantity', $quantity);
+						# Reset the cart
+						$site->payments->cart->reset();
+						# Notify the payments system
+						$site->payments->notifyProcessed($order);
+						#
+						$form = PaymentsForms::getById( $order->getMeta('form', 0) );
+						$url = '';
+						if ($form) {
+							$url = $form->getMeta('thank_you_page');
+						}
+						$url = $url ?: $site->urlTo("/thanks/{$order->uid}");
+						$site->redirectTo($url);
+					}
 				} else {
 					$options = array(
 						'amount' => $charge_amount*100,
@@ -167,6 +186,8 @@
 				}
 			} catch (Exception $e) {
 				log_to_file($e->getMessage(), 'stripe_error');
+				log_to_file( $e->getCode(), 'stripe_error');
+				//log_to_file($e->getTraceAsString(), 'stripe_error');
 				$site->redirectTo( $site->urlTo('/error') ); // TBD: Show proper error page
 			}
 		}
