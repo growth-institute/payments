@@ -101,12 +101,35 @@
 
 			try {
 
-				if($form->subscription) {
-
-					//Subscription Mike
-					//
+				if ($form->subscription) {
+					$plan = \Stripe\Plan::retrieve($form->slug);
+					if (! isset($plan) ) {
+						$options_plan = array(
+							'id' => $form->slug,
+							'object' => 'plan',
+							'active' => true,
+							'amount' => $charge_amount,
+							'currency' => $form->currency,
+							'interval' => $form->getMeta('periodicity'),
+							'created' => $form->created,
+							'metadata' => (array)$form->getMetas(),
+							'nickname' => $form->name
+						);
+						$plan = \Stripe\Plan::create($options_plan);
+					}
+					print_a($plan);
+					exit;
+					$options_subscription = array(
+						'object' => 'subscription',
+						'active' => true,
+						'created' => $form->created,
+						'amount' => $charge_amount,
+						'quantity' => $form->slug,
+						'nickname' => $form->name,
+						'customer' => $customer->id
+					);
+					$subscription = \Stripe\Subscription::create($options_subscription);
 				} else {
-
 					$options = array(
 						'amount' => $charge_amount*100,
 						'currency' => $order->currency,
