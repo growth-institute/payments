@@ -22,7 +22,7 @@
 				<?php if($form->getMeta('quantity')): ?>
 					<div class="row row-md">
 						<div class="col col-6 total-total">
-							<h3>Price:</h3>
+							<h3><?php $i18n->translate('sidebar.product.h3-price'); ?></h3>
 						</div>
 						<div class="col col-6 total-prices">
 							<span class="total-price">$<?php echo number_format($form->total, 2); ?> <?php echo strtoupper($form->currency); ?></span>
@@ -40,7 +40,7 @@
 
 				<div class="row row-md">
 					<div class="col col-6 total-total">
-						<h3>Total:</h3>
+						<h3><?php $i18n->translate('sidebar.product.h3-total'); ?></h3>
 					</div>
 					<div class="col col-6 total-prices">
 						<span class="total-price js-total-price">$<?php echo number_format(isset($order) ? $order->total : $form->total, 2); ?> <?php echo strtoupper($form->currency); ?></span>

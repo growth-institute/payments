@@ -1,5 +1,5 @@
 <?php if ($processors): ?>
-	<h2>Payment Detail</h2>
+	<h2><?php $i18n->translate('form.title.payment'); ?></h2>
 
 	<?php if(count($processors) > 0): ?>
 		<ul class="tab-list payment-method <?php echo count($processors) == 1 ? 'hide' : ''; ?>">
