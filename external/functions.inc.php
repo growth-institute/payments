@@ -95,6 +95,11 @@
 	# Start session
 	//session_start();
 
+	//i18n
+	$i18n->addLocale('en', $site->baseDir('/locales/enUS.php'));
+	$i18n->addLocale('es', $site->baseDir('/locales/esES.php'));
+	$i18n->setLocale('en');
+
 	# Restore manager session (check for Managers module first)
 	if ( class_exists('Managers') ) {
 		Managers::init();

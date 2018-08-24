@@ -6,8 +6,8 @@
 				<div class="inner boxfix-vert">
 					<div class="margins-horz">
 						<ul class="menu">
-							<li class="menu-item menu-item-info"><a href="#" class="active">Student Details</a></li>
-							<li class="menu-item menu-item-payment"><a href="#">Payment</a></li>
+							<li class="menu-item menu-item-info"><a href="#" class="active"><?php $i18n->translate('form.title.student'); ?></a></li>
+							<li class="menu-item menu-item-payment"><a href="#"><?php $i18n->translate('form.title.menu-payment'); ?></a></li>
 						</ul>
 					</div>
 				</div>

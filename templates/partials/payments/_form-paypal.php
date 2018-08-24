@@ -1,6 +1,6 @@
 	<form action="<?php echo $paypal_url; ?>" method="post" id="paypal-form">
 		<div class="form-group">
-			<label for="" class="control-label">Pay safely and easily with PayPal</label>
+			<label for="" class="control-label"><?php $i18n->translate('form.paypal.label-title'); ?></label>
 		</div>
 
 		<?php if($form->getMeta('quantity')): ?>
@@ -29,6 +29,6 @@
 		<input type="hidden" name="notify_url" value="<?php $site->urlTo('/paypal/webhook', true); ?>">
 		<input type="hidden" name="return" value="<?php $site->urlTo("/thanks/{$site->payments->cart->uid}", true); ?>">
 		<div class="form-actions">
-			<button type="submit" class="button button-primary">Pay now with PayPal</button>
+			<button type="submit" class="button button-primary"><?php $i18n->translate('form.paypal.button'); ?></button>
 		</div>
 	</form>

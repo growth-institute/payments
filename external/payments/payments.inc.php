@@ -47,15 +47,18 @@
 			$site->getRouter()->addRoute('/thanks/:uid', 'Payments::routeThanks');
 			$site->getRouter()->addRoute('/:processor/webhook', 'Payments::routeWebhook');
 			$site->getRouter()->addRoute('/:processor/charge/:uid', 'Payments::routeCharge');
+
 		}
 
 		static function routeForm($args) {
 			global $site;
+			global $i18n;
 			#
 			$request = $site->getRequest();
 			$response = $site->getResponse();
 			$test = $request->get('test');
 			$test = $test && $test == $site->getGlobal('test_password');
+
 			Payments::init();
 			#
 			$params = [];
@@ -66,6 +69,11 @@
 				#
 				switch ($request->type) {
 					case 'get':
+						if ($form->currency == 'mxn') {
+							$i18n->setLocale('es');
+						}else if ($form->currency == 'usd') {
+							$i18n->setLocale('en');
+						}
 						if($form->getMeta('growsumo')) {
 							$site->registerScript('growsumo', 'payment-form-growsumo.js', false);
 							$site->enqueueScript('growsumo');
