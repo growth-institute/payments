@@ -174,6 +174,7 @@
 
 		static function routeReview($args) {
 			global $site;
+			global $i18n;
 			#
 			$request = $site->getRequest();
 			$response = $site->getResponse();
@@ -185,6 +186,11 @@
 			$params['pdoargs'] = ['fetch_metas'];
 			$form = PaymentsForms::getById($order->getMeta('form', 0), $params);
 			#
+			if ($form->currency == 'mxn') {
+							$i18n->setLocale('es');
+						}else if ($form->currency == 'usd') {
+							$i18n->setLocale('en');
+			}
 			if ($order && $form) {
 				if ($order->payment_status == 'Pending') {
 					switch ($request->type) {
@@ -279,16 +285,25 @@
 
 		static function routeThanks($args) {
 			global $site;
+			global $i18n;
 			$request = $site->getRequest();
 			$response = $site->getResponse();
 			Payments::init();
 			#
 			$req_order = get_item($args, 1);
 			$order = PaymentsOrders::getByUid($req_order);
+			$params = [];
+			$params['pdoargs'] = ['fetch_metas'];
+			$form = PaymentsForms::getById($order->getMeta('form', 0), $params);
 			if ($order) {
 				#
 				switch ($request->type) {
 					case 'get':
+						if ($form->currency == 'mxn') {
+								$i18n->setLocale('es');
+							}else if ($form->currency == 'usd') {
+								$i18n->setLocale('en');
+						}
 					case 'post':
 						$data = [];
 						$data['order'] = $order;

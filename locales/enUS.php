@@ -44,9 +44,16 @@
 		//Footer
 		'footer.a-policy' => 'Privacy Policy',
 		'footer.a-terms' => 'Terms of Use',
-		'footer.a-about' => 'ABOUT US',
-		'footer.a-blog' => 'BLOG',
-		'footer.a-contact' => 'CONTACT US'
+		'footer.a-about' => 'About Us',
+		'footer.a-blog' => 'Blog',
+		'footer.a-contact' => 'Contact Us',
 
+		//Page Thanks
+		'thanks.h1' => 'Thanks',
+		'thanks.h3' => 'Your payment is being validated',
+		'thanks.p' => 'We will send you an email once the payment has been verified.',
+		'thanks.p.title' => 'Payment details',
+		'thanks.li.concept' => 'Concept:',
+		'thanks.li.amount' => 'Amount:'
 	];
 ?>

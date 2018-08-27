@@ -2,7 +2,7 @@
 	<input type="hidden" name="custom" value="<?php echo $site->payments->cart->uid; ?>">
 
 	<div class="form-row">
-		<label for="card-element"><?php $i18n->translate('form.paypal.label-title'); ?></label>
+		<label for="card-element"><?php $i18n->translate('form.stripe.card-element'); ?></label>
 		<div id="card-element">
 			<!-- a Stripe Element will be inserted here. -->
 		</div>

@@ -29,7 +29,7 @@
 		'form.stripe.submit' => 'Procesando Pago',
 
 		//Form Payments Paypal
-		'form.paypal.label-title' => 'Pay safely and easily with PayPal',
+		'form.paypal.label-title' => 'Pague de manera segura y fácil con PayPal',
 		'form.paypal.label-extra-seat' => 'for each extra seat',
 		'form.paypal.button' => 'Paga ahora con PayPal',
 
@@ -46,7 +46,15 @@
 		'footer.a-terms' => 'Términos de uso',
 		'footer.a-about' => 'Acerca de Nosotros',
 		'footer.a-blog' => 'Blog',
-		'footer.a-contact' => 'Contáctanos'
+		'footer.a-contact' => 'Contáctanos',
+
+				//Page Thanks
+		'thanks.h1' => 'Gracias',
+		'thanks.h3' => 'Tu pago esta siendo validado',
+		'thanks.p' => 'Te enviaremos un email una vez que el pago ha sido verificado.',
+		'thanks.p.title' => 'Detalles  de pago',
+		'thanks.li.concept' => 'Concepto:',
+		'thanks.li.amount' => 'Cantidad:'
 
 	];
 ?>
