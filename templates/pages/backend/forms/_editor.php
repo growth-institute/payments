@@ -62,12 +62,13 @@
 				<input placeholder="Add the name of your form" type="text" name="name" id="name" data-validate="required" class="form-control input-block form-control-xlarge" value="<?php sanitized_print($item ? $item->name : ''); ?>">
 			</div>
 			<div class="form-group">
-				<p><?php $site->urlTo('/', true); ?> <input type="text" id="slug" name="slug" data-validate="required" class="form-control" readonly="readonly" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
+				<p><?php $site->urlTo('/', true); ?> <input type="text" id="slug" name="slug" data-validate="required" class="form-control"  value="<?php sanitized_print($item ? $item->slug : ''); ?>">
+				<input type="text" id="slugroot" name="slugroot"  class="linkcopy"  value="<?php $site->urlTo('/', true); sanitized_print($item ? $item->slug : ''); ?>">
 				<?php
 					$slug = $item ? $item->slug : false;
 						if($slug):
 				?>
-						<span class="field-value"><a href="#" class="button button-primary js-copy"><i class="fa fa-fw fa-copy"></i></a></span>
+						<span class="field-value"><a href="#" class="button button-primary js-copy" data-clipboard-target="#slugroot"><i class="fa fa-fw fa-copy"></i></a></span>
 						<span class="field-value"><a href="<?php $site->urlTo("/form/{$item->slug}", true) ?>" target="_blank" class="button button-primary"><i class="fa fa-fw fa-external-link"></i></a></span>
 						<span class="field-value"><a href="<?php $site->urlTo("/form/{$item->slug}?test=ggi2018", true) ?>" target="_blank" class="button button-error"><i class="fa fa-fw fa-external-link"></i></a></span>
 				<?php endif; ?>
@@ -99,8 +100,8 @@
 										$decode = isset($item) ? json_decode($item->products) : false;
 										$implode = isset($item) ? implode(',', $decode) : false;
 									?>
-									<label for="products" class="control-label">Products</label>
-									<input type="text" name="products" id="products" data-validate="required" class="form-control input-block" value="<?php sanitized_print($decode && $implode ? $implode : '');?>">
+									<label for="products" class="control-label">Products (SKU) </label>
+									<input type="text" name="products" id="products"  class="form-control input-block" value="<?php sanitized_print($decode && $implode ? $implode : '');?>">
 								</div>
 								<div class="row row-md">
 									<div class="col col-6 col-md-6">
@@ -198,10 +199,10 @@
 									<?php
 										$installments = isset($item) ? $item->getMeta('installments') : false;
 									?>
-									<label class="control-label"><input class="form-control" type="checkbox" name="installments[]" value="3" <?php echo( $installments && in_array('3',$installments) ? 'checked="checked"' : ''); ?> >Every 3 months</label>
-									<label class="control-label"><input type="checkbox" class="form-control" name="installments[]" value="6" <?php echo( $installments && in_array('6', $installments) ? 'checked="checked"' : ''); ?> >Every 6 months</label>
-									<label class="control-label"><input type="checkbox" class="form-control" name="installments[]" value="9" <?php echo( $installments && in_array('9', $installments) ? 'checked="checked"' : ''); ?>>Every 9 months</label>
-									<label class="control-label"><input type="checkbox" class="form-control" name="installments[]" value="12" <?php echo( $installments && in_array('12', $installments) ? 'checked="checked"' : '' );?> >Every 12 months</label>
+									<label class="control-label"><input class="form-control" type="checkbox" name="installments[]" value="3" <?php echo( $installments && in_array('3',$installments) ? 'checked="checked"' : ''); ?> > 3 months</label>
+									<label class="control-label"><input type="checkbox" class="form-control" name="installments[]" value="6" <?php echo( $installments && in_array('6', $installments) ? 'checked="checked"' : ''); ?> > 6 months</label>
+									<label class="control-label"><input type="checkbox" class="form-control" name="installments[]" value="9" <?php echo( $installments && in_array('9', $installments) ? 'checked="checked"' : ''); ?>> 9 months</label>
+									<label class="control-label"><input type="checkbox" class="form-control" name="installments[]" value="12" <?php echo( $installments && in_array('12', $installments) ? 'checked="checked"' : '' );?> > 12 months</label>
 								</div>
 							</div>
 					</div>

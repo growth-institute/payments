@@ -152,8 +152,13 @@ Backend = Class.extend({
 				else{
 					rangesresponse = false;
 					return false;
-				}		
+				}
+
 		},
+	copy: function(params) {
+		new ClipboardJS('.js-copy');
+		console.log($('#slugroot').val());
+	},	
 	onDomReady: function($) {
 		var obj = this;
 
@@ -173,10 +178,9 @@ Backend = Class.extend({
 		});
 		/**Clipboard function */
 		$('.span').css("display","none");
+		
 		$('.js-copy').on('click', function(e) {
-			e.preventDefault();
-			var copy = $('#slug-hidden').select();
-			document.execCommand("copy");
+			obj.copy();
 			$('.span' ).css( "display", "inline" ).fadeOut( 2000 );
 		});
 		//set default 0 value in ocurrency
