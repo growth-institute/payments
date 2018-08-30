@@ -33,6 +33,7 @@
 			global $site;
 			#
 			$site->enqueueStyle('site');
+			$site->enqueueStyle('plugins'); 
 			$site->enqueueScript('site');
 		}
 
