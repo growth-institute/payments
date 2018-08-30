@@ -96,7 +96,7 @@ Site = Class.extend({
 						});
 					},
 					error: function(fields) {
-						$.alert('Por favor llena todos los campos requeridos');
+						$.alert('Please complete all the mandatory fileds to continue');
 					}
 				}
 			});

@@ -2260,12 +2260,6 @@ section {
 .tabs .tab.active {
   display: block;
 }
-.alert-overlay .alert .alert-message {
-  color: #333333;
-}
-.alert-overlay .alert .alert-buttons {
-  background: #eeeeee;
-}
 /* Header */
 /* ------------------------------------------------------------------------------------------ */
 .site-header {
@@ -2353,7 +2347,7 @@ section {
   text-align: center;
 }
 .payment-navigation .menu .menu-item:first-child {
-  background: url('http://localhost/GI/payment/assets/images/payment-form/menu-divider.jpg') right center no-repeat;
+  background: url('http://localhost/payment/assets/images/payment-form/menu-divider.jpg') right center no-repeat;
 }
 .payment-navigation .menu .menu-item a {
   display: block;

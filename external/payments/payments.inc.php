@@ -70,9 +70,9 @@
 				#
 				switch ($request->type) {
 					case 'get':
-						if ($form->currency == 'mxn') {
+						if ($form->language == 'es') {
 							$i18n->setLocale('es');
-						}else if ($form->currency == 'usd') {
+						}else if ($form->language == 'en') {
 							$i18n->setLocale('en');
 						}
 						if($form->getMeta('growsumo')) {
@@ -187,9 +187,9 @@
 			$params['pdoargs'] = ['fetch_metas'];
 			$form = PaymentsForms::getById($order->getMeta('form', 0), $params);
 			#
-			if ($form->currency == 'mxn') {
+			if ($form->language == 'es') {
 							$i18n->setLocale('es');
-						}else if ($form->currency == 'usd') {
+						}else if ($form->language == 'en') {
 							$i18n->setLocale('en');
 			}
 			if ($order && $form) {
@@ -300,9 +300,9 @@
 				#
 				switch ($request->type) {
 					case 'get':
-						if ($form->currency == 'mxn') {
+						if ($form->language == 'es') {
 								$i18n->setLocale('es');
-							}else if ($form->currency == 'usd') {
+							}else if ($form->language == 'en') {
 								$i18n->setLocale('en');
 						}
 					case 'post':
