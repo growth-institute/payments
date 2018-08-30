@@ -47,6 +47,7 @@ Backend = Class.extend({
 			data: { name: name },
 			success: function(response) {
 				slugCheck = response;
+				console.log(slugCheck);
 			}
 		});
 
@@ -215,7 +216,6 @@ Backend = Class.extend({
 					clean = false;
 					slug = obj.checkSlug(name);
 				}
-
 				if(!clean) {
 
 					$.alert('The slug of the form already exists. Creating a new one.');

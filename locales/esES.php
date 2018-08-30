@@ -50,11 +50,10 @@
 
 				//Page Thanks
 		'thanks.h1' => 'Gracias',
-		'thanks.h3' => 'Tu pago esta siendo validado',
+		'thanks.h3' => 'Tu pago está siendo validado',
 		'thanks.p' => 'Te enviaremos un email una vez que el pago ha sido verificado.',
 		'thanks.p.title' => 'Detalles  de pago',
 		'thanks.li.concept' => 'Concepto:',
-		'thanks.li.amount' => 'Cantidad:'
-
+		'thanks.li.amount' => 'Cantidad:',
 	];
 ?>

@@ -2260,6 +2260,12 @@ section {
 .tabs .tab.active {
   display: block;
 }
+.alert-overlay .alert .alert-message {
+  color: #333333;
+}
+.alert-overlay .alert .alert-buttons {
+  background: #eeeeee;
+}
 /* Header */
 /* ------------------------------------------------------------------------------------------ */
 .site-header {
