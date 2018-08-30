@@ -55,5 +55,6 @@
 		'thanks.p.title' => 'Detalles  de pago',
 		'thanks.li.concept' => 'Concepto:',
 		'thanks.li.amount' => 'Cantidad:',
+		'return.stripe' => 'Tarjeta de crédito'
 	];
 ?>

@@ -154,9 +154,9 @@
 										$obj = isset($item) ? json_decode($item->processor) : false;
 									?>
 									<label for="processor" class="control-label">Processor</label>
-									<label id="lbpaypal"class="hide"><input type="checkbox" name="processor[]" id="PayPal" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control ">PayPal</label>
 									<label id="lbstripe"class="hide"><input type="checkbox" name="processor[]" id="Stripe" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control ">Stripe</label>
 									<label id="lbconekta"class="hide"><input type="checkbox" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control ">Conekta</label>
+									<label id="lbpaypal"class="hide"><input type="checkbox" name="processor[]" id="PayPal" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control ">PayPal</label>
 								</div>
 							</div>
 					</div>

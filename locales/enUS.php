@@ -54,6 +54,7 @@
 		'thanks.p' => 'We will send you an email once the payment has been verified.',
 		'thanks.p.title' => 'Payment details',
 		'thanks.li.concept' => 'Concept:',
-		'thanks.li.amount' => 'Amount:'
+		'thanks.li.amount' => 'Amount:',
+		'return.stripe' => 'Credit card'
 	];
 ?>

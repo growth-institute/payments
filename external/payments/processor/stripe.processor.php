@@ -28,7 +28,6 @@
 			$stripe_opts_cur = $site->getOption('stripe');
 			$stripe_opts = get_item($stripe_opts_cur, $order->sandbox ? 'sandbox' : 'production');
 			$stripe_opts = get_item($stripe_opts, $order->currency);
-			print_a($stripe_opts);
 			$stripe_publishable = get_item($stripe_opts, 'publishable_key');
 			$site->addScriptVar('stripePublishableKey', $stripe_publishable);
 		}
@@ -42,7 +41,6 @@
 			$stripe_opts_cur = $site->getOption('stripe');
 			$stripe_opts = get_item($stripe_opts_cur, $order->sandbox ? 'sandbox' : 'production');
 			$stripe_opts = get_item($stripe_opts, $order->currency);
-			print_a($stripe_opts);
 			$stripe_secret = get_item($stripe_opts, 'secret_key');
 
 			$form = PaymentsForms::getById($order->getMeta('form'));

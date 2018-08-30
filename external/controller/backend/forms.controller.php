@@ -148,11 +148,9 @@ function checkImageAction(){
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
 				->addRule('Slug', $slug)
-				->addRule('Products', $products)
 				->addRule('Language', $language)
 				->addRule('Processor', $processor)
 				->addRule('Currency', $currency)
-				->addRule('Total', $total)
 				->validate();
 				//check the result
 				if(! $validator->isValid() ){
