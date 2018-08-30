@@ -39,7 +39,8 @@
 	$site->registerScript('loadzilla', 'loadzilla-lite.js', false);
 	$site->registerScript('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js', true);
 	$site->registerScript('underscore', 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js', true);
-	$site->registerScript('class', 'class.js', false, array('jquery', 'underscore'));
+	$site->registerScript('clipboard', 'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js', true);
+	$site->registerScript('class', 'class.js', false, array('jquery', 'underscore', 'clipboard'));
 	$site->registerScript('site', 'site.js', false, array('class', 'jquery.valid4tor','plugins'));
 	$site->registerScript('backend', 'backend.js', false, array('class', 'jquery.valid4tor','plugins', 'loadzilla'));
 
