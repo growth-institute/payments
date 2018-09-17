@@ -76,7 +76,7 @@ Backend = Class.extend({
 			$('#lbconekta').addClass('hide');
 			$('#conekta').attr('disabled', true);
 			$('#PayPal, #Stripe').attr('disabled', false);
-			
+
 
 		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
 
@@ -90,81 +90,72 @@ Backend = Class.extend({
 			$('#lbpaypal, #lbconekta').addClass('hide');
 			$('#conekta, #PayPal').attr('disabled', true);
 			$('#Stripe').attr('disabled', false);
-			
+
 		}
 	},
-		// Validation ranges
-		ranges: function(rangesresponse) {
-			var ranges = [];
-			froms = $('.repeater-item input[name^="from"]').map(function () { return this.value; }).get();
-			tos = $('.repeater-item input[name="to[]"').map(function () { return this.value; }).get();
-			ranges = $.map(froms, function(from, i) {
-				return {from:parseInt(froms[i]), to:parseInt(tos[i])};
-			  });
-			rr = rangesresponse;
+	// Validation ranges
+	ranges: function(rangesresponse) {
+
+		var ranges = [];
+		froms = $('.repeater-item input[name^="from"]').map(function () { return this.value; }).get();
+		tos = $('.repeater-item input[name="to[]"').map(function () { return this.value; }).get();
+		ranges = $.map(froms, function(from, i) {
+			return {from:parseInt(froms[i]), to:parseInt(tos[i])};
+		});
+		rr = rangesresponse;
 
 		function compare(a,b) {
+
 			var x = a.from;
 			var y = b.from;
 			if (x < y) {return -1;}
 			if (x > y) {return 1;}
 			return 0;
-		  }
-		  function validateRanges(ranges, rr) {
-					
-					for(var i = 0; i < ranges.length; i++) {
-						//console.log(ranges[i].from + ' ' + ranges[i].to);
-						if(i == 0 && ranges[i].from < 2) {
-						alert('1 is an invalid range of discount');
-						rangesresponse = false;
-						// console.log('rrn1'+ rr);
-						return rangesresponse;
-						}
-					
-						if(ranges[i].from >= ranges[i].to) {
-							//   console.log(ranges[i].from + ranges[i].to);
-							   console.log(ranges[i]);
-							alert('Range from is bigger than a Range to');
-							rangesresponse = false;
-							// console.log('rrn2'+ rr);	
-							return rangesresponse;
-						}
-						if(i+1 < ranges.length) {
-							//alert(ranges[i].to + ' ' + (ranges[i+1].from));
-							if(ranges[i].to != ranges[i+1].from-1) {
-							alert('Missing numbers in the discounts ranges');
-							rangesresponse = false;
-							// console.log('rrn3'+ rangesresponse);
-							return rangesresponse;
-							}
-						}
-						else{
-							rangesresponse = true;
-							// console.log('rrp1'+ rr);
-							return rangesresponse;
-						}
-						//console.log('rr2'+ rr);
+		}
 
-					}
-					
+		function validateRanges(ranges, rr) {
+
+			for(var i = 0; i < ranges.length; i++) {
+				if(i == 0 && ranges[i].from < 2) {
+					$.alert('1 is an invalid range of discount');
+					rangesresponse = false;
+					return rangesresponse;
 				}
-				
-				ranges.sort(compare);
-				validateRanges(ranges, rr);
-				if (rangesresponse == true ) {
-					rangesresponse = true;
-					return true;
+
+				if(ranges[i].from >= ranges[i].to) {
+					$.alert('Range from is bigger than a Range to');
+					rangesresponse = false;
+					return rangesresponse;
+				}
+				if(i+1 < ranges.length) {
+					if(ranges[i].to != ranges[i+1].from-1) {
+						$.alert('Missing numbers in the discounts ranges');
+						rangesresponse = false;
+						return rangesresponse;
+					}
 				}
 				else{
-					rangesresponse = false;
-					return false;
-				}
 
-		},
+					rangesresponse = true;
+					return rangesresponse;
+				}
+			}
+		}
+
+		ranges.sort(compare);
+		validateRanges(ranges, rr);
+		if (rangesresponse == true ) {
+			rangesresponse = true;
+			return true;
+		} else {
+			rangesresponse = false;
+			return false;
+		}
+	},
 	copy: function(params) {
 		new ClipboardJS('.js-copy');
 		console.log($('#slugroot').val());
-	},	
+	},
 	onDomReady: function($) {
 		var obj = this;
 
@@ -184,30 +175,32 @@ Backend = Class.extend({
 		});
 		/**Clipboard function */
 		$('.span').css("display","none");
-		
+
 		$('.js-copy').on('click', function(e) {
 			obj.copy();
 			$('.span' ).css( "display", "inline" ).fadeOut( 2000 );
 		});
+
 		//set default 0 value in ocurrency
 		if ($('#ocurrency').val() == '') {
 			$('#ocurrency').val('0');
 		}
+
 		//call function show periodicty
 		$('.js-toggle-periodicity').on('change', function() {
 			var el = $(this),
 				val = el.val();
 			obj.showPeriodicity(val);
 		}).trigger('change');
-		$('#conekta').change( function(){
+
+		$('#conekta').change(function() {
 			console.log('checked');
 			var el = $(this),
 				val = el.val();
 			obj.showInstallments(val);
+		}).trigger('change');
 
-		});
-		$('#PayPal, #Stripe' ).change( function(){
-			console.log('checked2');
+		$('#PayPal, #Stripe').change( function(){
 			var el = $(this),
 				val = '';
 			obj.showInstallments(val);
