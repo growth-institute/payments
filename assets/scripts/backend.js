@@ -50,7 +50,7 @@ Backend = Class.extend({
 			url: constants.siteUrl + 'backend/forms/slug-check',
 			async: false,
 			type: 'POST',
-			data: { name: name },
+			data: { name: name, id: constants.mvc.id },
 			success: function(response) {
 				slugCheck = response;
 				console.log(slugCheck);
@@ -208,9 +208,31 @@ Backend = Class.extend({
 
 		$('#name').on('blur', function(e){
 			var el = $(this),
-				name = el.val();
-			console.log(name);
-			if (name) {
+				name = el.val(),
+				slug = $('#slug').val()
+			if (name && !slug) {
+				var slug = obj.checkSlug(name);
+				var clean = true;
+
+				while(slug.result == 'error') {
+					name = name + '-1';
+					clean = false;
+					slug = obj.checkSlug(name);
+				}
+				if(!clean) {
+
+					$.alert('The slug of the form already exists. Creating a new one.');
+				}
+
+				$('#slug').val(slug.data.slug);
+			}
+		});
+
+		$('#slug').on('blur', function(e){
+			var el = $(this),
+				name = el.val(),
+				slug = $('#slug').val()
+			if (slug) {
 				var slug = obj.checkSlug(name);
 				var clean = true;
 
