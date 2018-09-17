@@ -115,7 +115,7 @@ Backend = Class.extend({
 					for(var i = 0; i < ranges.length; i++) {
 						//console.log(ranges[i].from + ' ' + ranges[i].to);
 						if(i == 0 && ranges[i].from < 2) {
-						alert('1 is an invalid range of discount');
+						$.alert('1 is an invalid range of discount');
 						rangesresponse = false;
 						// console.log('rrn1'+ rr);
 						return rangesresponse;
@@ -124,7 +124,7 @@ Backend = Class.extend({
 						if(ranges[i].from >= ranges[i].to) {
 							//   console.log(ranges[i].from + ranges[i].to);
 							   console.log(ranges[i]);
-							alert('Range from is bigger than a Range to');
+							$.alert('Range from is bigger than a Range to');
 							rangesresponse = false;
 							// console.log('rrn2'+ rr);	
 							return rangesresponse;
@@ -132,7 +132,7 @@ Backend = Class.extend({
 						if(i+1 < ranges.length) {
 							//alert(ranges[i].to + ' ' + (ranges[i+1].from));
 							if(ranges[i].to != ranges[i+1].from-1) {
-							alert('Missing numbers in the discounts ranges');
+							$.alert('Missing numbers in the discounts ranges');
 							rangesresponse = false;
 							// console.log('rrn3'+ rangesresponse);
 							return rangesresponse;
