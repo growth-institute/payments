@@ -13,12 +13,13 @@ class BackendFormsController extends Controller{
 		$response = $site->getResponse();
 		$dbh = $site->getDatabase();
 		$name = $request->post('name');
+		$id = $request->post('id');
 		$slug = $site->toAscii($name);
 		$data = [];
 		$data['name'] = $name;
 		$result = 'error';
 		$message = 'This slug already exist';
-		$form = PaymentsForms::getBySlug($slug);
+		$form = PaymentsForms::getBySlug($slug, ['conditions' => " AND id != {$id}"]);
 		if (!$form) {
 			$message = 'Need a new slug';
 			$result = 'success';
