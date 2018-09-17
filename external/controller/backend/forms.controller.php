@@ -122,7 +122,7 @@ function checkImageAction(){
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
-				$growsumo = $request->post('growsumo'); 
+				$growsumo = $request->post('growsumo');
 				$gdpr = $request->post('gdpr');
 				$product_image = $request->post('product_image');
 				$periodicity = $request->post('periodicity');
@@ -182,7 +182,7 @@ function checkImageAction(){
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
-				$form->updateMeta('growsumo', $growsumo); 
+				$form->updateMeta('growsumo', $growsumo);
 				$form->updateMeta('gdpr', $gdpr);
 				$form->updateMeta('product_image', $product_image);
 				$form->updateMeta('periodicity', $periodicity);
@@ -260,7 +260,6 @@ function checkImageAction(){
 				$validator = Validator::newInstance()
 				->addRule('name',$name)
 				->addRule('slug',$slug)
-				->addRule('products',$products)
 				->addRule('language',$language)
 				->addRule('processor',$processor)
 				->addRule('currency',$currency)
