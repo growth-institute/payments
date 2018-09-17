@@ -108,9 +108,9 @@
 										<div class="form-group">
 											<label for="language" class="control-label">Language</label>
 											<select class="form-control input-block" name="language" data-validate="required">
-												<option disabled selected>Select</option>
-												<option name="English"  value="en" <?php echo( $item && $item->language == 'en' ? 'selected="selected"' :  ''); ?> >English</option>
-												<option name="Spanish"  value="es" <?php echo( $item && $item->language == 'es' ? 'selected="selected"' : ''); ?> >Spanish</option>
+												<option value="">Select</option>
+												<option value="en" <?php echo( $item && $item->language == 'en' ? 'selected="selected"' :  ''); ?> >English</option>
+												<option value="es" <?php echo( $item && $item->language == 'es' ? 'selected="selected"' : ''); ?> >Spanish</option>
 											</select>
 										</div>
 									</div>	
@@ -118,9 +118,9 @@
 										<div class="form-group">
 										<label for="currency" class="control-label">Currency</label>
 										<select class="form-control input-block" name="currency" id="currency" data-validate="required">
-											<option selected disabled>Select</option>
-											<option name="usd" value="usd" <?php echo($item && $item->currency == 'usd' ? 'selected="selected"' : ''); ?> >USD</option>
-											<option name="mxn" value="mxn" <?php echo($item && $item->currency == 'mxn' ? 'selected="selected"' : ''); ?> >MXN</option>
+											<option value="">Select</option>
+											<option value="usd" <?php echo($item && $item->currency == 'usd' ? 'selected="selected"' : ''); ?> >USD</option>
+											<option value="mxn" <?php echo($item && $item->currency == 'mxn' ? 'selected="selected"' : ''); ?> >MXN</option>
 										</select>
 										</div>
 									</div>
@@ -136,7 +136,7 @@
 									<div class="form-group">
 										<label for="periodicity"  id="label_periodicity" class="control-label">Periodicity</label>
 										<select name="periodicity" id="periodicity" class="form-control input-block">
-											<option disabled selected>Select</option>
+											<option value="">Select</option>
 
 											<option name="monthly" value="1" <?php echo( $item && $item->getMeta('periodicity') == '1' ? 'selected="selected"' : ''); ?> >Monthly</option>
 											<option name="3_months" value="3" <?php echo( $item && $item->getMeta('periodicity') == '3' ? 'selected="slected"' : ''); ?> >Every 3 months</option>
@@ -199,10 +199,10 @@
 									<?php
 										$installments = isset($item) ? $item->getMeta('installments') : false;
 									?>
-									<label class="control-label"><input class="form-control" type="checkbox" name="installments[]" value="3" <?php echo( $installments && in_array('3',$installments) ? 'checked="checked"' : ''); ?> > 3 months</label>
-									<label class="control-label"><input type="checkbox" class="form-control" name="installments[]" value="6" <?php echo( $installments && in_array('6', $installments) ? 'checked="checked"' : ''); ?> > 6 months</label>
-									<label class="control-label"><input type="checkbox" class="form-control" name="installments[]" value="9" <?php echo( $installments && in_array('9', $installments) ? 'checked="checked"' : ''); ?>> 9 months</label>
-									<label class="control-label"><input type="checkbox" class="form-control" name="installments[]" value="12" <?php echo( $installments && in_array('12', $installments) ? 'checked="checked"' : '' );?> > 12 months</label>
+									<label class="control-label"><input disabled type="checkbox" class="form-control" name="installments[]" value="3" data-validate="checked" data-param="at least 1" <?php echo( $installments && in_array('3',$installments) ? 'checked="checked"' : ''); ?> > 3 months</label>
+									<label class="control-label"><input disabled type="checkbox" class="form-control" name="installments[]" value="6" <?php echo( $installments && in_array('6', $installments) ? 'checked="checked"' : ''); ?> > 6 months</label>
+									<label class="control-label"><input disabled type="checkbox" class="form-control" name="installments[]" value="9" <?php echo( $installments && in_array('9', $installments) ? 'checked="checked"' : ''); ?>> 9 months</label>
+									<label class="control-label"><input disabled type="checkbox" class="form-control" name="installments[]" value="12" <?php echo( $installments && in_array('12', $installments) ? 'checked="checked"' : '' );?> > 12 months</label>
 								</div>
 							</div>
 					</div>

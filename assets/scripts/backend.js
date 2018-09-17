@@ -17,6 +17,10 @@ Backend = Class.extend({
 			]
 		});
 
+		$.extend(true,$.validate.defaults, {
+			fieldsSelector: '[data-validate]:not(:disabled)'
+		});
+
 		jQuery(document).ready(function($) {
 			obj.onDomReady($);
 		});
@@ -31,8 +35,10 @@ Backend = Class.extend({
 	showInstallments: function(val) {
 		if ($('#conekta').is(':checked')) {
 			$('#tab-installment').removeClass('hide');
+			$('#tab-three input').prop('disabled', false);
 		} else {
 			$('#tab-installment').addClass('hide');
+			$('#tab-three input').prop('disabled', true);
 		}
 	},
 	checkSlug: function(name){
@@ -255,8 +261,12 @@ Backend = Class.extend({
 				callbacks: {
 					fail: function(field, type, message) {
 						/* An item has failed validation, field has the jQuery object, type is the rule and message its description */
-						console.log('form invalid');
+						// console.log('form invalid');
+						var container = field.closest('.tab').attr('id'),
+							tab = $('.tab-list a[href=\'#' + container + '\']');
+						console.log(field);
 						field.closest('.form-group').addClass('has-error');
+						tab.trigger('click');
 						field.on('focus', function() {
 							field.closest('.form-group').removeClass('has-error');
 							field.off('focus');
