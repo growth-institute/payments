@@ -17,6 +17,7 @@
 			#
 			$data = [];
 			$data['form'] = $form;
+			$data['order'] = $order;
 			$data['paypal_account'] = $paypal_account;
 			$data['paypal_url'] = $paypal_url;
 			$site->partial('payments/form-paypal', $data);

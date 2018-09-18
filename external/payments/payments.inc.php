@@ -33,7 +33,7 @@
 			global $site;
 			#
 			$site->enqueueStyle('site');
-			$site->enqueueStyle('plugins'); 
+			$site->enqueueStyle('plugins');
 			$site->enqueueScript('site');
 		}
 
@@ -136,28 +136,51 @@
 						$site->render('payments/page-form', $data);
 					break;
 					case 'post':
-						$first_name = $request->post('first_name');
-						$last_name = $request->post('last_name');
-						$email = $request->post('email');
-						$phone = $request->post('phone');
-						$company = $request->post('company');
-						$quantity = $request->post('quantity', 1);
-						$gdpr = $request->post('gdpr');
-						$growsumo = $request->post('growsumo');
-						$partner_key = $request->post('growsumo-partner-key');
-						//$customer_key = $request->post('growsumo-customer-key');
+						$first_name = 	$request->post('first_name');
+						$last_name = 	$request->post('last_name');
+						$email = 		$request->post('email');
+						$phone = 		$request->post('phone');
+						$company = 		$request->post('company');
+						$quantity = 	$request->post('quantity', 1);
+						$gdpr = 		$request->post('gdpr');
+						$growsumo = 	$request->post('growsumo');
+						$partner_key = 	$request->post('growsumo-partner-key');
 						#
 						$order = PaymentsOrders::getByUid($site->payments->cart->uid);
 						if($order) {
 
-							$order->total = $form->total*$quantity;
+							//Updating total based on rules
+
+							$final_total = $form->total*$quantity;
+							$quantity_info = '';
+
+							if($discounts = get_item($form->metas, 'discounts')) {
+
+								foreach($discounts as $discount) {
+
+									if($quantity >= $discount['from'] && $quantity <= $discount['to']) {
+
+										if($discount['type'] == 'percentage') {
+
+											$final_total = $final_total*(1-($discount['val']/100));
+											$quantity_info = "{$quantity} ({$discount['val']}% off)";
+										}
+									}
+								}
+							}
+
+							$order->total = $final_total;
 							$order->save();
+
 							$order->updateMeta('first_name', $first_name);
 							$order->updateMeta('last_name', $last_name);
 							$order->updateMeta('email', $email);
 							$order->updateMeta('phone', $phone);
 							$order->updateMeta('company', $company);
 							$order->updateMeta('quantity', $quantity);
+
+							if($quantity_info) $order->updateMeta('quantity_info', $quantity_info);
+
 							$order->updateMeta('gdpr', $gdpr);
 							$order->updateMeta('growsumo', $growsumo);
 							$order->updateMeta('growsumo-partner-key', $partner_key);
@@ -180,19 +203,17 @@
 			$request = $site->getRequest();
 			$response = $site->getResponse();
 			Payments::init();
-			#
+			# Getting the Order based on the UID
 			$req_order = get_item($args, 1);
-			$order = PaymentsOrders::getByUid($req_order);
 			$params = [];
 			$params['pdoargs'] = ['fetch_metas'];
+			$order = PaymentsOrders::getByUid($req_order, $params);
 			$form = PaymentsForms::getById($order->getMeta('form', 0), $params);
-			#
-			if ($form->language == 'es') {
-							$i18n->setLocale('es');
-						}else if ($form->language == 'en') {
-							$i18n->setLocale('en');
-			}
+			# Setting Language
+			$i18n->setLocale($form->language);
+			# If we have order and form
 			if ($order && $form) {
+				# If the form is pending of payment
 				if ($order->payment_status == 'Pending') {
 					switch ($request->type) {
 						case 'get':
@@ -210,6 +231,8 @@
 							$data = [];
 							$data['form'] = $form;
 							$data['order'] = $order;
+
+							ksort($processors);
 							$data['processors'] = $processors;
 
 							$site->setPageTitle( $site->getPageTitle($form->name) );

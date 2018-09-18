@@ -9,6 +9,7 @@
 		function getMarkup($form, $order) {
 			global $site;
 			$data = [];
+			$data['order'] = $order;
 			$data['metadata'] = $order->getMetas();
 
 			$data['form'] = $form;
