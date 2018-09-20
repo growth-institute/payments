@@ -21,6 +21,11 @@ Site = Class.extend({
 			obj.onDomReady($);
 		});
 	},
+	numberWithCommas: function(x) {
+		var parts = x.toString().split(".");
+		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		return parts.join(".");
+	},
 	onDomReady: function($) {
 		var obj = this;
 
@@ -29,7 +34,10 @@ Site = Class.extend({
 				val = el.val(),
 				extraSeats = typeof quantity.extraSeatPrice !== 'undefined',
 				discounts = typeof quantity.discounts !== 'undefined',
-				discount = 1;
+				discount = 1,
+				totalPrice = 0;
+
+			console.log(val);
 
 			if(val) {
 				if(discounts) {
@@ -39,21 +47,32 @@ Site = Class.extend({
 							if(quantity.discounts[x].type == 'percentage') {
 
 								discount = 1-(quantity.discounts[x].val/100);
-								$('.js-total-price').html('$' + ((quantity.price*val)*discount).toFixed(2) + ' ' + quantity.currency);
+								totalPrice = obj.numberWithCommas(((quantity.price*val)*discount).toFixed(2));
+
+								$('.js-total-price').html('$' + totalPrice + ' ' + quantity.currency);
 								$('.js-quantity').html(val + ' (' + (quantity.discounts[x].val) + '% off)');
 							}
 						}
 					}
 
 					if(discount == 1) {
-						$('.js-total-price').html('$' + (quantity.price*val).toFixed(2) + ' ' + quantity.currency);
+
+						totalPrice = obj.numberWithCommas((quantity.price*val).toFixed(2));
+
+						$('.js-total-price').html('$' + totalPrice + ' ' + quantity.currency);
 						$('.js-quantity').html(val);
 					}
 				}
 				else if(extraSeats) {
-					$('.js-total-price').html('$' + (parseFloat(quantity.price)+(quantity.extraSeatPrice*parseFloat(val))).toFixed(2) + ' ' + quantity.currency);
+
+					totalPrice = obj.numberWithCommas((parseFloat(quantity.price)+(quantity.extraSeatPrice*parseFloat(val))).toFixed(2));
+
+					$('.js-total-price').html('$' + totalPrice + ' ' + quantity.currency);
 					$('.js-quantity').html(val + ' × $' + parseFloat(quantity.extraSeatPrice).toFixed(2) + ' ' + quantity.currency);
 				} else {
+
+					totalPrice = obj.numberWithCommas((quantity.price*val).toFixed(2));
+
 					$('.js-total-price').html('$' + (quantity.price*val).toFixed(2) + ' ' + quantity.currency);
 					$('.js-quantity').html(val);
 				}
@@ -67,7 +86,7 @@ Site = Class.extend({
 				}
 				el.trigger('change');
 			}
-		});
+		}).trigger('blur');
 
 		// Tabs Miniplugin
 		$('.tab-list li a').on('click', function(e) {
