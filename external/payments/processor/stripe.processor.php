@@ -110,7 +110,7 @@
 								'id' => $form->slug,
 								//'object' => 'plan',
 								'active' => true,
-								'amount' => $charge_amount*100,
+								'amount' => ($charge_amount*100)/$form->getMeta('ocurrency'),
 								'currency' => $form->currency,
 								'interval' => 'month',
 								'interval_count' => $form->getMeta('periodicity'),
