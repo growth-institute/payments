@@ -57,7 +57,7 @@
 					$site->render('backend/managers/page-new');
 				break;
 				case 'post':
-					
+
 					$login = $request->post('login');
 					$email = $request->post('email');
 					$nicename = $request->post('nicename');
@@ -96,12 +96,14 @@
 					$site->render('backend/managers/page-edit', $data);
 				break;
 				case 'post':
+					$login = $request->post('login');
 					$status = $request->post('status');
 					$email = $request->post('email');
 					$nicename = $request->post('nicename');
 					$password = $request->post('password');
 					$confirm = $request->post('confirm');
 					#
+					$manager->login = $login;
 					$manager->status = $status;
 					$manager->email = $email;
 					$manager->nicename = $nicename;
