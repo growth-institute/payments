@@ -10,7 +10,7 @@
 			global $site;
 			$data = [];
 			$data['form'] = $form;
-			print_a($data);
+			//print_a($data);
 			$site->partial('payments/form-conekta', $data);
 		}
 
@@ -109,6 +109,8 @@
 				}
 			} catch (Exception $e) {
 				log_to_file($e->getMessage(), 'conekta_error');
+				log_to_file($e->getCode(), 'conekta_error');
+				log_to_file($e->getLine(), 'conekta_error');
 				$site->redirectTo( $site->urlTo('/error') ); // TBD: Show proper error page
 			}
 		}

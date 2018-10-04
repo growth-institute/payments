@@ -187,7 +187,7 @@
 				}
 			} catch (Exception $e) {
 				log_to_file($e->getMessage(), 'stripe_error');
-				log_to_file( $e->getCode(), 'stripe_error');
+				log_to_file($e->getCode(), 'stripe_error');
 				//log_to_file($e->getTraceAsString(), 'stripe_error');
 				$site->redirectTo( $site->urlTo('/error') ); // TBD: Show proper error page
 			}
