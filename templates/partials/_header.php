@@ -1,3 +1,7 @@
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KTS6H8"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
 	<header class="site-header">
 		<div class="action-bar">
 			<div class="row row-md row-collapse">
