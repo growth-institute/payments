@@ -109,15 +109,5 @@
 	} else {
 		$site->manager = null;
 	}
-	//Saving user with the next code
-	/*$user = Managers::getByLogin('user');
-		if (!$user) {
-		$user = new Manager();
-		$user->login = 'user';
-		$user->email = 'miguel@thewebchi.mp';
-		$user->password = 'megamanx';
-		$user->type = 'Administrador';
-		$user->nicename = 'Administrador';
-		$user->save();
-	}*/
+
 ?>

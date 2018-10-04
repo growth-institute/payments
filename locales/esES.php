@@ -1,4 +1,4 @@
-<?php 
+<?php
 	return [
 		//Student details
 		'globals.button' => 'Continuar',
@@ -15,14 +15,14 @@
 		'form.label.email' => 'Correo Electrónico',
 		'form.label.phone' => 'Teléfono',
 		'form.label.company' => 'Empresa',
-		'form.label.extra-seat' => 'for each extra seat',
+		'form.label.extra-seat' => 'por cada asiento extra',
 		'form.span.gdpr' => 'Por favor haga click aquí si gusta que lo contactemos vía correo electrónico o texto con información acerca de bienes y servicios ofrecidos por nosotros que puedan ser de su interés. Procesaremos su información de acuerdo a nuestro <a href="https://www.growthinstitute.com/privacy-notice/" target="_blank">Aviso de Privacidad</a>. Puede retirar su aprobación de procesamiento en cualquier momento, simplemente enviando un correo a <a href="mailto:support@growthinstitute.com">support@growthinstitute.com</a>.',
 
 		//Sidebar
 		'sidebar.product.h3-price' => 'Precio',
 		'sidebar.product.h3-total' => 'Total',
 		'sidebar.product.h3-extra-seat' => 'Extra seats',
-		'sidebar.product.h3-quantity' => 'Quantity',
+		'sidebar.product.h3-quantity' => 'Cantidad',
 
 		//Form Payments Stripe
 		'form.stripe.card-element' => 'Tarjeta de crédito o débito',
@@ -30,7 +30,7 @@
 
 		//Form Payments Paypal
 		'form.paypal.label-title' => 'Pague de manera segura y fácil con PayPal',
-		'form.paypal.label-extra-seat' => 'for each extra seat',
+		'form.paypal.label-extra-seat' => 'Por cada asiento extra',
 		'form.paypal.button' => 'Paga ahora con PayPal',
 
 		//Features Section

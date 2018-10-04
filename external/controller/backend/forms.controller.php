@@ -40,7 +40,7 @@ function checkImageAction(){
 		$ext = pathinfo($product_image['name'], PATHINFO_EXTENSION);
 		if (!in_array($ext, $allowed)) {
 			$message = "This file extension is not allowed";
-		}else{
+		} else {
 			$attachment = Attachments::upload($product_image);
 			if ($attachment) {
 				$attachment_image = Attachments::getById($attachment->id);

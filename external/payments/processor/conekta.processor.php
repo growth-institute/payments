@@ -10,7 +10,7 @@
 			global $site;
 			$data = [];
 			$data['form'] = $form;
-			//print_a($data);
+			print_a($data);
 			$site->partial('payments/form-conekta', $data);
 		}
 
