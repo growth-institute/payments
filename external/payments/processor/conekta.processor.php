@@ -48,6 +48,13 @@
 			$email = $order->getMeta('email');
 			$phone = $order->getMeta('phone');
 			#
+			$payment_method = array(
+				'type' => 'default'
+			);
+
+			if ($installments) {
+				$payment_method['monthly_installments'] = $installments;
+			}
 			try {
 				#
 				$options = [
@@ -78,13 +85,10 @@
 					],
 					'charges' => [
 						[
-							'payment_method' => ['type' => 'default']
+							'payment_method' => $payment_method
 						]
 					]
 				];
-				if ($installments) {
-					$options['monthly_installments'] = $installments;
-				}
 				$charge = \Conekta\Order::create($options);
 				#
 				if ($charge && $charge->payment_status == 'paid') {
