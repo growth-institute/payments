@@ -63,7 +63,7 @@
 			</div>
 			<div class="form-group">
 				<p><?php $site->urlTo('/', true); ?> <input type="text" id="slug" name="slug" data-validate="required" class="form-control"  value="<?php sanitized_print($item ? $item->slug : ''); ?>">
-				<input type="text" id="slugroot" name="slugroot"  class="linkcopy"  value="<?php $site->urlTo('/', true); sanitized_print($item ? $item->slug : ''); ?>">
+				<input type="text" id="slugroot" name="slugroot"  class="linkcopy"  value="<?php $site->urlTo("/form/", true); sanitized_print($item ? $item->slug : ''); ?>">
 				<?php
 					$slug = $item ? $item->slug : false;
 						if($slug):
@@ -113,7 +113,7 @@
 												<option value="es" <?php echo( $item && $item->language == 'es' ? 'selected="selected"' : ''); ?> >Spanish</option>
 											</select>
 										</div>
-									</div>	
+									</div>
 									<div class="col col-6 col-md-6">
 										<div class="form-group">
 										<label for="currency" class="control-label">Currency</label>
