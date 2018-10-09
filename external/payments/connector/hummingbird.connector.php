@@ -15,6 +15,7 @@
 			$params['email'] = $order->metas->email;
 			$params['processor'] = $order->payment_processor;
 			$params['sku'] = json_decode($form->products);
+			$params['locale'] = $form->language;
 			$lang = $form->language;
 
 			$curly = Curly::newInstance(false)
