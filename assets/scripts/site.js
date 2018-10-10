@@ -36,7 +36,6 @@ Site = Class.extend({
 				discounts = typeof quantity.discounts !== 'undefined',
 				discount = 1,
 				totalPrice = 0;
-
 			console.log(val);
 
 			if(val) {
@@ -61,12 +60,12 @@ Site = Class.extend({
 
 						$('.js-total-price').html('$' + totalPrice + ' ' + quantity.currency);
 						$('.js-quantity').html(val);
+
 					}
 				}
 				else if(extraSeats) {
 
 					totalPrice = obj.numberWithCommas((parseFloat(quantity.price)+(quantity.extraSeatPrice*parseFloat(val))).toFixed(2));
-
 					$('.js-total-price').html('$' + totalPrice + ' ' + quantity.currency);
 					$('.js-quantity').html(val + ' × $' + parseFloat(quantity.extraSeatPrice).toFixed(2) + ' ' + quantity.currency);
 				} else {

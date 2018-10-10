@@ -85,12 +85,12 @@
 							$quantity_script['price'] = $form->total;
 							$quantity_script['currency'] = strtoupper($form->currency);
 
-							if($form->getMeta('extra_seats_price')) {
+							if($form->getMeta('discounts')) {
 								$quantity_script['discounts'] = $form->getMeta('discounts');
 							} elseif($form->getMeta('extra_seats_price')) {
 								$quantity_script['extraSeatPrice'] = $form->getMeta('extra_seats_price');
 							}
-
+							print_a($quantity_script);
 							$site->addScriptVar( 'quantity', $quantity_script );
 						}
 
