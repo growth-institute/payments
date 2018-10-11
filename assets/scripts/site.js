@@ -66,6 +66,7 @@ Site = Class.extend({
 				else if(extraSeats) {
 
 					totalPrice = obj.numberWithCommas((parseFloat(quantity.price)+(quantity.extraSeatPrice*parseFloat(val))).toFixed(2));
+
 					$('.js-total-price').html('$' + totalPrice + ' ' + quantity.currency);
 					$('.js-quantity').html(val + ' × $' + parseFloat(quantity.extraSeatPrice).toFixed(2) + ' ' + quantity.currency);
 				} else {

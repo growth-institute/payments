@@ -151,6 +151,7 @@
 							//Updating total based on rules
 
 							$final_total = $form->total*$quantity;
+							$total_seats = $form->total;
 							$quantity_info = '';
 
 							if($discounts = get_item($form->metas, 'discounts')) {
@@ -167,6 +168,9 @@
 									}
 								}
 							}
+							if ($seats = get_item($form->metas, 'extra_seats_price')) {
+								$final_total = $total_seats+($seats*$quantity);
+							}
 
 							$order->total = $final_total;
 							$order->save();
@@ -177,7 +181,6 @@
 							$order->updateMeta('phone', $phone);
 							$order->updateMeta('company', $company);
 							$order->updateMeta('quantity', $quantity);
-							$order->updateMeta('extra_seats', $extra_seats);
 
 							if($quantity_info) $order->updateMeta('quantity_info', $quantity_info);
 
