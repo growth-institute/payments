@@ -46,7 +46,7 @@
 						</div>
 						<div class="form-group">
 							<label for="total" class="control-label">Total</label>
-							<input type="number" name="total" id="total" class="form-control input-block" data-validate="required" value="<?php sanitized_print($item ? $item->total : ''); ?>">
+							<input type="text" name="total" id="total" class="form-control input-block" data-validate="required" value="<?php sanitized_print($item ? $item->total : ''); ?>">
 						</div>
 					</div>
 					<div class="text-right">

@@ -166,10 +166,7 @@
 										}
 									}
 								}
-							} /*else if (get_item($form->metas, 'extra_seats_price')) {
-								$quantity_info = "{$quantity}";
-							}*/
-
+							}
 
 							$order->total = $final_total;
 							$order->save();
@@ -188,7 +185,6 @@
 							$order->updateMeta('growsumo', $growsumo);
 							$order->updateMeta('growsumo-partner-key', $partner_key);
 							$order->updateMeta('growsumo-customer-key', $email);
-							print_a($order->uid);
 						}
 						#
 						$site->redirectTo( $site->urlTo("/review/{$order->uid}") );
