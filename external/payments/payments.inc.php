@@ -90,7 +90,6 @@
 							} elseif($form->getMeta('extra_seats_price')) {
 								$quantity_script['extraSeatPrice'] = $form->getMeta('extra_seats_price');
 							}
-							print_a($quantity_script);
 							$site->addScriptVar( 'quantity', $quantity_script );
 						}
 
@@ -167,7 +166,10 @@
 										}
 									}
 								}
-							}
+							} /*else if (get_item($form->metas, 'extra_seats_price')) {
+								$quantity_info = "{$quantity}";
+							}*/
+
 
 							$order->total = $final_total;
 							$order->save();
@@ -178,6 +180,7 @@
 							$order->updateMeta('phone', $phone);
 							$order->updateMeta('company', $company);
 							$order->updateMeta('quantity', $quantity);
+							$order->updateMeta('extra_seats', $extra_seats);
 
 							if($quantity_info) $order->updateMeta('quantity_info', $quantity_info);
 
@@ -185,6 +188,7 @@
 							$order->updateMeta('growsumo', $growsumo);
 							$order->updateMeta('growsumo-partner-key', $partner_key);
 							$order->updateMeta('growsumo-customer-key', $email);
+							print_a($order->uid);
 						}
 						#
 						$site->redirectTo( $site->urlTo("/review/{$order->uid}") );
