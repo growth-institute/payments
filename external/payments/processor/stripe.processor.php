@@ -121,11 +121,26 @@
 							$plan = \Stripe\Plan::create($options_plan);
 						}
 					}
+					try {
+						$coupon = \Stripe\Coupon::retrieve($form->slug);
+					} catch (\Stripe\Error\InvalidRequest $e) {
+						if(! isset($coupon) ) {
+							$options_coupon = array(
+								'percent_off' => $form->getMeta('discount_amount'),
+								'currency' => $form->currency,
+								'duration' => 'once',
+								'id' => $form->slug
+							);
+							$coupon = \Stripe\Coupon::create($options_coupon);
+						}
+					}
 					$options_subscription = array(
 						//'quantity' => $quantity,
 						'items' => [['plan' => $plan->id]],
-						'customer' => $customer->id
+						'customer' => $customer->id,
+						'coupon' => $coupon->id
 					);
+					log_to_file(print_r($options_subscription,1), 'subscription');
 					$subscription = \Stripe\Subscription::create($options_subscription);
 					if ($subscription && $subscription->status == 'active') {
 						$order->payment_status = 'Paid';
