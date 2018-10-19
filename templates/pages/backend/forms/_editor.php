@@ -133,8 +133,8 @@
 									</select>
 								</div>
 								<div class="form-group">
-									<label for="discount_subscription" class="control-label">Discount Subscription</label>
-									<input type="text" name="discount_subscription" id="discount_subscription" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('discount_subscription') : ''); ?>">
+									<label for="coupon_subscription" class="control-label">Coupon Subscription (%off)</label>
+									<input type="text" name="coupon_subscription" id="coupon_subscription" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('coupon_subscription') : ''); ?>">
 								</div>
 								<div class="hide" id="periodicity-group">
 									<div class="form-group">

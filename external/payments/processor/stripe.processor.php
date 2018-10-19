@@ -126,7 +126,7 @@
 					} catch (\Stripe\Error\InvalidRequest $e) {
 						if(! isset($coupon) ) {
 							$options_coupon = array(
-								'percent_off' => $form->getMeta('discount_amount'),
+								'percent_off' => $form->getMeta('coupon_subscription'),
 								'currency' => $form->currency,
 								'duration' => 'once',
 								'id' => $form->slug
