@@ -133,7 +133,8 @@
 									</select>
 								</div>
 								<div class="form-group">
-									<label for="coupon_subscription" class="control-label">Coupon Subscription (%off)</label>
+									<label for="coupon_subscription" class="control-label">Coupon Subscription (applies only in the first month
+ %off)</label>
 									<input type="text" name="coupon_subscription" id="coupon_subscription" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('coupon_subscription') : ''); ?>">
 								</div>
 								<div class="hide" id="periodicity-group">
