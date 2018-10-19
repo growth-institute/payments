@@ -132,12 +132,11 @@
 										<option value="Yes" <?php echo( $item && $item->subscription == 'Yes' ? 'selected="selected"' :  ''); ?>>Yes</option>
 									</select>
 								</div>
-								<div class="form-group">
-									<label for="coupon_subscription" class="control-label">Coupon Subscription (applies only in the first month
- %off)</label>
-									<input type="text" name="coupon_subscription" id="coupon_subscription" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('coupon_subscription') : ''); ?>">
-								</div>
 								<div class="hide" id="periodicity-group">
+									<div class="form-group">
+										<label for="coupon_subscription" class="control-label">Coupon Subscription (applies only in the first month %off)</label>
+										<input type="text" name="coupon_subscription" id="coupon_subscription" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('coupon_subscription') : ''); ?>">
+									</div>
 									<div class="form-group">
 										<label for="periodicity"  id="label_periodicity" class="control-label">Periodicity</label>
 										<select name="periodicity" id="periodicity" class="form-control input-block">
