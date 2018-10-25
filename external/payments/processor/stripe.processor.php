@@ -121,17 +121,19 @@
 							$plan = \Stripe\Plan::create($options_plan);
 						}
 					}
-					try {
-						$coupon = \Stripe\Coupon::retrieve($form->slug);
-					} catch (\Stripe\Error\InvalidRequest $e) {
-						if(! isset($coupon) ) {
-							$options_coupon = array(
-								'percent_off' => $form->getMeta('coupon_subscription'),
-								'currency' => $form->currency,
-								'duration' => 'once',
-								'id' => $form->slug
-							);
-							$coupon = \Stripe\Coupon::create($options_coupon);
+					if($form->getMeta('coupon_subscription')){
+						try {
+							$coupon = \Stripe\Coupon::retrieve($form->slug);
+						} catch (\Stripe\Error\InvalidRequest $e) {
+							if(! isset($coupon) ) {
+								$options_coupon = array(
+									'percent_off' => $form->getMeta('coupon_subscription'),
+									'currency' => $form->currency,
+									'duration' => 'once',
+									'id' => $form->slug
+								);
+								$coupon = \Stripe\Coupon::create($options_coupon);
+							}
 						}
 					}
 					$options_subscription = array(
