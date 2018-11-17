@@ -63,6 +63,7 @@
 				<div class="form-actions text-right">
 					<button type="submit" class="button button-primary"><?php $i18n->translate('globals.button'); ?></button>
 				</div>
+				<img class="center" src="https://learn.growthinstitute.com/images/payment-form/credit-cards.jpg" alt="payment">
 			</form>
 		</div>
 	</div>
