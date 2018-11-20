@@ -50,5 +50,4 @@
 	<div class="form-actions">
 		<button type="submit" class="button button-primary">Procesar pago</button>
 	</div>
-	<img class="center" src="https://learn.growthinstitute.com/images/payment-form/credit-cards.jpg" alt="payment">
 </form>

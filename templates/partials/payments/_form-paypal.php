@@ -18,5 +18,4 @@
 		<div class="form-actions">
 			<button type="submit" class="button button-primary"><?php $i18n->translate('form.paypal.button'); ?></button>
 		</div>
-		<img class="center" src="https://learn.growthinstitute.com/images/payment-form/credit-cards.jpg" alt="payment">
 	</form>

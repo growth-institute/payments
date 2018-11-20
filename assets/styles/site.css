@@ -2347,7 +2347,7 @@ section {
   text-align: center;
 }
 .payment-navigation .menu .menu-item:first-child {
-  background: url('http://localhost/payments/assets/images/payment-form/menu-divider.jpg') right center no-repeat;
+  background: url('http://localhost/payment/assets/images/payment-form/menu-divider.jpg') right center no-repeat;
 }
 .payment-navigation .menu .menu-item a {
   display: block;
@@ -2482,9 +2482,4 @@ section {
 }
 .total-extra-seats {
   display: none;
-}
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
 }
