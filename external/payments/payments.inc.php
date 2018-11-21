@@ -167,8 +167,7 @@
 										}
 									}
 								}
-							}
-							if ($seats = get_item($form->metas, 'extra_seats_price')) {
+							} else if ($seats = get_item($form->metas, 'extra_seats_price')) {
 								$final_total = $total_seats+($seats*$quantity);
 							}
 
