@@ -1,4 +1,4 @@
-<?php 
+<?php
 	return [
 		//Student details
 		'globals.button' => 'Continue',
@@ -13,7 +13,7 @@
 		'form.label.first-name' => 'First name',
 		'form.label.last-name' => 'Last name',
 		'form.label.email' => 'Email',
-		'form.label.phone' => 'Phone (10 digits)',
+		'form.label.phone' => 'Phone',
 		'form.label.company' => 'Company',
 		'form.label.extra-seat' => 'for each extra seat',
 		'form.span.gdpr' => 'Please click here if you would like us to contact you with information about Growth Institute which is related to your request. We will process your data in accordance with our <a href="https://www.growthinstitute.com/privacy-notice/" target="_blank">Privacy Notice</a>, and you can withdraw this consent at any time by emailing us at <a href="mailto:support@growthinstitute.com">support@growthinstitute.com</a>.',

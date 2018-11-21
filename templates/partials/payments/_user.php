@@ -30,7 +30,7 @@
 						<div class="col col-md-6">
 							<div class="form-group">
 								<label for="phone" class="control-label"><?php $i18n->translate('form.label.phone'); ?> <span class="required">*</span></label>
-								<input type="tel" name="phone" id="phone" class="form-control input-block" pattern="^\d{10}$" value="<?php sanitized_print($order ? $order->getMeta('phone') : ''); ?>" data-validate="required">
+								<input type="tel" name="phone" id="phone" class="form-control input-block" value="<?php sanitized_print($order ? $order->getMeta('phone') : ''); ?>" data-validate="required">
 							</div>
 						</div>
 					</div>
