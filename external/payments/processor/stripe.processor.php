@@ -97,7 +97,8 @@
 
 			} catch (Exception $e) {
 				log_to_file($e->getMessage(), 'stripe_error');
-				$site->redirectTo( $site->urlTo('/error') ); // TBD: Show proper error page
+				log_to_file($e->getCode(), 'stripe_error');
+				$site->redirectTo( $site->urlTo("/review/{$order->uid}?error=".$e->getMessage()) ); // TBD: Show proper error page
 			}
 
 			try {
@@ -205,8 +206,7 @@
 			} catch (Exception $e) {
 				log_to_file($e->getMessage(), 'stripe_error');
 				log_to_file($e->getCode(), 'stripe_error');
-				//log_to_file($e->getTraceAsString(), 'stripe_error');
-				$site->redirectTo( $site->urlTo('/error') ); // TBD: Show proper error page
+				$site->redirectTo( $site->urlTo("/review/{$order->uid}?error=".$e->getMessage()) ); // TBD: Show proper error page
 			}
 		}
 	}

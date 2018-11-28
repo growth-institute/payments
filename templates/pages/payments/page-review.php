@@ -6,6 +6,9 @@
 			<nav class="payment-navigation">
 				<div class="inner boxfix-vert">
 					<div class="margins-horz">
+						<?php if(get_item($_GET, 'error')): ?>
+							<div class="message message-error"><strong><?php echo "Error: ".$_GET['error']; ?></strong></div>
+						<?php endif; ?>
 						<ul class="menu">
 							<li class="menu-item menu-item-info"><a href="#"><?php $i18n->translate('form.title.student'); ?></a></li>
 							<li class="menu-item menu-item-payment"><a href="#"  class="active"><?php $i18n->translate('form.title.menu-payment'); ?></a></li>
