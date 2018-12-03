@@ -15,7 +15,6 @@
 			$data['form'] = $form;
 			if(get_item($_GET, 'getdata')) print_a($data);
 			$site->partial('payments/form-stripe', $data);
-			echo $form->getMeta('ocurrency');
 		}
 
 		function includeDependencies($form, $order) {
