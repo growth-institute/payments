@@ -15,6 +15,7 @@
 			$data['form'] = $form;
 			if(get_item($_GET, 'getdata')) print_a($data);
 			$site->partial('payments/form-stripe', $data);
+			echo $form->getMeta('ocurrency');
 		}
 
 		function includeDependencies($form, $order) {
@@ -107,11 +108,17 @@
 						$plan = \Stripe\Plan::retrieve($form->slug);
 					} catch (\Stripe\Error\InvalidRequest $e) {
 						if (! isset($plan) ) {
+							if ($form->getMeta('ocurrency') == '0') {
+								$amount = $charge_amount*100;
+								echo $form->getMeta('ocurrency');
+							} else {
+								$amount = ($charge_amount*100)/$form->getMeta('ocurrency');
+							}
 							$options_plan = array(
 								'id' => $form->slug,
 								//'object' => 'plan',
 								'active' => true,
-								'amount' => ($charge_amount*100)/$form->getMeta('ocurrency'),
+								'amount' => $amount,
 								'currency' => $form->currency,
 								'interval' => 'month',
 								'interval_count' => $form->getMeta('periodicity'),
