@@ -27,6 +27,7 @@
 			$properties['lastname'] = $order->getMeta('last_name');
 			$properties['company'] = $order->getMeta('company');
 			$properties['phone'] = $order->getMeta('phone');
+			$properties['su_cart_abondonment'] = $order->payment_status == 'Pending';
 			$res = $hubspot->contactsUpsert($properties['email'], $properties);
 			# GDPR Implementation
 			if ($form->getMeta('gdpr')) {
@@ -37,7 +38,7 @@
 			}
 			# Create the deal
 			# Price, Product Name, SKU (If aplicable), Number of Installments (if applicable)
-			if ($res) {
+			if ($res && $order->payment_status != 'Pending') {
 				$properties = array();
 				$properties['dealname'] = "#{$order->id} {$concept} ({$skus})" . ($installments ? " - {$installments} Installments" : '');
 				$properties['dealstage'] = 'closedwon';

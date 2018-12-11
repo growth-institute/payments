@@ -130,7 +130,7 @@
 						$data = [];
 						$data['form'] = $form;
 						$data['order'] = $order;
-						//print_a($data);
+
 						$site->setPageTitle( $site->getPageTitle($form->name) );
 						$site->render('payments/page-form', $data);
 					break;
@@ -187,6 +187,8 @@
 							$order->updateMeta('growsumo', $growsumo);
 							$order->updateMeta('growsumo-partner-key', $partner_key);
 							$order->updateMeta('growsumo-customer-key', $email);
+							# Notify the abandonment payments system
+							$site->payments->notifyRegister($order);
 						}
 						#
 						$site->redirectTo( $site->urlTo("/review/{$order->uid}") );
@@ -344,6 +346,15 @@
 		}
 
 		function notifyProcessed($order) {
+			global $site;
+			if ($this->connectors) {
+				foreach ($this->connectors as $name => $instance) {
+					$instance->process($order);
+				}
+			}
+		}
+
+		function notifyRegister($order) {
 			global $site;
 			if ($this->connectors) {
 				foreach ($this->connectors as $name => $instance) {
