@@ -188,6 +188,7 @@
 							$order->updateMeta('growsumo-partner-key', $partner_key);
 							$order->updateMeta('growsumo-customer-key', $email);
 							# Notify the abandonment payments system
+							$site->payments->disableConnector('hummingbird');
 							$site->payments->notifyRegister($order);
 						}
 						#

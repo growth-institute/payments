@@ -122,13 +122,12 @@
 								'interval' => 'month',
 								'interval_count' => $form->getMeta('periodicity'),
 								//'created' => $form->created,
-								'metadata' => (array)$form->getMetas(),
 								'name' => $form->name
 							);
 							$plan = \Stripe\Plan::create($options_plan);
 						}
 					}
-					if($form->getMeta('coupon_subscription')){
+					if( $form->getMeta('coupon_subscription') ) {
 						try {
 							$coupon = \Stripe\Coupon::retrieve($form->slug);
 						} catch (\Stripe\Error\InvalidRequest $e) {
