@@ -115,7 +115,7 @@
 				log_to_file($e->getMessage(), 'conekta_error');
 				log_to_file($e->getCode(), 'conekta_error');
 				log_to_file($e->getLine(), 'conekta_error');
-				$site->redirectTo( $site->urlTo('/error') ); // TBD: Show proper error page
+				$site->redirectTo( $site->urlTo("/review/{$order->uid}?error=".$e->getMessage()) );// TBD: Show proper error page
 			}
 		}
 	}
