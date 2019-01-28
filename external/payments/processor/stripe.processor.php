@@ -111,7 +111,7 @@
 								$amount = $charge_amount*100;
 								echo $form->getMeta('ocurrency');
 							} else {
-								$amount = ($charge_amount*100)/$form->getMeta('ocurrency');
+								$amount = round(($charge_amount*100)/$form->getMeta('ocurrency'));
 							}
 							$options_plan = array(
 								'id' => $form->slug,
