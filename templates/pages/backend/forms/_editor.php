@@ -45,6 +45,10 @@
 							</select>
 						</div>
 						<div class="form-group">
+							<label for="quantity_value" class="control-label">Quantity Value</label>
+							<input type="text" name="quantity_value" id="quantity_value" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('quantity_value') : ''); ?>">
+						</div>
+						<div class="form-group">
 							<label for="total" class="control-label">Total</label>
 							<input type="text" name="total" id="total" class="form-control input-block" data-validate="required" value="<?php sanitized_print($item ? $item->total : ''); ?>">
 						</div>

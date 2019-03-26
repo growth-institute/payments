@@ -44,13 +44,18 @@
 					<?php endif; ?>
 					<?php if ($form->getMeta('quantity')): ?>
 						<div class="form-group">
+							<?php echo $form->getMeta('quantity_value');?>
 							<label for="quantity" class="control-label">
 								<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 'Extra seats' : 'Quantity'; ?>
 								<?php if($form->getMeta('extra_seats_price') && !$form->getMeta('discounts')): ?>
 									<small>(<?php echo '$' .  number_format($form->getMeta('extra_seats_price'), 2) ?> <?php $i18n->translate('form.label.extra-seat'); ?>)</small>
 								<?php endif; ?>
 							</label>
-							<input type="number" min="<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 0 : 1; ?>" name="quantity" id="quantity" value="<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 0 : 1; ?>" class="input-block form-control">
+							<?php
+								echo($form->getMeta('extra_seats_price'));
+							?>
+							<!-- <input type="number" min="<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 0 : 1; ?>" name="quantity" id="quantity" value="<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 0 : 1; ?>" class="input-block form-control"> -->
+							<input type="number" min="<?php sanitized_print($form->getMeta('quantity_value') ? $form->getMeta('quantity_value') : 1); ?>" name="quantity" id="quantity" value="<?php sanitized_print($form->getMeta('quantity_value') ? $form->getMeta('quantity_value') : 1); ?>" class="input-block form-control">
 						</div>
 					<?php endif; ?>
 					<?php if ($form->getMeta('gdpr')): ?>

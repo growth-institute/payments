@@ -119,6 +119,7 @@ function checkImageAction(){
 				$subscription = $request->post('subscription');
 				//MetaPost
 				$quantity = $request->post('quantity');
+				$quantity_value = $request->post('quantity_value');
 				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
@@ -180,6 +181,7 @@ function checkImageAction(){
 				$form->save();
 				//Saving metas to DB
 				$form->updateMeta('quantity', $quantity);
+				$form->updateMeta('quantity_value', $quantity_value);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
@@ -233,6 +235,7 @@ function checkImageAction(){
 				$subscription = $request->post('subscription');
 				//MetaPost
 				$quantity = $request->post('quantity');
+				$quantity_value = $request->post('quantity_value');
 				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
@@ -289,6 +292,7 @@ function checkImageAction(){
 				$form->save();
 				//Updating metas to DB
 				$form->updateMeta('quantity',$quantity);
+				$form->updateMeta('quantity_value',$quantity_value);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);

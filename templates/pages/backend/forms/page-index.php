@@ -52,7 +52,7 @@
 													<label for="currency" class="control-label">Currency</label>
 													<label><input type="checkbox" name="currency[]" id="currency" value="mxn" class="form-control" <?php echo($search_currency && in_array('mxn', $search_currency) ? 'checked="checked"' : ''); ?> >MXN</label>
 													<label><input type="checkbox" name="currency[]" id="currency" value="usd" class="form-control" <?php echo($search_currency && in_array('usd', $search_currency) ? 'checked="checked"' : ''); ?> >USD</label>
-												</div>	
+												</div>
 												<div class="form-group">
 													<label for="subscription" class="control-label">Has subscription?</label>
 													<select class="form-control input-block" name="subscription">
@@ -66,10 +66,10 @@
 												<?php if ($search): ?>
 													<a href="<?php $site->urlTo('/backend/forms', true); ?>" class="button button-link">Reset</a>
 												<?php endif; ?>
-												
+
 												<button type="submit" class="button button-primary">Apply filter</button>
 											</div>
-									
+
 										</form>
 									</div>
 								</div>
