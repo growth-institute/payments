@@ -10,7 +10,7 @@
 							<h2 class="bar-title">
 								<a href="<?php $site->urlTo("/backend/forms/", true); ?>" class="action-button button-back"><i class="fa fa-fw fa-angle-left"></i></a>
 								<span>Create Forms</span>
-								
+
 							</h2>
 						</div>
 					</div>
@@ -26,6 +26,7 @@
 						<?php
 							$data = array();
 							$data['item'] = null;
+							$data['hubspot_list'] = $hubspot_list;
 							$site->partial('backend/forms/editor', $data, $site->baseDir('/templates/pages'));
 						?>
 					</div>

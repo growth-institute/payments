@@ -32,7 +32,8 @@
 						<?php
 							$data = array();
 							$data['item'] = $item;
-							//print_a($data);
+							$data['hubspot_list'] = $hubspot_list;
+							//print_a($data['item']);
 							$site->partial('backend/forms/editor', $data, $site->baseDir('/templates/pages'));
 						?>
 					</div>

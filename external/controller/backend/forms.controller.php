@@ -101,9 +101,14 @@ function checkImageAction(){
 		switch ($request->type) {
 			case 'get':
 			//creating a variable to send data in url page-new
+				$credentials = array();
+				$credentials['api_key'] = 'a32d646d-4819-4c40-89a9-dd9140ae9fda';
+				$hubspot = HubSpot::newInstance($credentials);
+				$res = $hubspot->contactListsAll();
 				$notice = Flasher::notice();
 				$data = [];
 				$data['notice'] = $notice;
+				$data['hubspot_list'] = $res;
 				$site->render('backend/forms/page-new', $data);
 				break;
 			case 'post':
@@ -120,6 +125,7 @@ function checkImageAction(){
 				//MetaPost
 				$quantity = $request->post('quantity');
 				$quantity_value = $request->post('quantity_value');
+				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
@@ -182,6 +188,7 @@ function checkImageAction(){
 				//Saving metas to DB
 				$form->updateMeta('quantity', $quantity);
 				$form->updateMeta('quantity_value', $quantity_value);
+				$form->updateMeta('id_list', $id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
@@ -216,10 +223,15 @@ function checkImageAction(){
 		switch($request->type){
 			case 'get':
 			//create an object Flasher to send massage with url
+				$credentials = array();
+				$credentials['api_key'] = 'a32d646d-4819-4c40-89a9-dd9140ae9fda';
+				$hubspot = HubSpot::newInstance($credentials);
+				$res = $hubspot->contactListsAll();
 				$notice = Flasher::notice();
 				$data = [];
 				$data['item'] = $form;
 				$data['notice'] = $notice;
+				$data['hubspot_list'] = $res;
 				$site->render('backend/forms/page-edit', $data);
 			break;
 			case 'post':
@@ -236,6 +248,7 @@ function checkImageAction(){
 				//MetaPost
 				$quantity = $request->post('quantity');
 				$quantity_value = $request->post('quantity_value');
+				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
@@ -293,6 +306,7 @@ function checkImageAction(){
 				//Updating metas to DB
 				$form->updateMeta('quantity',$quantity);
 				$form->updateMeta('quantity_value',$quantity_value);
+				$form->updateMeta('id_list',$id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);

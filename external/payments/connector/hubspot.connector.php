@@ -29,6 +29,9 @@
 			$properties['phone'] = $order->getMeta('phone');
 			$properties['su_cart_abondonment'] = $order->payment_status == 'Pending';
 			$res = $hubspot->contactsUpsert($properties['email'], $properties);
+			$vid = $res && isset($res->vid) ? $res->vid : false;
+			$list_id = $form->getMeta('id_list');
+
 			# GDPR Implementation
 			if ($form->getMeta('gdpr')) {
 				$properties = [];
@@ -51,6 +54,11 @@
 				$associations = array();
 				$associations['associatedVids'] = array($res->vid);
 				$res = $hubspot->dealsCreate($properties, $associations);
+			}
+
+			if($list_id && $vid) {
+
+				$res = $hubspot->contactListsAddContact($list_id, $vid);
 			}
 		}
 	}
