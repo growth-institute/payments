@@ -454,7 +454,7 @@
 			return $ret;
 		}
 
-		function contactListsAll($offset = '', $count = 60) {
+		function contactListsAll($offset = '', $count = 20) {
 			$ret = false;
 			#
 			$endpoint = "{$this->api_url}/contacts/v1/lists";

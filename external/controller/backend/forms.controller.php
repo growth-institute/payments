@@ -101,14 +101,14 @@ function checkImageAction(){
 		switch ($request->type) {
 			case 'get':
 			//creating a variable to send data in url page-new
-				$credentials = array();
+				/*$credentials = array();
 				$credentials['api_key'] = 'a32d646d-4819-4c40-89a9-dd9140ae9fda';
 				$hubspot = HubSpot::newInstance($credentials);
-				$res = $hubspot->contactListsAll();
+				$res = $hubspot->contactListsAll();*/
 				$notice = Flasher::notice();
 				$data = [];
 				$data['notice'] = $notice;
-				$data['hubspot_list'] = $res;
+				//$data['hubspot_list'] = $res;
 				$site->render('backend/forms/page-new', $data);
 				break;
 			case 'post':
@@ -223,15 +223,15 @@ function checkImageAction(){
 		switch($request->type){
 			case 'get':
 			//create an object Flasher to send massage with url
-				$credentials = array();
+				/*$credentials = array();
 				$credentials['api_key'] = 'a32d646d-4819-4c40-89a9-dd9140ae9fda';
 				$hubspot = HubSpot::newInstance($credentials);
-				$res = $hubspot->contactListsAll();
+				$res = $hubspot->contactListsAll();*/
 				$notice = Flasher::notice();
 				$data = [];
 				$data['item'] = $form;
 				$data['notice'] = $notice;
-				$data['hubspot_list'] = $res;
+				//$data['hubspot_list'] = $res;
 				$site->render('backend/forms/page-edit', $data);
 			break;
 			case 'post':

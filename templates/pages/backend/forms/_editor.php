@@ -186,8 +186,9 @@
 									<input type="url" name="thank_you_page" id="thank_you_page" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('thank_you_page') : '');?>">
 								</div>
 								<div class="form-group">
-									<label for="contact_list" class="control-label">Hubspot List</label>
-									<select class="form-control input-block" name="id_list" id="id_list"  data-value="<?php sanitized_print($item ? $item->getMeta('id_list') : ''); ?>">
+									<label for="contact_list" class="control-label">ID Hubspot List</label>
+									<input type="text" class="form-control" name="id_list" id="id_list" value="<?php sanitized_print($item ? $item->getMeta('id_list') : ''); ?>">
+									<!-- <select class="form-control input-block" name="id_list" id="id_list"  data-value="<?php sanitized_print($item ? $item->getMeta('id_list') : ''); ?>">
 										<option value="">Select</option>
 										<?php
 										if($hubspot_list):
@@ -198,7 +199,7 @@
 											endforeach;
 										endif;
 									?>
-									</select>
+									</select> -->
 								</div>
 								<div class="form-group">
 									<label for="product_description" class="control-label">Product Description</label>
