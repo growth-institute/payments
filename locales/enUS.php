@@ -35,7 +35,7 @@
 
 		//Features Section
 		'features.h2-information' => 'YEARS OF EXPERIENCE IN BUSINESS EDUCATION',
-		'features.p-information' => 'Weve already helped +40,000 mid-market organizations scale up rapidly, and methodically and without drama*',
+		'features.p-information' => 'We\'ve already helped +40,000 mid-market organizations scale up rapidly, and methodically and without drama*',
 		'features.h2-privacy' => 'PRIVACY &amp; SECURITY',
 		'features.p-privacy' => 'All personal information you submit is encrypted and secure.',
 		'features.h2-support' => '24/7 SUPPORT',
