@@ -38,6 +38,8 @@
 			#
 			$token = get_item($fields, 'stripeToken');
 			$quantity = get_item($fields, 'quantity', 0);
+			print_a($fields);
+			exit;
 			#
 			$stripe_opts_cur = $site->getOption('stripe');
 			$stripe_opts = get_item($stripe_opts_cur, $order->sandbox ? 'sandbox' : 'production');

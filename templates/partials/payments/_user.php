@@ -45,9 +45,13 @@
 					<?php if ($form->getMeta('quantity')): ?>
 						<div class="form-group">
 							<label for="quantity" class="control-label">
-								<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 'Extra seats' : 'Quantity'; ?>
+								<?php if ($form->getMeta('quantity_label')): ?>
+									<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') && $form->getMeta('quantity_label') ? 'Extra seats' : $form->getMeta('quantity_label'); ?>
+								<?php else: ?>
+									<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts')? 'Extra seats' : 'Quantity' ?>
+								<?php endif; ?>
 								<?php if($form->getMeta('extra_seats_price') && !$form->getMeta('discounts')): ?>
-									<small>(<?php echo '$' .  number_format($form->getMeta('extra_seats_price'), 2) ?> <?php $i18n->translate('form.label.extra-seat'); ?>)</small>
+									<small>(<?php echo '$' .  number_format($form->getMeta('extra_seats_price'), 2) ?> <?php sanitized_print($form->getMeta('quantity_label') ); ?>)</small>
 								<?php endif; ?>
 							</label>
 							<?php
