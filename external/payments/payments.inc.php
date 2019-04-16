@@ -14,6 +14,7 @@
 	include $site->baseDir('/external/payments/processor/conekta.processor.php');
 	include $site->baseDir('/external/payments/processor/paypal.processor.php');
 	include $site->baseDir('/external/payments/processor/stripe.processor.php');
+	include $site->baseDir('/external/payments/processor/payu.processor.php');
 
 	class Payments {
 
@@ -84,6 +85,7 @@
 
 							$quantity_script = [];
 							$quantity_script['price'] = $form->total;
+							$quantity_script['usd'] = $form->getMeta('price_usd');
 							$quantity_script['currency'] = strtoupper($form->currency);
 
 							if($form->getMeta('discounts')) {
@@ -175,6 +177,10 @@
 							$order->total = $final_total;
 							$order->save();
 
+							if ($form->getMeta('price_usd')) {
+								$total_usd = $form->getMeta('price_usd') * $quantity;
+								$order->updateMeta('total_usd', $total_usd);
+							}
 							$order->updateMeta('first_name', $first_name);
 							$order->updateMeta('last_name', $last_name);
 							$order->updateMeta('email', $email);

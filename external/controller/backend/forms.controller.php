@@ -125,6 +125,8 @@ function checkImageAction(){
 				//MetaPost
 				$quantity = $request->post('quantity');
 				$quantity_value = $request->post('quantity_value');
+				$quantity_label = $request->post('quantity_label');
+				$price_usd = $request->post('price_usd');
 				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
@@ -188,6 +190,8 @@ function checkImageAction(){
 				//Saving metas to DB
 				$form->updateMeta('quantity', $quantity);
 				$form->updateMeta('quantity_value', $quantity_value);
+				$form->updateMeta('quantity_label', $quantity_label);
+				$form->updateMeta('price_usd', $price_usd);
 				$form->updateMeta('id_list', $id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);
@@ -248,6 +252,8 @@ function checkImageAction(){
 				//MetaPost
 				$quantity = $request->post('quantity');
 				$quantity_value = $request->post('quantity_value');
+				$quantity_label = $request->post('quantity_label');
+				$price_usd = $request->post('price_usd');
 				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
@@ -306,6 +312,8 @@ function checkImageAction(){
 				//Updating metas to DB
 				$form->updateMeta('quantity',$quantity);
 				$form->updateMeta('quantity_value',$quantity_value);
+				$form->updateMeta('quantity_label',$quantity_label);
+				$form->updateMeta('price_usd', $price_usd);
 				$form->updateMeta('id_list',$id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);

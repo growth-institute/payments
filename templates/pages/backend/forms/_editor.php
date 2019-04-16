@@ -49,6 +49,10 @@
 							<input type="text" name="quantity_value" id="quantity_value" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('quantity_value') : ''); ?>">
 						</div>
 						<div class="form-group">
+							<label for="price_usd" class="control-label">Price USD</label>
+							<input type="text" name="price_usd" id="price_usd" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('price_usd') : ''); ?>">
+						</div>
+						<div class="form-group">
 							<label for="total" class="control-label">Total</label>
 							<input type="text" name="total" id="total" class="form-control input-block" data-validate="required" value="<?php sanitized_print($item ? $item->total : ''); ?>">
 						</div>
@@ -165,6 +169,7 @@
 									<label id="lbstripe"class="hide"><input type="checkbox" name="processor[]" id="Stripe" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control ">Stripe</label>
 									<label id="lbconekta"class="hide"><input type="checkbox" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control ">Conekta</label>
 									<label id="lbpaypal"class="hide"><input type="checkbox" name="processor[]" id="PayPal" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control ">PayPal</label>
+									<label id="lbpayu"class="hide"><input type="checkbox" name="processor[]" id="Payu" value="Payu" <?php echo( $obj && in_array('Payu', $obj) ? 'checked="checked"' : ''); ?> class="form-control ">Payu</label>
 								</div>
 							</div>
 					</div>
@@ -200,6 +205,10 @@
 										endif;
 									?>
 									</select> -->
+								</div>
+								<div class="form-group">
+									<label for="quantity_label" class="control-label">Quantity Label</label>
+									<input name="quantity_label" id="quantity_label"  class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('quantity_label') : '');?>" >
 								</div>
 								<div class="form-group">
 									<label for="product_description" class="control-label">Product Description</label>
