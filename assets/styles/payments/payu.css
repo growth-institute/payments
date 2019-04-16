@@ -1,0 +1,56 @@
+/* .form-row-payu {
+
+	overflow: hidden;
+	padding:8px;
+	float:left;
+} */
+.label-payu{font-family:amplesoft;color:#A6C307;font-size:12px;display:block;padding-bottom:3px;text-transform:capitalize;}
+#card-payu{padding:0px 20px 20px 20px;}
+#mylistID{float:right;width:80px;margin-left:10px;margin-top:-48px;font-family:arial;font-size:10px;}
+.input-payu{border:#7b7b7b 1px solid;}
+div.clear {
+	clear:both;
+}
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
+/* .cvc{width:120px;
+ } */
+
+.input-payu{padding:5px 0px 5px 0px;border:#a4a4a4 1px solid;}
+.clearfix {
+	display: inline-block;
+}
+/* html[xmlns] .clearfix {
+	display: block;
+}
+* html .clearfix {
+	height: 1%;
+}
+
+.expiracion{
+  width:130px;float:left;
+
+}
+
+.card{
+	width:200px;float:left;
+
+}
+
+.first_row{width:350px;
+}
+
+.documento{width:200px;float:left;} */
+
+.title-payu{margin-left:40px;color:#A6C307;background:url('http://developers.payulatam.com/images/icon/token-icon.png') no-repeat left;padding-left:120px;padding-top:0px;margin-bottom:5px;font-family:amplesoft;}
+
+.caja{border:solid 1px #bbb;background:#f7f7f7;border-radius:5px;width:400px;margin:30px auto 0px auto;}
+
+.button-payu{background:url('http://developers.payulatam.com/images/botones_js/GenerarTokenJS(Es).png') no-repeat;height:100px;width:250px;border:none;margin-left:20px;margin-top:20px;cursor:pointer;background-size: 150px auto;}
