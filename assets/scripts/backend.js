@@ -67,28 +67,28 @@ Backend = Class.extend({
 		if ($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
 
 			$('#lbstripe').removeClass('hide');
-			$('#conekta, #PayPal').attr('disabled', true);
+			$('#conekta, #PayPal, #Payu').attr('disabled', true);
 			$('#lbpaypal').addClass('hide');
 
 		} else if($('#currency').val() == 'usd' && $('#subscription').val() == '' ) {
 
 			$('#lbpaypal, #lbstripe').removeClass('hide');
 			$('#lbconekta').addClass('hide');
-			$('#conekta').attr('disabled', true);
+			$('#conekta, #Payu').attr('disabled', true);
 			$('#PayPal, #Stripe').attr('disabled', false);
 
 
 		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
 
-			$('#lbconekta, #lbpaypal, #lbstripe').removeClass('hide');
-			$('#conekta, #PayPal, #Stripe').attr('disabled', false);
+			$('#lbconekta, #lbpaypal, #lbstripe, #lbpayu').removeClass('hide');
+			$('#conekta, #PayPal, #Stripe, #Payu').attr('disabled', false);
 
 
 		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == 'Yes' ) {
 
 			$('#lbstripe').removeClass('hide');
-			$('#lbpaypal, #lbconekta').addClass('hide');
-			$('#conekta, #PayPal').attr('disabled', true);
+			$('#lbpaypal, #lbconekta, #lbpayu').addClass('hide');
+			$('#conekta, #PayPal, #Payu').attr('disabled', true);
 			$('#Stripe').attr('disabled', false);
 
 		}
