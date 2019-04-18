@@ -13,7 +13,7 @@
 		'form.label.first-name' => 'Nombre',
 		'form.label.last-name' => 'Apellido',
 		'form.label.email' => 'Correo Electrónico',
-		'form.label.phone' => 'Teléfono)',
+		'form.label.phone' => 'Teléfono',
 		'form.label.company' => 'Empresa',
 		'form.label.extra-seat' => 'por cada asiento extra',
 		'form.span.gdpr' => 'Por favor haga click aquí si gusta que lo contactemos vía correo electrónico o texto con información acerca de bienes y servicios ofrecidos por nosotros que puedan ser de su interés. Procesaremos su información de acuerdo a nuestro <a href="https://www.growthinstitute.com/privacy-notice/" target="_blank">Aviso de Privacidad</a>. Puede retirar su aprobación de procesamiento en cualquier momento, simplemente enviando un correo a <a href="mailto:support@growthinstitute.com">support@growthinstitute.com</a>.',

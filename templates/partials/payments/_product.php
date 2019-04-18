@@ -61,6 +61,19 @@
 						<?php endif; ?>
 					</div>
 				</div>
+
+				<div class="row row-md">
+					<div class="col col-4 ">
+						<img src="../assets/images/payment-form/advanced.png"  class="img-responsive">
+					</div>
+					<div class="col col-4 ">
+						<img src="../assets/images/payment-form/capital.png"  class="img-responsive">
+					</div>
+					<div class="col col-4 ">
+						<img src="../assets/images/payment-form/eologo.png"  class="img-responsive">
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
