@@ -71,5 +71,8 @@
 					<button type="submit" class="button button-primary"><?php $i18n->translate('globals.button'); ?></button>
 				</div>
 			</form>
+			<div class="form-actions text-center">
+					<img src="../assets/images/payment-form/credit-cards.jpg"  class="img-responsive">
+			</div>
 		</div>
 	</div>
