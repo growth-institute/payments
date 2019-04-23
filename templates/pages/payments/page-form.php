@@ -17,7 +17,9 @@
 				<div class="inner boxfix-vert">
 					<div class="margins-horz">
 						<div class="row row-md">
-							<div class="col col-8 col-md-8">
+							<div class="col col-2 col-md-2">
+							</div>
+							<div class="col col-4 col-md-4">
 								<div class="the-content">
 									<?php $site->partial('payments/user', ['form' => $form, 'order' => $order]); ?>
 								</div>
