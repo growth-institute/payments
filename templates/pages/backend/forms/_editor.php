@@ -70,7 +70,7 @@
 				<input placeholder="Add the name of your form" type="text" name="name" id="name" data-validate="required" class="form-control input-block form-control-xlarge" value="<?php sanitized_print($item ? $item->name : ''); ?>">
 			</div>
 			<div class="form-group">
-				<p><?php $site->urlTo('/', true); ?> <input type="text" id="slug" name="slug" data-validate="required" class="form-control"  value="<?php sanitized_print($item ? $item->slug : ''); ?>">
+				<p><?php $site->urlTo('/', true); ?> <input type="text" id="slug" name="slug" data-validate="required" class="form-control" size="30" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
 				<input type="text" id="slugroot" name="slugroot"  class="linkcopy"  value="<?php $site->urlTo("/form/", true); sanitized_print($item ? $item->slug : ''); ?>">
 				<?php
 					$slug = $item ? $item->slug : false;
