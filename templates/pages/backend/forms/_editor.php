@@ -178,9 +178,19 @@
 					<div class="metabox">
 						<div class="metabox-header">Additional Information</div>
 							<div class="metabox-body">
-								<div class="form-group">
-									<label for="extra_seats_price" class="control-label">Extra Seats Price</label>
-									<input type="text" name="extra_seats_price" id="extra_seats_price" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('extra_seats_price') : ''); ?>">
+								<div class="row row-md row-5">
+									<div class="col col-md-6">
+										<div class="form-group">
+											<label for="extra_seats_price" class="control-label">Extra Seats Price</label>
+											<input type="text" name="extra_seats_price" id="extra_seats_price" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('extra_seats_price') : ''); ?>">
+										</div>
+									</div>
+									<div class="col col-md-6">
+										<div class="form-group">
+											<label for="extra_seats_price_usd" class="control-label">Extra Seats Price USD</label>
+											<input type="text" name="extra_seats_price_usd" id="extra_seats_price_usd" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('extra_seats_price_usd') : ''); ?>">
+										</div>
+									</div>
 								</div>
 								<div class="form-group">
 									<label for="time_to_live" class="control-label">Time to live in days - leave empty for no limit</label>

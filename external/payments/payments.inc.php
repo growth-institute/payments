@@ -92,6 +92,9 @@
 								$quantity_script['discounts'] = $form->getMeta('discounts');
 							} elseif($form->getMeta('extra_seats_price')) {
 								$quantity_script['extraSeatPrice'] = $form->getMeta('extra_seats_price');
+								if ($form->getMeta('extra_seats_price_usd')) {
+									$quantity_script['extraSeatPriceUsd'] = $form->getMeta('extra_seats_price_usd');
+								}
 							}
 							$site->addScriptVar( 'quantity', $quantity_script );
 						}
@@ -178,8 +181,15 @@
 							$order->save();
 
 							if ($form->getMeta('price_usd')) {
-								$total_usd = $form->getMeta('price_usd') * $quantity;
-								$order->updateMeta('total_usd', $total_usd);
+								if ($form->getMeta('extra_seats_price_usd')) {
+									$price_usd = $form->getMeta('price_usd');
+									$seats_usd = $form->getMeta('extra_seats_price_usd');
+									$total_seats_usd = $price_usd + ($seats_usd * $quantity);
+									$order->updateMeta('total_usd', $total_seats_usd);
+								} else {
+									$total_usd = $form->getMeta('price_usd') * $quantity;
+									$order->updateMeta('total_usd', $total_usd);
+								}
 							}
 							$order->updateMeta('first_name', $first_name);
 							$order->updateMeta('last_name', $last_name);

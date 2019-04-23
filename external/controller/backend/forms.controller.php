@@ -129,6 +129,7 @@ function checkImageAction(){
 				$price_usd = $request->post('price_usd');
 				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
+				$extra_seats_price_usd = $request->post('extra_seats_price_usd');
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
@@ -194,6 +195,7 @@ function checkImageAction(){
 				$form->updateMeta('price_usd', $price_usd);
 				$form->updateMeta('id_list', $id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
+				$form->updateMeta('extra_seats_price_usd', $extra_seats_price_usd);
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
@@ -256,6 +258,7 @@ function checkImageAction(){
 				$price_usd = $request->post('price_usd');
 				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
+				$extra_seats_price_usd = $request->post('extra_seats_price_usd');
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
@@ -316,6 +319,7 @@ function checkImageAction(){
 				$form->updateMeta('price_usd', $price_usd);
 				$form->updateMeta('id_list',$id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
+				$form->updateMeta('extra_seats_price_usd', $extra_seats_price_usd);
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
