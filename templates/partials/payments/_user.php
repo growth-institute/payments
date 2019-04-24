@@ -61,22 +61,6 @@
 					<?php endif; ?>
 				</div>
 
-				<div class="payment-content">
-				<div class="inner boxfix-vert">
-					<div class="margins-horz">
-						<div class="row row-md">
-						<div class="col col-2 col-md-2">
-							</div>
-							<div class="col col-4 col-md-4">
-								<div class="the-content">
-									<?php $site->partial('payments/payment', ['form' => $form, 'order' => $order, 'processors' => $processors]); ?>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
 				<div class="product-total">
 
 				<?php if($form->getMeta('quantity')): ?>

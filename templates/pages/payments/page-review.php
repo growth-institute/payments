@@ -25,6 +25,7 @@
 							</div>
 							<div class="col col-4 col-md-4">
 								<div class="the-content">
+									<?php $site->partial('payments/user', ['form' => $form, 'order' => $order]); ?>
 									<?php $site->partial('payments/payment', ['form' => $form, 'order' => $order, 'processors' => $processors]); ?>
 								</div>
 							</div>
