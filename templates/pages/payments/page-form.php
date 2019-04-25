@@ -5,10 +5,10 @@
 			<nav class="payment-navigation">
 				<div class="inner boxfix-vert">
 					<div class="margins-horz">
-						<ul class="menu">
-							<li class="menu-item menu-item-info"><a href="#" class="active"><?php $i18n->translate('form.title.student'); ?></a></li>
-							<li class="menu-item menu-item-payment"><a href="#"><?php $i18n->translate('form.title.menu-payment'); ?></a></li>
-						</ul>
+					<div class="row row-md">
+						<div class="col col-12 menu">
+							<h3><?php $i18n->translate('form.title.general'); ?></h3>
+						</div>
 					</div>
 				</div>
 			</nav>
