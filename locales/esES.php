@@ -7,6 +7,7 @@
 		'section.message-error' => 'Modo de Pruebas',
 
 		//Form Main
+		'form.title.general' => 'Completa tus datos y finaliza tu inscripción',
 		'form.title.menu-payment' => 'Pago',
 		'form.title.student' => 'Detalles de estudiante',
 		'form.title.payment' => 'Detalles de pago',
