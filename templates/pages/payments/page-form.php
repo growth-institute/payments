@@ -31,9 +31,31 @@
 					</div>
 				</div>
 			</div>
-
+			<div class="inner boxfix-vert">
+				<div class="margins-horz">
+					<div class="row row-md">
+						<div class="col col-12">
+							<hr>
+						</div>
+					</div>
+					<div class="row row-md">
+						<div class="col col-2 col-md-2">
+						</div>
+						<div class="col col-2 col-md-2">
+							<div class="the-content">
+							<img src="../assets/images/payment-form/garantia100.png"  class="img-responsive">
+							</div>
+						</div>
+						<div class="col col-6 col-md-6">
+							<h3>La única MasterClass 100% Garantizada</h3><br>
+							<p>Si al tomar alguna de nuestras clases sientes que este programa no es para ti, no te ayuda en tus desafíos ni te brinda información que nunca antes habías escuchado, tienes 60 días para pedir tu reembolso. Nos escribes y recibirás tu inversión de regreso. Así de fácil. 100% GARANTIZADO. 100% SIN RIESGOS. </p>
+						</div>
+					</div>
+				</div>
+			</div>
 			<?php $this->partial('payments/features'); ?>
 		</section>
+	
 
 	<?php $this->partial('payments/footer'); ?>
 <?php $this->partial('payments/footer-html'); ?>

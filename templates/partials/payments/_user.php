@@ -115,7 +115,7 @@
 				</div>
 			</form>
 
-
+			<hr>
 			<div class="form-actions text-center">
 					<img src="../assets/images/payment-form/credit-cards.jpg"  class="img-responsive">
 			</div>
