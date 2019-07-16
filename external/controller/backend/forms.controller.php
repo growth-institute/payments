@@ -156,6 +156,19 @@ function checkImageAction(){
 						];
 					}
 				}
+				$code = $request->post('code');
+				$value_code = $request->post('value_code');
+				$type_code = $request->post('type_code');
+				$array_coupon = false;
+				if (is_array($code)) {
+					for ($i=0; $i < count($code); $i++) {
+						$array_coupon[] = [
+							'coupon' => $code[$i],
+							'value_code' => $value_code[$i],
+							'type_code' => $type_code[$i]
+						];
+					}
+				}
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -207,6 +220,8 @@ function checkImageAction(){
 				$form->updateMeta('installments', $installments);
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
+				$form->updateMeta('coupon_codes', $array_coupon);
+
 				//$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
@@ -282,6 +297,19 @@ function checkImageAction(){
 							'to' => $to[$x],
 							'val' => $val[$x],
 							'type' => $type[$x]
+						];
+					}
+				}
+				$code = $request->post('code');
+				$value_code = $request->post('value_code');
+				$type_code = $request->post('type_code');
+				$array_coupon = false;
+				if (is_array($code)) {
+					for ($i=0; $i < count($code); $i++) {
+						$array_coupon[] = [
+							'coupon' => $code[$i],
+							'value_code' => $value_code[$i],
+							'type_code' => $type_code[$i]
 						];
 					}
 				}

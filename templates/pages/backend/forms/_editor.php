@@ -251,7 +251,7 @@
 				</div>
 				<div class="tab" id="tab-four">
 					<div class="metabox">
-						<div class="metabox-header">Discounts</div>
+						<div class="metabox-header">Range Discounts</div>
 							<div class="metabox-body">
 								<div class="repeater repeater-discount" data-partial="#partial-repeater-discount">
 
@@ -344,6 +344,96 @@
 														<div class="form-group">
 															<label for="type_<%= number %>" class="control-label">Type</label>
 															<select name="type[]" data-validate="required" id="type_<%= number %>" class="form-control input-block">
+																<option value="percentage">Percentage</option>
+																<option value="amount">Fixed Amount</option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</script>
+								</div>
+
+								<div class="repeater repeater-coupon" data-partial="#partial-repeater-coupon">
+
+									<div class="repeater-items">
+
+											<?php
+												$coupon_codes = isset($item) ? $item->getMeta("coupon_codes") : false;
+												$counter = 1;
+												if ($coupon_codes) :
+													foreach ($coupon_codes as $coupon_code => $value) :
+											?>
+													<div class="repeater-item-coupon">
+														<div class="item-grip">
+															<div class="grip-number"><span><?php echo($counter++); ?></span></div>
+														</div>
+														<div class="item-actions">
+															<a href="#" class="item-action action-insert js-repeater-insert"><i class="fa fa-plus"></i></a>
+															<a href="#" class="item-action action-delete js-repeater-delete"><i class="fa fa-minus"></i></a>
+														</div>
+														<div class="item-controls">
+															<div class="row row-md row-5">
+																<div class="col col-md-4">
+																	<div class="form-group">
+																		<label for="range_<?php echo $counter; ?>" class="control-label">Code</label>
+																		<input type="text" data-validate="required" name="code[]" id="code_<?php echo $counter; ?>" class="form-control input-block" value="<?php echo $value['coupon']; ?>">
+																	</div>
+																</div>
+																<div class="col col-md-4">
+																	<div class="form-group">
+																		<label for="range_<?php echo $counter; ?>" class="control-label">Value</label>
+																		<input type="text" data-validate="required" name="value[]" id="value_<?php echo $counter; ?>" class="form-control input-block" value="<?php echo $value['value_code']; ?>">
+																	</div>
+																</div>
+																<div class="col col-md-4">
+																	<div class="form-group">
+																		<label for="type_code_<?php echo $counter; ?>" class="control-label">Type</label>
+																		<select name="type_code[]" data-validate="required" id="type_code_<?php echo $counter; ?>" class="form-control input-block">
+																			<option value="percentage_code" <?php echo $value['type_code'] == 'percentage' ? 'selected' : ''; ?>>Percentage</option>
+																			<option value="amount_amount" <?php echo $value['type_code'] == 'amount' ? 'selected' : ''; ?>>Fixed Amount</option>
+																		</select>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+											<?php
+													endforeach;
+												endif;
+											?>
+									</div>
+									<div class="repeater-actions">
+										<a href="#" class="button button-primary js-repeater-add">Add Coupon</a>
+									</div>
+									<script type="text/template" id="partial-repeater-coupon">
+										<div class="repeater-item-coupon">
+											<div class="item-grip">
+												<div class="grip-number"><span><%= number %></span></div>
+											</div>
+											<div class="item-actions">
+												<a href="#" class="item-action action-insert js-repeater-insert"><i class="fa fa-plus"></i></a>
+												<a href="#" class="item-action action-delete js-repeater-delete"><i class="fa fa-minus"></i></a>
+											</div>
+											<div class="item-controls">
+												<div class="row row-md row-5">
+													<div class="col col-md-4">
+														<div class="form-group">
+															<label for="range_<%= number %>" class="control-label">Code</label>
+															<input type="text" data-validate="required" name="code[]" id="code_<%= number %>" class="form-control input-block" value="">
+														</div>
+													</div>
+													<div class="col col-md-4">
+														<div class="form-group">
+															<label for="range_<%= number %>" class="control-label">Value</label>
+															<input type="text" data-validate="required" name="value_code[]" id="value_code<%= number %>" class="form-control input-block" value="">
+														</div>
+													</div>
+													<div class="col col-md-4">
+														<div class="form-group">
+															<label for="type_code_<%= number %>" class="control-label">Type</label>
+															<select name="type_code[]" data-validate="required" id="type_code_<%= number %>" class="form-control input-block">
 																<option value="percentage">Percentage</option>
 																<option value="amount">Fixed Amount</option>
 															</select>
