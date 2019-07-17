@@ -394,8 +394,8 @@
 																	<div class="form-group">
 																		<label for="type_code_<?php echo $counter_coupon; ?>" class="control-label">Type</label>
 																		<select name="type_code[]" data-validate="required" id="type_code_<?php echo $counter_coupon; ?>" class="form-control input-block">
-																			<option value="percentage_code" <?php echo $value['type_code'] == 'percentage' ? 'selected' : ''; ?>>Percentage</option>
-																			<option value="amount_amount" <?php echo $value['type_code'] == 'amount' ? 'selected' : ''; ?>>Fixed Amount</option>
+																			<option value="percentage" <?php echo $value['type_code'] == 'percentage' ? 'selected' : ''; ?>>Percentage</option>
+																			<option value="amount" <?php echo $value['type_code'] == 'amount' ? 'selected' : ''; ?>>Fixed Amount</option>
 																		</select>
 																	</div>
 																</div>

@@ -59,6 +59,13 @@
 							<div class="input-checkbox"><input type="checkbox" name="gdpr" id="gdpr" class="form-control" data-validate="required"> <span><?php $i18n->translate('form.span.gdpr'); ?></span></div>
 						</div>
 					<?php endif; ?>
+					<?php if ($form->getMeta('coupon_codes')): ?>
+						<div class="form-group">
+							<label class="control-label">Code</label>
+							<input type="text" name="code" id="code" placeholder="Code" class="form-control input-block" value="" data-validate="required">
+						</div>
+					<?php endif; ?>
+
 				</div>
 
 				<div class="product-total">

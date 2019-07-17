@@ -81,7 +81,7 @@
 							$site->registerScript('growsumo', 'payment-form-growsumo.js', false);
 							$site->enqueueScript('growsumo');
 						}
-
+						print_a($form->getMeta('coupon_codes'));
 						# Logic if we have quantity, since, with quantity, weird stuff happens
 						if($form->getMeta('quantity')) {
 
@@ -160,6 +160,7 @@
 						$gdpr = 		$request->post('gdpr');
 						$growsumo = 	$request->post('growsumo');
 						$partner_key = 	$request->post('growsumo-partner-key');
+						$code = 		$request->post('code');
 						#
 						$order = PaymentsOrders::getByUid($site->payments->cart->uid);
 						if($order) {
@@ -193,17 +194,45 @@
 							}
 
 							# Apply Coupon code discount
+							if($codes = $form->getMeta('coupon_codes')) {
+								$code_trim = str_replace(' ','',$code);
+								print_a($codes);
+								/*var_dump($code);
+								var_dump($code_trim);*/
+
+								foreach ($codes as $code) {
+
+									if ($code['coupon'] == $code_trim) {
+
+										if ($code['type_code'] == 'percentage') {
+
+											$final_total = $final_total*(1-($code['value_code']/100));
+											$quantity_info = "{$quantity} ({$code['value_code']}% off)(coupon code {$code['coupon']} with {$code['value_code']} % off)";
+											var_dump($final_total);
+											var_dump($quantity_info);
+										} else {
+
+											$final_total -= $code['value_code'];
+											$quantity_info = "{$quantity} (\${$code['value_code']}% off)(coupon code {$code['coupon']} with {$code['value_code']} % off)";
+										}
+
+									}
+								}
+							}
 
 							$order->total = $final_total;
 							$order->save();
 
 							if ($form->getMeta('price_usd')) {
+
 								if ($form->getMeta('extra_seats_price_usd')) {
+
 									$price_usd = $form->getMeta('price_usd');
 									$seats_usd = $form->getMeta('extra_seats_price_usd');
 									$total_seats_usd = $price_usd + ($seats_usd * $quantity);
 									$order->updateMeta('total_usd', $total_seats_usd);
 								} else {
+
 									$total_usd = $form->getMeta('price_usd') * $quantity;
 									$order->updateMeta('total_usd', $total_usd);
 								}
