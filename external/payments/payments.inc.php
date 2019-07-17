@@ -72,27 +72,37 @@
 				#
 				switch ($request->type) {
 					case 'get':
-						if ($form->language == 'es') {
-							$i18n->setLocale('es');
-						}else if ($form->language == 'en') {
-							$i18n->setLocale('en');
-						}
+
+						# Changing locale bases on form language
+						$i18n->setLocale($form->language);
+
+						# Inyecting Growsimo script
 						if($form->getMeta('growsumo')) {
 							$site->registerScript('growsumo', 'payment-form-growsumo.js', false);
 							$site->enqueueScript('growsumo');
 						}
+
+						# Logic if we have quantity, since, with quantity, weird stuff happens
 						if($form->getMeta('quantity')) {
 
+							#  Preparing variables for JS front functionality
 							$quantity_script = [];
 							$quantity_script['price'] = $form->total;
 							$quantity_script['usd'] = $form->getMeta('price_usd');
 							$quantity_script['currency'] = strtoupper($form->currency);
 
+							# If discounts are present, then we add the full discounts array to the variable
 							if($form->getMeta('discounts')) {
+
 								$quantity_script['discounts'] = $form->getMeta('discounts');
+
+							# Variables for extra seats
 							} elseif($form->getMeta('extra_seats_price')) {
+
 								$quantity_script['extraSeatPrice'] = $form->getMeta('extra_seats_price');
+
 								if ($form->getMeta('extra_seats_price_usd')) {
+
 									$quantity_script['extraSeatPriceUsd'] = $form->getMeta('extra_seats_price_usd');
 								}
 							}
@@ -156,10 +166,12 @@
 
 							//Updating total based on rules
 
+							# The final total should be the total times the quantity
 							$final_total = $form->total*$quantity;
 							$total_seats = $form->total;
 							$quantity_info = '';
 
+							# Applying discounts based on quantity (Range discounts)
 							if($discounts = get_item($form->metas, 'discounts')) {
 
 								foreach($discounts as $discount) {
@@ -170,12 +182,17 @@
 
 											$final_total = $final_total*(1-($discount['val']/100));
 											$quantity_info = "{$quantity} ({$discount['val']}% off)";
+										} else {
+											$final_total -= $discount['val'];
+											$quantity_info = "{$quantity} (\${$discount['val']} off)";
 										}
 									}
 								}
 							} else if ($seats = get_item($form->metas, 'extra_seats_price')) {
 								$final_total = $total_seats+($seats*$quantity);
 							}
+
+							# Apply Coupon code discount
 
 							$order->total = $final_total;
 							$order->save();
