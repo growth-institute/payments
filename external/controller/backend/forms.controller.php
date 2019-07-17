@@ -169,6 +169,7 @@ function checkImageAction(){
 						];
 					}
 				}
+
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -359,6 +360,7 @@ function checkImageAction(){
 				$form->updateMeta('installments', $installments);
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
+				$form->updateMeta('coupon_codes', $array_coupon);
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}
