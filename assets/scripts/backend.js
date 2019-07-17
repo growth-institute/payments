@@ -97,8 +97,8 @@ Backend = Class.extend({
 	ranges: function(rangesresponse) {
 
 		var ranges = [];
-		froms = $('.repeater-item input[name^="from"]').map(function () { return this.value; }).get();
-		tos = $('.repeater-item input[name="to[]"').map(function () { return this.value; }).get();
+		froms = $('#repeater-item-ranges input[name^="from"]').map(function () { return this.value; }).get();
+		tos = $('#repeater-item-ranges input[name="to[]"').map(function () { return this.value; }).get();
 		ranges = $.map(froms, function(from, i) {
 			return {from:parseInt(froms[i]), to:parseInt(tos[i])};
 		});
@@ -258,7 +258,7 @@ Backend = Class.extend({
 				$.alert('You must select at least one payment processor');
 				return false;
 			}
-			var hasDiscount = $('.repeater-item').length;
+			var hasDiscount = $('#repeater-item-ranges').length;
 			if(hasDiscount >= 1) {
 				//console.log(hasDiscount);
 				var rangesresponse = false;
