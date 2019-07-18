@@ -60,9 +60,25 @@
 						</div>
 					<?php endif; ?>
 					<?php if ($form->getMeta('coupon_codes')): ?>
-						<div class="form-group">
-							<label class="control-label">Code</label>
-							<input type="text" name="code" id="code" placeholder="Code" class="form-control input-block" value="" data-validate="required">
+						<div class="row row-md">
+							<div class="col col-12">
+								<div class="form-group">
+									<label class="control-label">Code</label>
+								</div>
+							</div>
+						</div>
+						<div class="row row-md">
+							<div class="col col-6">
+								<div class="form-group">
+									<input type="text" name="code" id="code" class="form-control input-block" value="" data-validate="required">
+									<input type="hidden" name="coupon_code" id="coupon_code" class="form-control input-block" value="">
+								</div>
+							</div>
+							<div class="col col-6">
+								<div class="form-group">
+									<input type="button" class="button button-primary" id="check" value="Check Code">
+								</div>
+							</div>
 						</div>
 					<?php endif; ?>
 

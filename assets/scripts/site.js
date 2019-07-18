@@ -21,17 +21,18 @@ Site = Class.extend({
 			obj.onDomReady($);
 		});
 	},
+	couponCode: null,
 	numberWithCommas: function(x) {
 		var parts = x.toString().split(".");
 		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		return parts.join(".");
 	},
 	calculateTotal: function(qty) {
-		var obj = this;
+		var obj = this,
 
 		extraSeats = typeof quantity.extraSeatPrice !== 'undefined', // Extraseats exist
 		discounts = typeof quantity.discounts !== 'undefined', // Discounts exist
-		coupons = typeof quantity.coupons !== 'undefined', // Coupons Exist
+		codes = typeof quantity.codes !== 'undefined', // Coupons Exist
 		discount = 1,
 		totalPrice = 0,
 		qtyInfo = '';
@@ -47,13 +48,13 @@ Site = Class.extend({
 
 						// Percentage Discount
 						totalPrice = totalPrice*(1-(quantity.discounts[x].val/100));
-						qtyInfo = ''; //TODO
+						qtyInfo = qty + ' (' + quantity.discounts[x].val + '% off)'; //TODO
 
 					} else {
 
 						//Fixed amount discount
 						totalPrice -= quantity.discounts[x].val;
-						qtyInfo = ''; //TODO
+						qtyInfo = qty + '($' + quantity.discounts[x].val + '% off)'; //TODO
 					}
 				}
 			}
@@ -62,8 +63,45 @@ Site = Class.extend({
 			totalPrice = parseFloat(quantity.price) + (quantity.extraSeatPrice * parseFloat(qty));
 		}
 
+		// Coupons discounts
+		if (obj.couponCode) {
+
+			if (obj.couponCode['type_code'] == 'percentage') {
+
+				totalPrice = totalPrice*(1-(obj.couponCode['value_code']/100));
+				qtyInfo = qty + '(' + obj.couponCode['value_code'] + '% off) (coupon code' + obj.couponCode['coupon'] + 'with' + obj.couponCode['value_code'] + '%off)';
+			} else {
+
+				totalPrice -= $obj.couponCode['value_code'];
+				qtyInfo = qty + '($' + $obj.couponCode['value_code'] + '%off)(coupon code ' + obj.couponCode['coupon'] + 'with' + quantity.codes[i]['value_code'] + '%off)';
+			}
+		}
+
+		$('.js-total-price').html('$' + obj.numberWithCommas(parseFloat(totalPrice).toFixed(2)) + ' ' + quantity.currency);
+		console.log(totalPrice);
+
 		return totalPrice;
-	}
+	},
+
+	checkCouponCode: function(coupon) {
+		var codes = typeof quantity.codes !== 'undefined', // Codes Exist
+			ret = false;
+
+		if(codes) {
+
+			for (var i = 0; i < quantity.codes.length; i++) {
+
+				if (coupon == quantity.codes[i]['coupon']) {
+
+					console.log('Coupon exits:', coupon);
+					console.log(quantity.codes[i]['value_code']);
+					ret = quantity.codes[i];
+				}
+			}
+		}
+
+		return ret;
+	},
 	onDomReady: function($) {
 		var obj = this;
 
@@ -176,7 +214,7 @@ Site = Class.extend({
 
 		// Tabs Miniplugin
 		$('.tab-list li a').on('click', function(e) {
-			e.preventDefault();
+			e.preventDefaul
 			var el = $(this),
 				li = el.closest('li'),
 				target = $( el.attr('href') );
@@ -205,6 +243,31 @@ Site = Class.extend({
 					}
 				}
 			});
+		});
+
+		$('#check').on('click', function() {
+
+			var code = $('#code').val();
+			if (!code) {
+
+				$.alert('Please enter your code number');
+				console.log('input empty');
+			} else {
+
+				obj.couponCode = obj.checkCouponCode(code);
+				console.log(obj.couponCode);
+
+				if (!obj.couponCode) {
+
+					$.alert('Your code is not valid');
+
+				} else {
+
+					console.log("SI ENTRA");
+
+					obj.calculateTotal($('#quantity').val() || 1);
+				}
+			}
 		});
 	}
 });

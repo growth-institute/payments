@@ -105,6 +105,8 @@
 
 									$quantity_script['extraSeatPriceUsd'] = $form->getMeta('extra_seats_price_usd');
 								}
+							} else if($form->getMeta('coupon_codes') ) {
+								$quantity_script['codes'] = $form->getMeta('coupon_codes');
 							}
 							$site->addScriptVar( 'quantity', $quantity_script );
 						}
@@ -185,7 +187,7 @@
 											$quantity_info = "{$quantity} ({$discount['val']}% off)";
 										} else {
 											$final_total -= $discount['val'];
-											$quantity_info = "{$quantity} (\${$discount['val']} off)";
+											$quantity_info = "{$quantity} (\${$discount['val']}% off)";
 										}
 									}
 								}
