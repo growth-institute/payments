@@ -81,7 +81,6 @@
 							$site->registerScript('growsumo', 'payment-form-growsumo.js', false);
 							$site->enqueueScript('growsumo');
 						}
-						print_a($form->getMeta('coupon_codes'));
 						# Logic if we have quantity, since, with quantity, weird stuff happens
 						if($form->getMeta('quantity')) {
 
@@ -94,11 +93,12 @@
 							# If discounts are present, then we add the full discounts array to the variable
 							if($form->getMeta('discounts')) {
 
+								$quantity_script['codes'] = $form->getMeta('coupon_codes');
 								$quantity_script['discounts'] = $form->getMeta('discounts');
 
 							# Variables for extra seats
 							} elseif($form->getMeta('extra_seats_price')) {
-
+								$quantity_script['codes'] = $form->getMeta('coupon_codes');
 								$quantity_script['extraSeatPrice'] = $form->getMeta('extra_seats_price');
 
 								if ($form->getMeta('extra_seats_price_usd')) {

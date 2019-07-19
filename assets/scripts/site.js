@@ -263,8 +263,6 @@ Site = Class.extend({
 
 				} else {
 
-					console.log("SI ENTRA");
-
 					obj.calculateTotal($('#quantity').val() || 1);
 				}
 			}
