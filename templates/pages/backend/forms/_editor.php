@@ -49,8 +49,8 @@
 							<input type="text" name="quantity_value" id="quantity_value" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('quantity_value') : ''); ?>">
 						</div>
 						<div class="form-group">
-							<label for="price_usd" class="control-label">Price USD</label>
-							<input type="text" name="price_usd" id="price_usd" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('price_usd') : ''); ?>">
+							<label for="exchange_rate" class="control-label">Exchange Rate(MXN to USD)</label>
+							<input type="text" name="exchange_rate" id="exchange_rate" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('exchange_rate') : ''); ?>">
 						</div>
 						<div class="form-group">
 							<label for="total" class="control-label">Total</label>
@@ -179,16 +179,10 @@
 						<div class="metabox-header">Additional Information</div>
 							<div class="metabox-body">
 								<div class="row row-md row-5">
-									<div class="col col-md-6">
+									<div class="col col-md-12">
 										<div class="form-group">
 											<label for="extra_seats_price" class="control-label">Extra Seats Price</label>
 											<input type="text" name="extra_seats_price" id="extra_seats_price" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('extra_seats_price') : ''); ?>">
-										</div>
-									</div>
-									<div class="col col-md-6">
-										<div class="form-group">
-											<label for="extra_seats_price_usd" class="control-label">Extra Seats Price USD</label>
-											<input type="text" name="extra_seats_price_usd" id="extra_seats_price_usd" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('extra_seats_price_usd') : ''); ?>">
 										</div>
 									</div>
 								</div>

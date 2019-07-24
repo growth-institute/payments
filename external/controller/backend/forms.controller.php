@@ -126,10 +126,9 @@ function checkImageAction(){
 				$quantity = $request->post('quantity');
 				$quantity_value = $request->post('quantity_value');
 				$quantity_label = $request->post('quantity_label');
-				$price_usd = $request->post('price_usd');
+				$exchange_rate = $request->post('exchange_rate');
 				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
-				$extra_seats_price_usd = $request->post('extra_seats_price_usd');
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
@@ -206,10 +205,9 @@ function checkImageAction(){
 				$form->updateMeta('quantity', $quantity);
 				$form->updateMeta('quantity_value', $quantity_value);
 				$form->updateMeta('quantity_label', $quantity_label);
-				$form->updateMeta('price_usd', $price_usd);
+				$form->updateMeta('exchange_rate', $exchange_rate);
 				$form->updateMeta('id_list', $id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
-				$form->updateMeta('extra_seats_price_usd', $extra_seats_price_usd);
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
@@ -271,10 +269,9 @@ function checkImageAction(){
 				$quantity = $request->post('quantity');
 				$quantity_value = $request->post('quantity_value');
 				$quantity_label = $request->post('quantity_label');
-				$price_usd = $request->post('price_usd');
+				$exchange_rate = $request->post('exchange_rate');
 				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
-				$extra_seats_price_usd = $request->post('extra_seats_price_usd');
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
@@ -345,10 +342,9 @@ function checkImageAction(){
 				$form->updateMeta('quantity',$quantity);
 				$form->updateMeta('quantity_value',$quantity_value);
 				$form->updateMeta('quantity_label',$quantity_label);
-				$form->updateMeta('price_usd', $price_usd);
+				$form->updateMeta('exchange_rate', $exchange_rate);
 				$form->updateMeta('id_list',$id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
-				$form->updateMeta('extra_seats_price_usd', $extra_seats_price_usd);
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
