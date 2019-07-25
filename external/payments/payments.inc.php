@@ -78,39 +78,33 @@
 
 						# Inyecting Growsimo script
 						if($form->getMeta('growsumo')) {
+
 							$site->registerScript('growsumo', 'payment-form-growsumo.js', false);
 							$site->enqueueScript('growsumo');
 						}
-						# Logic if we have quantity, since, with quantity, weird stuff happens
-						if($form->getMeta('quantity')) {
 
-							#  Preparing variables for JS front functionality
-							$quantity_script = [];
-							$quantity_script['price'] = $form->total;
-							$quantity_script['usd'] = $form->getMeta('price_usd');
-							$quantity_script['currency'] = strtoupper($form->currency);
+						$quantity_script = [];
+						$quantity_script['price'] = $form->total;
+						$quantity_script['currency'] = strtoupper($form->currency);
+						$quantity_script['codes'] = $form->getMeta('coupon_codes');
 
-							# If discounts are present, then we add the full discounts array to the variable
-							if($form->getMeta('discounts')) {
+						# If discounts are present, then we add the full discounts array to the variable
+						if($form->getMeta('discounts')) {
 
-								$quantity_script['codes'] = $form->getMeta('coupon_codes');
-								$quantity_script['discounts'] = $form->getMeta('discounts');
+							$quantity_script['discounts'] = $form->getMeta('discounts');
 
-							# Variables for extra seats
-							} elseif($form->getMeta('extra_seats_price')) {
-								$quantity_script['codes'] = $form->getMeta('coupon_codes');
-								$quantity_script['extraSeatPrice'] = $form->getMeta('extra_seats_price');
+						# Variables for extra seats
+						} else if($form->getMeta('extra_seats_price')) {
 
-								if ($form->getMeta('extra_seats_price_usd')) {
+							$quantity_script['extraSeatPrice'] = $form->getMeta('extra_seats_price');
 
-									$quantity_script['extraSeatPriceUsd'] = $form->getMeta('extra_seats_price_usd');
-								}
-							} else if($form->getMeta('coupon_codes') ) {
-								$quantity_script['codes'] = $form->getMeta('coupon_codes');
-							}
-							$site->addScriptVar( 'quantity', $quantity_script );
+						}
+						if($form->getMeta('exchange_rate')) {
+
+							$quantity_script['exchangeRate'] = $form->getMeta('exchange_rate');
 						}
 
+						$site->addScriptVar( 'quantity', $quantity_script );
 						# Initialize cart
 						$products_json = json_decode($form->products);
 						if ($products_json) {
@@ -224,21 +218,6 @@
 
 							$order->total = $final_total;
 							$order->save();
-
-							if ($form->getMeta('price_usd')) {
-
-								if ($form->getMeta('extra_seats_price_usd')) {
-
-									$price_usd = $form->getMeta('price_usd');
-									$seats_usd = $form->getMeta('extra_seats_price_usd');
-									$total_seats_usd = $price_usd + ($seats_usd * $quantity);
-									$order->updateMeta('total_usd', $total_seats_usd);
-								} else {
-
-									$total_usd = $form->getMeta('price_usd') * $quantity;
-									$order->updateMeta('total_usd', $total_usd);
-								}
-							}
 							$order->updateMeta('first_name', $first_name);
 							$order->updateMeta('last_name', $last_name);
 							$order->updateMeta('email', $email);

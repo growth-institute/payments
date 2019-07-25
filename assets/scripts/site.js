@@ -27,12 +27,20 @@ Site = Class.extend({
 		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		return parts.join(".");
 	},
+	calculateRate: function(price) {
+		var exchangeRate = quantity.exchangeRate; //exchange rates exist
+		var usdPrice;
+
+		usdPrice = price / exchangeRate;
+		return usdPrice;
+	},
 	calculateTotal: function(qty) {
 		var obj = this,
 
 		extraSeats = typeof quantity.extraSeatPrice !== 'undefined', // Extraseats exist
 		discounts = typeof quantity.discounts !== 'undefined', // Discounts exist
 		codes = typeof quantity.codes !== 'undefined', // Coupons Exist
+		exchangeRate = typeof quantity.exchangeRate !== 'undefined', //exchange rates exist
 		discount = 1,
 		totalPrice = 0,
 		qtyInfo = '';
@@ -49,18 +57,30 @@ Site = Class.extend({
 						// Percentage Discount
 						totalPrice = totalPrice*(1-(quantity.discounts[x].val/100));
 						qtyInfo = qty + ' (' + quantity.discounts[x].val + '% off)'; //TODO
-
 					} else {
 
 						//Fixed amount discount
 						totalPrice -= quantity.discounts[x].val;
 						qtyInfo = qty + '($' + quantity.discounts[x].val + '% off)'; //TODO
 					}
+
+
+				} else if (qty == 1 ) {
+
+					qtyInfo = '1' + ' (' + quantity.discounts[0].val + '% off)'; //TODO
 				}
 			}
+
 		} else if(extraSeats) {
 
+			console.log(extraSeats);
 			totalPrice = parseFloat(quantity.price) + (quantity.extraSeatPrice * parseFloat(qty));
+			//qtyInfo = '1';
+			qtyInfo = !exchangeRate ? qty + ' × $' + parseFloat(quantity.extraSeatPrice).toFixed(2) + ' ' + quantity.currency : qty + ' × $' + parseFloat(obj.calculateRate(quantity.extraSeatPrice)).toFixed(2) + ' ' + 'USD';
+
+		} else {
+
+			qtyInfo = qty;
 		}
 
 		// Coupons discounts
@@ -69,17 +89,27 @@ Site = Class.extend({
 			if (obj.couponCode['type_code'] == 'percentage') {
 
 				totalPrice = totalPrice*(1-(obj.couponCode['value_code']/100));
-				qtyInfo = qty + '(' + obj.couponCode['value_code'] + '% off) (coupon code' + obj.couponCode['coupon'] + 'with' + obj.couponCode['value_code'] + '%off)';
+				qtyInfo = qty + '(' + obj.couponCode['value_code'] + '% off) (coupon code ' + obj.couponCode['coupon'] + ' with ' + obj.couponCode['value_code'] + ' %off)';
 			} else {
 
 				totalPrice -= $obj.couponCode['value_code'];
-				qtyInfo = qty + '($' + $obj.couponCode['value_code'] + '%off)(coupon code ' + obj.couponCode['coupon'] + 'with' + quantity.codes[i]['value_code'] + '%off)';
+				qtyInfo = qty + '($' + $obj.couponCode['value_code'] + '%off)(coupon code ' + obj.couponCode['coupon'] + ' with ' + quantity.codes[i]['value_code'] + ' %off)';
 			}
 		}
+		//showing the princing on form view
+			console.log(exchangeRate);
+		if (exchangeRate) {
+			$('.total-price').html('$' + obj.numberWithCommas(parseFloat(obj.calculateRate(quantity.price)).toFixed(2)) + ' USD');
+			$('.js-quantity').html(qtyInfo);
+			$('.js-total-price-mxn').html('$' + obj.numberWithCommas(parseFloat(obj.calculateRate(totalPrice)).toFixed(2)) + ' ' + 'USD');
+			$('.js-price-mxn').html('equivale a: $' + obj.numberWithCommas(parseFloat(totalPrice).toFixed(2)) + ' ' + quantity.currency);
+			console.log(':p');
+		} else  if (!exchangeRate){
 
-		$('.js-total-price').html('$' + obj.numberWithCommas(parseFloat(totalPrice).toFixed(2)) + ' ' + quantity.currency);
-		console.log(totalPrice);
-
+			$('.js-quantity').html(qtyInfo);
+			$('.js-total-price').html('$' + obj.numberWithCommas(parseFloat(totalPrice).toFixed(2)) + ' ' + quantity.currency);
+			console.log(':)');
+		}
 		return totalPrice;
 	},
 
@@ -107,14 +137,14 @@ Site = Class.extend({
 
 		$('#quantity').on('change blur', function(event) {
 			var el = $(this),
-				val = el.val(), // Current quantity
-				extraSeats = typeof quantity.extraSeatPrice !== 'undefined', // Extraseats exist
+				val = el.val(); // Current quantity
+				/*extraSeats = typeof quantity.extraSeatPrice !== 'undefined', // Extraseats exist
 				discounts = typeof quantity.discounts !== 'undefined', // Discounts exist
 				coupons = typeof quantity.coupons !== 'undefined', // Coupons Exist
 				discount = 1,
-				totalPrice = 0;
-
-			if(val) {
+				totalPrice = 0;*/
+				obj.calculateTotal(val);
+			/*if(val) {
 				if (quantity.usd) {
 					if(discounts) {
 
@@ -209,7 +239,7 @@ Site = Class.extend({
 					el.val(1);
 				}
 				el.trigger('change');
-			}
+			}*/
 		}).trigger('blur');
 
 		// Tabs Miniplugin
@@ -251,7 +281,6 @@ Site = Class.extend({
 			if (!code) {
 
 				$.alert('Please enter your code number');
-				console.log('input empty');
 			} else {
 
 				obj.couponCode = obj.checkCouponCode(code);

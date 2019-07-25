@@ -46,7 +46,7 @@
 									<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts')? 'Extra seats' : 'Quantity' ?>
 								<?php endif; ?>
 								<?php if($form->getMeta('extra_seats_price') && !$form->getMeta('discounts')): ?>
-									<small>(<?php echo '$' .  ($form->getMeta('extra_seats_price_usd') ? $form->getMeta('extra_seats_price_usd') : number_format($form->getMeta('extra_seats_price'), 2)) ?> )</small>
+									<small>(<?php echo '$' .  ($form->getMeta('exchange_rate') ? number_format($form->getMeta('extra_seats_price') / $form->getMeta('exchange_rate'),2) : number_format($form->getMeta('extra_seats_price'), 2)) ?> )</small>
 								<?php endif; ?>
 							</label>
 							<!-- <input type="number" min="<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 0 : 1; ?>" name="quantity" id="quantity" value="<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 0 : 1; ?>" class="input-block form-control"> -->
@@ -92,8 +92,8 @@
 							<h3><?php $i18n->translate('sidebar.product.h3-price'); ?></h3>
 						</div>
 						<div class="col col-6 total-prices">
-							<?php if($form->getMeta('price_usd')): ?>
-								<span class="total-price">$<?php echo number_format((float)$form->getMeta('price_usd'), 2); ?> USD</span>
+							<?php if($form->getMeta('exchange_rate')): ?>
+								<span class="total-price">$<?php echo number_format((float)$form->total / $form->getMeta('exchange_rate'), 2); ?> USD</span>
 							<?php else:?>
 								<span class="total-price">$<?php echo number_format($form->total, 2); ?> <?php echo strtoupper($form->currency); ?></span>
 							<?php endif;?>
@@ -104,7 +104,7 @@
 							<h3><?php $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? $i18n->translate('sidebar.product.h3-extra-seat') : $i18n->translate('sidebar.product.h3-quantity'); ?>:</h3>
 						</div>
 						<div class="col col-6 total-prices">
-							<?php if($form->getMeta('extra_seats_price_usd')): ?>
+							<?php if($form->getMeta('exchange_rate')): ?>
 								<span class="total-price js-quantity"><?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') && isset($order)  ? $order->getMeta('quantity') : (isset($order) && $order->getMeta('quantity') ? ( $order->getMeta('quantity_info') ?: $order->getMeta('quantity') ) : 1); ?><?php if($form->getMeta('extra_seats_price') && !$form->getMeta('discounts')): ?>  &times;  <?php echo number_format($form->getMeta('extra_seats_price_usd'), 2); ?> <?php echo 'USD'; ?><?php endif; ?></span>
 							<?php else:?>
 								<span class="total-price js-quantity"><?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') && isset($order)  ? $order->getMeta('quantity') : (isset($order) && $order->getMeta('quantity') ? ( $order->getMeta('quantity_info') ?: $order->getMeta('quantity') ) : 1); ?><?php if($form->getMeta('extra_seats_price') && !$form->getMeta('discounts')): ?>  &times;  <?php echo number_format($form->getMeta('extra_seats_price'), 2); ?> <?php echo strtoupper($form->currency); ?><?php endif; ?></span>
@@ -117,8 +117,8 @@
 						<h3><?php $i18n->translate('sidebar.product.h3-total'); ?></h3>
 					</div>
 					<div class="col col-6 total-prices">
-						<?php if ($form->currency == 'mxn' && $form->getMeta('price_usd')): ?>
-								<span class="total-price js-total-price-usd">$<?php echo number_format(isset($order) ? (float)$order->getMeta('total_usd') : (float)$form->getMeta('price_usd'), 2); ?> USD</span>
+						<?php if ($form->currency == 'mxn' && $form->getMeta('exchange_rate')): ?>
+								<span class="total-price js-total-price-mxn">$<?php echo number_format(isset($form) ? (float) $form->total / $form->getMeta('exchange_rate') : (float) $form->total, 2); ?> USD</span>
 						<?php else: ?>
 							<span class="total-price js-total-price">$<?php echo number_format(isset($order) ? $order->total : $form->total, 2); ?> <?php echo strtoupper($form->currency); ?></span>
 						<?php endif; ?>
@@ -127,7 +127,7 @@
 				</div>
 				<div class="row row-md">
 					<div class="col col-12 price-mxn">
-						<?php if ($form->currency == 'mxn' && $form->getMeta('price_usd')): ?>
+						<?php if ($form->currency == 'mxn' && $form->getMeta('exchange_rate')): ?>
 							<span class="js-price-mxn"> equivale a:$<?php echo number_format(isset($order) ? $order->total : $form->total, 2); ?> <?php echo strtoupper($form->currency); ?></span>
 						<?php endif; ?>
 					</div>
