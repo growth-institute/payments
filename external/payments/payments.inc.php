@@ -186,13 +186,13 @@
 									}
 								}
 							} else if ($seats = get_item($form->metas, 'extra_seats_price')) {
+
 								$final_total = $total_seats+($seats*$quantity);
 							}
 
 							# Apply Coupon code discount
 							if($codes = $form->getMeta('coupon_codes')) {
 								$code_trim = str_replace(' ','',$code);
-								print_a($codes);
 								/*var_dump($code);
 								var_dump($code_trim);*/
 
@@ -204,8 +204,6 @@
 
 											$final_total = $final_total*(1-($code['value_code']/100));
 											$quantity_info = "{$quantity} ({$code['value_code']}% off)(coupon code {$code['coupon']} with {$code['value_code']} % off)";
-											var_dump($final_total);
-											var_dump($quantity_info);
 										} else {
 
 											$final_total -= $code['value_code'];
@@ -215,7 +213,6 @@
 									}
 								}
 							}
-
 							$order->total = $final_total;
 							$order->save();
 							$order->updateMeta('first_name', $first_name);

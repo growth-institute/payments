@@ -104,7 +104,7 @@ Site = Class.extend({
 			$('.js-total-price-mxn').html('$' + obj.numberWithCommas(parseFloat(obj.calculateRate(totalPrice)).toFixed(2)) + ' ' + 'USD');
 			$('.js-price-mxn').html('equivale a: $' + obj.numberWithCommas(parseFloat(totalPrice).toFixed(2)) + ' ' + quantity.currency);
 			console.log(':p');
-		} else  if (!exchangeRate){
+		} else  if (!exchangeRate) {
 
 			$('.js-quantity').html(qtyInfo);
 			$('.js-total-price').html('$' + obj.numberWithCommas(parseFloat(totalPrice).toFixed(2)) + ' ' + quantity.currency);
