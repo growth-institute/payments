@@ -49,8 +49,8 @@
 									<small>(<?php echo '$' .  ($form->getMeta('exchange_rate') ? number_format($form->getMeta('extra_seats_price') / $form->getMeta('exchange_rate'),2) : number_format($form->getMeta('extra_seats_price'), 2)) ?> )</small>
 								<?php endif; ?>
 							</label>
-							<!-- <input type="number" min="<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 0 : 1; ?>" name="quantity" id="quantity" value="<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 0 : 1; ?>" class="input-block form-control"> -->
-							<input type="number" min="<?php sanitized_print($form->getMeta('quantity_value') ? $form->getMeta('quantity_value') : 1); ?>" name="quantity" id="quantity" value="<?php sanitized_print($form->getMeta('quantity_value') ? $form->getMeta('quantity_value') : 1); ?>" class="input-block form-control">
+							<input type="number" min="<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 0 : 1; ?>" name="quantity" id="quantity" value="<?php echo $form->getMeta('extra_seats_price') && !$form->getMeta('discounts') ? 0 : 1; ?>" class="input-block form-control">
+							<!-- <input type="number" min="<?php sanitized_print($form->getMeta('quantity_value') ? $form->getMeta('quantity_value') : 0); ?>" name="quantity" id="quantity" value="<?php sanitized_print($form->getMeta('quantity_value') ? $form->getMeta('quantity_value') : 1); ?>" class="input-block form-control"> -->
 						</div>
 					<?php endif; ?>
 					<?php if ($form->getMeta('gdpr')): ?>

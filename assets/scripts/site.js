@@ -22,6 +22,7 @@ Site = Class.extend({
 		});
 	},
 	couponCode: null,
+	changed: null,
 	numberWithCommas: function(x) {
 		var parts = x.toString().split(".");
 		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -73,11 +74,10 @@ Site = Class.extend({
 
 		} else if(extraSeats) {
 
-			console.log(extraSeats);
+			console.log(qty);
 			totalPrice = parseFloat(quantity.price) + (quantity.extraSeatPrice * parseFloat(qty));
 			//qtyInfo = '1';
 			qtyInfo = !exchangeRate ? qty + ' × $' + parseFloat(quantity.extraSeatPrice).toFixed(2) + ' ' + quantity.currency : qty + ' × $' + parseFloat(obj.calculateRate(quantity.extraSeatPrice)).toFixed(2) + ' ' + 'USD';
-
 		} else {
 
 			qtyInfo = qty;
@@ -97,18 +97,15 @@ Site = Class.extend({
 			}
 		}
 		//showing the princing on form view
-			console.log(exchangeRate);
 		if (exchangeRate) {
 			$('.total-price').html('$' + obj.numberWithCommas(parseFloat(obj.calculateRate(quantity.price)).toFixed(2)) + ' USD');
 			$('.js-quantity').html(qtyInfo);
 			$('.js-total-price-mxn').html('$' + obj.numberWithCommas(parseFloat(obj.calculateRate(totalPrice)).toFixed(2)) + ' ' + 'USD');
 			$('.js-price-mxn').html('equivale a: $' + obj.numberWithCommas(parseFloat(totalPrice).toFixed(2)) + ' ' + quantity.currency);
-			console.log(':p');
 		} else  if (!exchangeRate) {
 
 			$('.js-quantity').html(qtyInfo);
 			$('.js-total-price').html('$' + obj.numberWithCommas(parseFloat(totalPrice).toFixed(2)) + ' ' + quantity.currency);
-			console.log(':)');
 		}
 		return totalPrice;
 	},
@@ -133,118 +130,30 @@ Site = Class.extend({
 		return ret;
 	},
 	onDomReady: function($) {
-		var obj = this;
+		var obj = this,
+		extraSeats = typeof quantity.extraSeatPrice !== 'undefined',
+		discounts = typeof quantity.discounts !== 'undefined';
 
 		$('#quantity').on('change blur', function(event) {
 			var el = $(this),
-				val = el.val(); // Current quantity
-				/*extraSeats = typeof quantity.extraSeatPrice !== 'undefined', // Extraseats exist
-				discounts = typeof quantity.discounts !== 'undefined', // Discounts exist
-				coupons = typeof quantity.coupons !== 'undefined', // Coupons Exist
-				discount = 1,
-				totalPrice = 0;*/
+				val = el.val();
+
+				console.log(val);
 				obj.calculateTotal(val);
-			/*if(val) {
-				if (quantity.usd) {
-					if(discounts) {
-
-						for(x = 0; x < quantity.discounts.length; x++) {
-							if(val >= parseInt(quantity.discounts[x].from) && val <= parseInt(quantity.discounts[x].to)) {
-								if(quantity.discounts[x].type == 'percentage') {
-
-									discount = 1-(quantity.discounts[x].val/100);
-									totalPrice = obj.numberWithCommas(((quantity.usd*val)*discount).toFixed(2));
-									totalPriceMxn = obj.numberWithCommas(((quantity.price*val)*discount).toFixed(2));
-
-									$('.js-total-price-usd').html('$' + totalPrice + ' ' + 'USD');
-									$('.js-quantity').html(val + ' (' + (quantity.discounts[x].val) + '% off)');
-									$('.js-price-mxn').html('equivale a: $' + totalPriceMxn + ' ' + 'MXN');
-								}
-							}
-						}
-
-						if(discount == 1) {
-
-							totalPrice = obj.numberWithCommas((quantity.usd*val).toFixed(2));
-							totalPriceMxn = obj.numberWithCommas((quantity.price*val).toFixed(2));
-
-							$('.js-total-price-usd').html('$' + totalPrice + ' ' + 'USD');
-							$('.js-quantity').html(val);
-							$('.js-price-mxn').html('equivale a: $' + totalPriceMxn + ' ' + 'MXN');
-
-						}
-					}
-					else if(extraSeats && quantity.extraSeatPriceUsd) {
-
-					totalPrice = obj.numberWithCommas((parseFloat(quantity.usd)+(quantity.extraSeatPriceUsd*parseFloat(val))).toFixed(2));
-					totalPriceMxn = obj.numberWithCommas((parseFloat(quantity.price)+(quantity.extraSeatPrice*parseFloat(val))).toFixed(2));
-
-					$('.js-total-price-usd').html('$' + totalPrice + ' ' + 'USD');
-					$('.js-quantity').html(val + ' × $' + parseFloat(quantity.extraSeatPriceUsd).toFixed(2) + ' ' + 'USD');
-					$('.js-price-mxn').html('equivale a: $' + totalPriceMxn + ' ' + 'MXN');
-					} else {
-
-						totalPrice = obj.numberWithCommas((quantity.usd*val).toFixed(2));
-						totalPriceMxn = obj.numberWithCommas((quantity.price*val).toFixed(2));
-
-						$('.js-total-price-usd').html('$' + obj.numberWithCommas((quantity.usd*val).toFixed(2)) + ' ' + 'USD');
-						$('.js-quantity').html(val);
-						$('.js-price-mxn').html('equivale a: $' + totalPriceMxn + ' ' + 'MXN');
-					}
-				} else {
-					if(discounts) {
-
-						for(x = 0; x < quantity.discounts.length; x++) {
-							if(val >= parseInt(quantity.discounts[x].from) && val <= parseInt(quantity.discounts[x].to)) {
-								if(quantity.discounts[x].type == 'percentage') {
-
-									discount = 1-(quantity.discounts[x].val/100);
-									totalPrice = obj.numberWithCommas(((quantity.price*val)*discount).toFixed(2));
-
-									$('.js-total-price').html('$' + totalPrice + ' ' + quantity.currency);
-									$('.js-quantity').html(val + ' (' + (quantity.discounts[x].val) + '% off)');
-								}
-							}
-						}
-
-						if(discount == 1) {
-
-							totalPrice = obj.numberWithCommas((quantity.price*val).toFixed(2));
-
-							$('.js-total-price').html('$' + totalPrice + ' ' + quantity.currency);
-							$('.js-quantity').html(val);
-
-						}
-					}
-					else if(extraSeats) {
-
-						totalPrice = obj.numberWithCommas((parseFloat(quantity.price)+(quantity.extraSeatPrice*parseFloat(val))).toFixed(2));
-
-						$('.js-total-price').html('$' + totalPrice + ' ' + quantity.currency);
-						$('.js-quantity').html(val + ' × $' + parseFloat(quantity.extraSeatPrice).toFixed(2) + ' ' + quantity.currency);
-					} else {
-
-						totalPrice = obj.numberWithCommas((quantity.price*val).toFixed(2));
-
-						$('.js-total-price').html('$' + obj.numberWithCommas((quantity.price*val).toFixed(2)) + ' ' + quantity.currency);
-						$('.js-quantity').html(val);
-					}
-				}
-			} else {
-				if(discounts) {
-					el.val(1);
-				} else if(extraSeats) {
-					el.val(0);
-				} else {
-					el.val(1);
-				}
-				el.trigger('change');
-			}*/
+				changed = true;
 		}).trigger('blur');
+
+		if (changed && extraSeats) {
+
+			$('#quantity').val(0);
+		} else {
+
+			$('#quantity').val(1);
+		}
 
 		// Tabs Miniplugin
 		$('.tab-list li a').on('click', function(e) {
-			e.preventDefaul
+			e.preventDefault
 			var el = $(this),
 				li = el.closest('li'),
 				target = $( el.attr('href') );
@@ -289,7 +198,6 @@ Site = Class.extend({
 				if (!obj.couponCode) {
 
 					$.alert('Your code is not valid');
-
 				} else {
 
 					obj.calculateTotal($('#quantity').val() || 1);
