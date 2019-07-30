@@ -74,9 +74,7 @@ Site = Class.extend({
 
 		} else if(extraSeats) {
 
-			console.log(qty);
 			totalPrice = parseFloat(quantity.price) + (quantity.extraSeatPrice * parseFloat(qty));
-			//qtyInfo = '1';
 			qtyInfo = !exchangeRate ? qty + ' × $' + parseFloat(quantity.extraSeatPrice).toFixed(2) + ' ' + quantity.currency : qty + ' × $' + parseFloat(obj.calculateRate(quantity.extraSeatPrice)).toFixed(2) + ' ' + 'USD';
 		} else {
 
@@ -138,7 +136,6 @@ Site = Class.extend({
 			var el = $(this),
 				val = el.val();
 
-				console.log(val);
 				obj.calculateTotal(val);
 				changed = true;
 		}).trigger('blur');
