@@ -22,7 +22,7 @@ Site = Class.extend({
 		});
 	},
 	couponCode: null,
-	changed: null,
+	//changed: null,
 	numberWithCommas: function(x) {
 		var parts = x.toString().split(".");
 		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -65,7 +65,6 @@ Site = Class.extend({
 						qtyInfo = qty + '($' + quantity.discounts[x].val + '% off)'; //TODO
 					}
 
-
 				} else if (qty == 1 ) {
 
 					qtyInfo = '1' + ' (' + quantity.discounts[0].val + '% off)'; //TODO
@@ -90,8 +89,8 @@ Site = Class.extend({
 				qtyInfo = qty + '(' + obj.couponCode['value_code'] + '% off) (coupon code ' + obj.couponCode['coupon'] + ' with ' + obj.couponCode['value_code'] + ' %off)';
 			} else {
 
-				totalPrice -= $obj.couponCode['value_code'];
-				qtyInfo = qty + '($' + $obj.couponCode['value_code'] + '%off)(coupon code ' + obj.couponCode['coupon'] + ' with ' + quantity.codes[i]['value_code'] + ' %off)';
+				totalPrice -= obj.couponCode['value_code'];
+				qtyInfo = qty + '($' + obj.couponCode['value_code'] + '%off)(coupon code ' + obj.couponCode['coupon'] + ' with ' + obj.couponCode['value_code'] + ' %off)';
 			}
 		}
 		//showing the princing on form view
@@ -128,9 +127,9 @@ Site = Class.extend({
 		return ret;
 	},
 	onDomReady: function($) {
-		var obj = this,
-		extraSeats = typeof quantity.extraSeatPrice !== 'undefined',
-		discounts = typeof quantity.discounts !== 'undefined';
+		var obj = this;
+		/*extraSeats = typeof quantity.extraSeatPrice !== 'undefined',
+		discounts = typeof quantity.discounts !== 'undefined';*/
 
 		$('#quantity').on('change blur', function(event) {
 			var el = $(this),
@@ -140,13 +139,13 @@ Site = Class.extend({
 				changed = true;
 		}).trigger('blur');
 
-		if (changed && extraSeats) {
+		/*if (changed && extraSeats) {
 
 			$('#quantity').val(0);
 		} else {
 
 			$('#quantity').val(1);
-		}
+		}*/
 
 		// Tabs Miniplugin
 		$('.tab-list li a').on('click', function(e) {
