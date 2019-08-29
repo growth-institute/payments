@@ -101,7 +101,6 @@
 			if ($query) {
 				$url = "{$this->url}?{$query}";
 			}
-			// print_a($url);
 			# Open connection
 			$ch = curl_init();
 			# Set the url, number of POST vars, POST data, etc
@@ -133,7 +132,6 @@
 					$fields = http_build_query($this->fields);
 					curl_setopt($ch, CURLOPT_POST, count($this->fields));
 					curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-					print_a($fields);
 				} else {
 					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($this->method));
 					curl_setopt($ch, CURLOPT_POSTFIELDS, $this->fields);

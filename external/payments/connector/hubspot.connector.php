@@ -31,9 +31,6 @@
 			$res = $hubspot->contactsUpsert($properties['email'], $properties);
 			$vid = $res && isset($res->vid) ? $res->vid : false;
 			$list_id = $form->getMeta('id_list');
-			/*print_a($vid);
-			print_a($list_id);
-			exit;*/
 
 			# GDPR Implementation
 			if ($form->getMeta('gdpr')) {

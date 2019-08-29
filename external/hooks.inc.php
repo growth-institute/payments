@@ -13,5 +13,4 @@
 	}
 
 	$site->registerHook('mvc.beforeHandler', 'hook_mvc_before_handler');
-
 ?>
