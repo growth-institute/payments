@@ -7,7 +7,6 @@
 		'section.message-error' => 'Testing Mode',
 
 		//Form Main
-		'form.title.general' => 'Complete your data and finalize your registration',
 		'form.title.menu-payment' => 'Payment',
 		'form.title.student' => 'Student details',
 		'form.title.payment' => 'Payment details',

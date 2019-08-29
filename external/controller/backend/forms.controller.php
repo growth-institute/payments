@@ -126,7 +126,6 @@ function checkImageAction(){
 				$quantity = $request->post('quantity');
 				$quantity_value = $request->post('quantity_value');
 				$quantity_label = $request->post('quantity_label');
-				$exchange_rate = $request->post('exchange_rate');
 				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
@@ -143,6 +142,7 @@ function checkImageAction(){
 				$val = $request->post('val');
 				$type = $request->post('type');
 				$coupon_subscription = $request->post('coupon_subscription');
+				$old_price = $request->post('old_price');
 				$array_discount = false;
 				if(is_array($from)) {
 					$array_discount = [];
@@ -155,20 +155,6 @@ function checkImageAction(){
 						];
 					}
 				}
-				$code = $request->post('code');
-				$value_code = $request->post('value_code');
-				$type_code = $request->post('type_code');
-				$array_coupon = false;
-				if (is_array($code)) {
-					for ($i=0; $i < count($code); $i++) {
-						$array_coupon[] = [
-							'coupon' => $code[$i],
-							'value_code' => $value_code[$i],
-							'type_code' => $type_code[$i]
-						];
-					}
-				}
-
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -205,7 +191,6 @@ function checkImageAction(){
 				$form->updateMeta('quantity', $quantity);
 				$form->updateMeta('quantity_value', $quantity_value);
 				$form->updateMeta('quantity_label', $quantity_label);
-				$form->updateMeta('exchange_rate', $exchange_rate);
 				$form->updateMeta('id_list', $id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);
@@ -219,8 +204,7 @@ function checkImageAction(){
 				$form->updateMeta('installments', $installments);
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
-				$form->updateMeta('coupon_codes', $array_coupon);
-
+				$form->updateMeta('old_price', $old_price);
 				//$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
@@ -269,7 +253,6 @@ function checkImageAction(){
 				$quantity = $request->post('quantity');
 				$quantity_value = $request->post('quantity_value');
 				$quantity_label = $request->post('quantity_label');
-				$exchange_rate = $request->post('exchange_rate');
 				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
@@ -286,6 +269,7 @@ function checkImageAction(){
 				$val = $request->post('val');
 				$type = $request->post('type');
 				$coupon_subscription = $request->post('coupon_subscription');
+				$old_price = $request->post('old_price');
 				$array_discount = false;
 				if(is_array($from)) {
 					$array_discount = [];
@@ -295,19 +279,6 @@ function checkImageAction(){
 							'to' => $to[$x],
 							'val' => $val[$x],
 							'type' => $type[$x]
-						];
-					}
-				}
-				$code = $request->post('code');
-				$value_code = $request->post('value_code');
-				$type_code = $request->post('type_code');
-				$array_coupon = false;
-				if (is_array($code)) {
-					for ($i=0; $i < count($code); $i++) {
-						$array_coupon[] = [
-							'coupon' => $code[$i],
-							'value_code' => $value_code[$i],
-							'type_code' => $type_code[$i]
 						];
 					}
 				}
@@ -342,7 +313,6 @@ function checkImageAction(){
 				$form->updateMeta('quantity',$quantity);
 				$form->updateMeta('quantity_value',$quantity_value);
 				$form->updateMeta('quantity_label',$quantity_label);
-				$form->updateMeta('exchange_rate', $exchange_rate);
 				$form->updateMeta('id_list',$id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);
@@ -356,7 +326,7 @@ function checkImageAction(){
 				$form->updateMeta('installments', $installments);
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
-				$form->updateMeta('coupon_codes', $array_coupon);
+				$form->updateMeta('old_price', $old_price);
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}

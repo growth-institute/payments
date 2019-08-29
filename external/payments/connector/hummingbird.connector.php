@@ -16,7 +16,7 @@
 			$params['processor'] = $order->payment_processor;
 			$params['sku'] = json_decode($form->products);
 			$params['locale'] = $form->language;
-			$params['notify'] = false;
+			//$params['notify'] = false;
 			$lang = $form->language;
 
 			$curly = Curly::newInstance(false)
