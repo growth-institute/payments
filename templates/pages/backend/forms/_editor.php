@@ -45,6 +45,15 @@
 							</select>
 						</div>
 						<div class="form-group">
+							<label for="connector" class="control-label">Connector</label>
+							<select name="connector" id="connector" class="form-control input-block">
+								<option value="">Select</option>
+								<option value="hummingbird" <?php echo( $item && $item->getMeta('connector') == 'hummingbird' ? 'selected="selected"' :  ''); ?>>Hummingbird</option>
+								<option value="ti" <?php echo( $item && $item->getMeta('connector') == 'ti' ? 'selected="selected"' :  ''); ?>>Thought Industries</option>
+							</select>
+						</div>
+
+						<div class="form-group">
 							<label for="quantity_value" class="control-label">Quantity Value</label>
 							<input type="text" name="quantity_value" id="quantity_value" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('quantity_value') : ''); ?>">
 						</div>
@@ -58,7 +67,6 @@
 						</div>
 					</div>
 					<div class="text-right">
-
 						<a href="<?php $site->urlTo("/backend/forms/", true); ?>" class="button button-link">Go back</a>
 						<button type="submit" id='submit' class="button button-primary">Save changes</button>
 					</div>

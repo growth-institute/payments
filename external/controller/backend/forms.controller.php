@@ -143,6 +143,7 @@ function checkImageAction(){
 				$type = $request->post('type');
 				$coupon_subscription = $request->post('coupon_subscription');
 				$old_price = $request->post('old_price');
+				$connector = $request->post('connector');
 				$array_discount = false;
 				if(is_array($from)) {
 					$array_discount = [];
@@ -205,6 +206,7 @@ function checkImageAction(){
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
 				$form->updateMeta('old_price', $old_price);
+				$form->updateMeta('connector', $connector);
 				//$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
@@ -270,6 +272,7 @@ function checkImageAction(){
 				$type = $request->post('type');
 				$coupon_subscription = $request->post('coupon_subscription');
 				$old_price = $request->post('old_price');
+				$connector = $request->post('connector');
 				$array_discount = false;
 				if(is_array($from)) {
 					$array_discount = [];
@@ -327,6 +330,7 @@ function checkImageAction(){
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
 				$form->updateMeta('old_price', $old_price);
+				$form->updateMeta('connector', $connector);
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}
