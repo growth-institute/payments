@@ -74,7 +74,16 @@
 						$order->save();
 						$order->updateMeta('installments', 0);
 						# Notify the payments system
-						$site->payments->notifyProcessed($order);
+						$class_name = $form->getMeta('connector') == 'ti' ? 'TIConnector' : 'HummingbirdConnector';
+						if (!$form->getMeta('connector')) {
+
+							$site->payments->enableConnector('hummingbird', new HummingbirdConnector);
+							$site->payments->notifyProcessed($order);
+						} else {
+
+							$site->payments->enableConnector($form->getMeta('connector'), new $class_name);
+							$site->payments->notifyProcessed($order);
+						}
 					}
 					log_to_file('---------------------------------', 'paypal');
 				} else {

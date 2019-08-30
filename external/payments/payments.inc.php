@@ -104,14 +104,6 @@
 						# Save or update the order
 						$order = PaymentsOrders::getByUid($site->payments->cart->uid);
 
-						$class_name = $form->getMeta('connector') == 'ti' ? 'TIConnector' : 'HummingbirdConnector';
-						if (!$form->getMeta('connector')) {
-
-							$site->payments->enableConnector('hummingbird', new HummingbirdConnector);
-						} else {
-
-							$site->payments->enableConnector($form->getMeta('connector'), new $class_name);
-						}
 						if (! $order ) {
 							$order = new PaymentsOrder();
 							$order->uid = $site->payments->cart->uid;
@@ -196,8 +188,7 @@
 							$order->updateMeta('growsumo-partner-key', $partner_key);
 							$order->updateMeta('growsumo-customer-key', $email);
 							# Notify the abandonment payments system
-							/*$site->payments->disableConnector('hummingbird');
-							$site->payments->notifyRegister($order);*/
+							$site->payments->notifyConnector($order, 'hubspot');
 						} else {
 
 							#TODO: Agregar el caso de que pasa si a este punto no hay orden
@@ -252,17 +243,7 @@
 							$data['processors'] = $processors;
 
 							$site->setPageTitle( $site->getPageTitle($form->name) );
-							/*********/
 
-							/*$class_name = $form->getMeta('connector') == 'ti' ? 'TIConnector' : 'HummingbirdConnector';
-							if (!$form->getMeta('connector')) {
-
-								$site->payments->enableConnector('hummingbird', new HummingbirdConnector);
-							} else {
-
-								$site->payments->enableConnector($form->getMeta('connector'), new $class_name);
-								$site->payments->notifyConnector($order, $form->getMeta('connector'));
-							}*/
 							$site->render('payments/page-review', $data);
 						break;
 					}
