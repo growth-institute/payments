@@ -53,8 +53,6 @@
 			}
 
 			$res = $curly->getResponse('json');
-			print_a($res);
-			exit;
 		}
 	}
 ?>
