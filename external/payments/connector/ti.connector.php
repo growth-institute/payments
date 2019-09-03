@@ -24,10 +24,12 @@
 				$product_parts = explode('-', $product);
 				if (get_item($product_parts, 0) == 'license') {
 
-					$licenses[] = $product;
-				} else {
+					$product_replace = str_replace('license-', '', $product);
+					$licenses[] = trim($product_replace);
+				} else if (get_item($product_parts, 0) == 'course') {
 
-					$courses[] = $product;
+					$product_replace = str_replace('course-', '', $product);
+					$courses[] = trim($product_replace);
 				}
 			}
 
@@ -48,11 +50,11 @@
 					->setFields($fields)
 					->execute();
 
-					$data['user'] = $curly->getResponse('json');
 					$json = file_get_contents("https://growthinstitute.com/ti/fetch/users/{$email}");
+					$res = $curly->getResponse('json');
 			}
 
-			$res = $curly->getResponse('json');
+
 		}
 	}
 ?>
