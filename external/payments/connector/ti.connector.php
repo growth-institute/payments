@@ -12,7 +12,8 @@
 			$first_name = $order->metas->first_name;
 			$last_name= $order->metas->last_name;
 			$email = $order->metas->email;
-			$password = 'ggi2019';
+			$form_name = $form->name;
+			$password = generate_password(8);
 			$products = json_decode($form->products);
 			$params['locale'] = $form->language;
 
@@ -54,6 +55,20 @@
 					$res = $curly->getResponse('json');
 			}
 
+			$fields_email = [
+				'send_email' => 1,
+				'password' => $password,
+				'email' => $email,
+				'form_name' => $form_name
+			];
+
+			$curly = Curly::newInstance(false)
+			->setMethod('post')
+			->setURL('https://learn.growthinstitute.com/admin/ti-create-email')
+			->setFields($fields_email)
+			->execute();
+
+			$res = $curly->getResponse('json');
 
 		}
 	}
