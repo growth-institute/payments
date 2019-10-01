@@ -106,4 +106,22 @@
 		$ret = "<table><tbody>{$rows}</tbody></table>";
 		return $ret;
 	}
+
+		/**
+	 * Generate a password of the given length
+	 * @param  integer $length Password length
+	 * @return string          Generated password on success, False otherwise
+	 */
+	function generate_password($length) {
+		global $site;
+		$ret = false;
+		try {
+			require_once $site->baseDir('/external/lib/Random.php');
+			$random = new Random(false);
+			$ret = $random->token($length);
+		} catch (Exception $e) {
+			error_log( $e->getMessage() );
+		}
+		return $ret;
+	}
 ?>

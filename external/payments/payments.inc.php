@@ -11,6 +11,7 @@
 	include $site->baseDir('/external/payments/connector/docebo.connector.php');
 	include $site->baseDir('/external/payments/connector/hubspot.connector.php');
 	include $site->baseDir('/external/payments/connector/hummingbird.connector.php');
+	include $site->baseDir('/external/payments/connector/ti.connector.php');
 	include $site->baseDir('/external/payments/processor/conekta.processor.php');
 	include $site->baseDir('/external/payments/processor/paypal.processor.php');
 	include $site->baseDir('/external/payments/processor/stripe.processor.php');
@@ -229,8 +230,7 @@
 							$order->updateMeta('growsumo-partner-key', $partner_key);
 							$order->updateMeta('growsumo-customer-key', $email);
 							# Notify the abandonment payments system
-							$site->payments->disableConnector('hummingbird');
-							$site->payments->notifyRegister($order);
+							$site->payments->notifyConnector($order, 'hubspot');
 						}
 						#
 						$site->redirectTo( $site->urlTo("/review/{$order->uid}") );
@@ -393,6 +393,13 @@
 				foreach ($this->connectors as $name => $instance) {
 					$instance->process($order);
 				}
+			}
+		}
+
+		function notifyConnector($order, $connector) {
+			global $site;
+			if(isset($this->connectors)) {
+				$this->connectors[$connector]->process($order);
 			}
 		}
 

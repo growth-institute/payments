@@ -143,6 +143,7 @@ function checkImageAction(){
 				$val = $request->post('val');
 				$type = $request->post('type');
 				$coupon_subscription = $request->post('coupon_subscription');
+				$connector = $request->post('connector');
 				$array_discount = false;
 				if(is_array($from)) {
 					$array_discount = [];
@@ -219,6 +220,7 @@ function checkImageAction(){
 				$form->updateMeta('installments', $installments);
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
+				$form->updateMeta('connector', $connector);
 				$form->updateMeta('coupon_codes', $array_coupon);
 
 				//$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
@@ -286,6 +288,7 @@ function checkImageAction(){
 				$val = $request->post('val');
 				$type = $request->post('type');
 				$coupon_subscription = $request->post('coupon_subscription');
+				$connector = $request->post('connector');
 				$array_discount = false;
 				if(is_array($from)) {
 					$array_discount = [];
@@ -356,6 +359,7 @@ function checkImageAction(){
 				$form->updateMeta('installments', $installments);
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
+				$form->updateMeta('connector', $connector);
 				$form->updateMeta('coupon_codes', $array_coupon);
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
