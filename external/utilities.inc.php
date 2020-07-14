@@ -124,4 +124,15 @@
 		}
 		return $ret;
 	}
+
+	function message($message, $type = 'error') {
+
+		if($message) {
+			if(is_array($message)) {
+				echo "<div class=\"message message-{$message['type']}\">{$message['message']} <a href=\"\" class=\"message-close\"><i class=\"fa fa-fw fa-close\"></i></a></div>";
+			} else {
+				echo "<div class=\"message message-{$type}\">{$message} <a href=\"#\" class=\"message-close\"><i class=\"fa fa-fw fa-close\"></i></a></div>";
+			}
+		}
+	}
 ?>

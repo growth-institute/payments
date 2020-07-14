@@ -7,13 +7,14 @@
 		'section.message-error' => 'Modo de Pruebas',
 
 		//Form Main
+		'form.title.general' => 'Completa tus datos y finaliza tu inscripción',
 		'form.title.menu-payment' => 'Pago',
 		'form.title.student' => 'Detalles de estudiante',
 		'form.title.payment' => 'Detalles de pago',
 		'form.label.first-name' => 'Nombre',
 		'form.label.last-name' => 'Apellido',
 		'form.label.email' => 'Correo Electrónico',
-		'form.label.phone' => 'Teléfono (10 dígitos)',
+		'form.label.phone' => 'Teléfono',
 		'form.label.company' => 'Empresa',
 		'form.label.extra-seat' => 'por cada asiento extra',
 		'form.span.gdpr' => 'Por favor haga click aquí si gusta que lo contactemos vía correo electrónico o texto con información acerca de bienes y servicios ofrecidos por nosotros que puedan ser de su interés. Procesaremos su información de acuerdo a nuestro <a href="https://www.growthinstitute.com/privacy-notice/" target="_blank">Aviso de Privacidad</a>. Puede retirar su aprobación de procesamiento en cualquier momento, simplemente enviando un correo a <a href="mailto:support@growthinstitute.com">support@growthinstitute.com</a>.',
@@ -21,12 +22,12 @@
 		//Sidebar
 		'sidebar.product.h3-price' => 'Precio',
 		'sidebar.product.h3-total' => 'Total',
-		'sidebar.product.h3-extra-seat' => 'Extra seats',
+		'sidebar.product.h3-extra-seat' => 'Asientos extra',
 		'sidebar.product.h3-quantity' => 'Cantidad',
 
 		//Form Payments Stripe
 		'form.stripe.card-element' => 'Tarjeta de crédito o débito',
-		'form.stripe.submit' => 'Procesando Pago',
+		'form.stripe.submit' => 'Procesar pago',
 
 		//Form Payments Paypal
 		'form.paypal.label-title' => 'Pague de manera segura y fácil con PayPal',

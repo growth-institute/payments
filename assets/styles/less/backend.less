@@ -38,6 +38,10 @@ canvas {
 	height: auto;
 }
 
+.CodeMirror        { height: 200px; border: 1px solid #DDDDDD; }
+.CodeMirror-scroll { max-height: 200px; }
+.CodeMirror pre    { padding-left: 7px; line-height: 1.25; }
+
 a {
 
 	color: @highlight_1;
@@ -276,6 +280,12 @@ h4, .h4 { font-size: 1.25em;  }
 			margin-bottom: 0;
 		}
 	}
+
+	&.metabox-simple {
+
+		box-shadow: none;
+		margin: 0;
+	}
 }
 
 .action-bar {
@@ -336,7 +346,7 @@ h4, .h4 { font-size: 1.25em;  }
 
 		.item-details {
 
-			color: @text_2;
+			color: @text_3;
 		}
 
 		&:not(:last-child) {
@@ -540,7 +550,7 @@ h4, .h4 { font-size: 1.25em;  }
 
 					.item-details {
 
-						color: @text_2;
+						color: @text_3;
 						margin-bottom: 3px;
 					}
 
@@ -666,6 +676,11 @@ ul.tab-list {
 		background: @background_2;
 		display: none;
 		padding: @margin_default;
+
+		&.tab-simple {
+
+			padding: 0;
+		}
 
 		&.active {
 

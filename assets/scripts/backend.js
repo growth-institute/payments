@@ -26,19 +26,49 @@ Backend = Class.extend({
 		});
 	},
 	showPeriodicity: function(val) {
-		if (val) {
+		if(val) {
 			$('#periodicity-group').removeClass('hide');
 		} else {
 			$('#periodicity-group').addClass('hide');
 		}
 	},
 	showInstallments: function(val) {
-		if ($('#conekta').is(':checked')) {
-			$('#tab-installment').removeClass('hide');
-			$('#tab-three input').prop('disabled', false);
+
+		if($('#conekta').is(':checked')) {
+
+			$('#tab-installment, .conekta-installments').removeClass('hide');
+			$('#tab-section-installments .conekta-installments input').prop('disabled', false);
+
 		} else {
+
+			$('.conekta-installments').addClass('hide');
+			$('#tab-section-installments .conekta-installments input').prop('disabled', true);
+		}
+
+		if($('#stripe').is(':checked')) {
+
+			$('#tab-installment, .stripe-installments').removeClass('hide');
+			$('#tab-section-installments .stripe-installments input').prop('disabled', false);
+
+		} else {
+
+			$('.stripe-installments').addClass('hide');
+			$('#tab-section-installments .stripe-installments input').prop('disabled', true);
+		}
+
+		if ($('#stripe-installments').is(':checked')) {
+			$('#section-stripe-installments').removeClass('hide');
+			$('#section-stripe-installments input').prop('disabled', false);
+
+		} else {
+
+			$('#section-stripe-installments').addClass('hide');
+			$('#section-stripe-installments input').prop('disabled', true);
+		}
+
+		if(!$('#conekta').is(':checked') && !$('#stripe').is(':checked')) {
+
 			$('#tab-installment').addClass('hide');
-			$('#tab-three input').prop('disabled', true);
 		}
 	},
 	checkSlug: function(name){
@@ -64,32 +94,32 @@ Backend = Class.extend({
 		console.log($('#currency').val());
 		console.log($('#subscription').val());
 
-		if ($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
+		if($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
 
 			$('#lbstripe').removeClass('hide');
-			$('#conekta, #PayPal').attr('disabled', true);
+			$('#conekta, #paypal, #payu').attr('disabled', true);
 			$('#lbpaypal').addClass('hide');
 
 		} else if($('#currency').val() == 'usd' && $('#subscription').val() == '' ) {
 
 			$('#lbpaypal, #lbstripe').removeClass('hide');
 			$('#lbconekta').addClass('hide');
-			$('#conekta').attr('disabled', true);
-			$('#PayPal, #Stripe').attr('disabled', false);
+			$('#conekta, #payu').attr('disabled', true);
+			$('#paypal, #stripe').attr('disabled', false);
 
 
 		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
 
-			$('#lbconekta, #lbpaypal, #lbstripe').removeClass('hide');
-			$('#conekta, #PayPal, #Stripe').attr('disabled', false);
+			$('#lbconekta, #lbpaypal, #lbstripe, #lbpayu').removeClass('hide');
+			$('#conekta, #paypal, #stripe, #payu').attr('disabled', false);
 
 
 		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == 'Yes' ) {
 
 			$('#lbstripe').removeClass('hide');
-			$('#lbpaypal, #lbconekta').addClass('hide');
-			$('#conekta, #PayPal').attr('disabled', true);
-			$('#Stripe').attr('disabled', false);
+			$('#lbpaypal, #lbconekta, #lbpayu').addClass('hide');
+			$('#conekta, #paypal, #payu').attr('disabled', true);
+			$('#stripe').attr('disabled', false);
 
 		}
 	},
@@ -97,8 +127,8 @@ Backend = Class.extend({
 	ranges: function(rangesresponse) {
 
 		var ranges = [];
-		froms = $('.repeater-item input[name^="from"]').map(function () { return this.value; }).get();
-		tos = $('.repeater-item input[name="to[]"').map(function () { return this.value; }).get();
+		froms = $('#repeater-item-ranges input[name^="from"]').map(function () { return this.value; }).get();
+		tos = $('#repeater-item-ranges input[name="to[]"').map(function () { return this.value; }).get();
 		ranges = $.map(froms, function(from, i) {
 			return {from:parseInt(froms[i]), to:parseInt(tos[i])};
 		});
@@ -108,8 +138,8 @@ Backend = Class.extend({
 
 			var x = a.from;
 			var y = b.from;
-			if (x < y) {return -1;}
-			if (x > y) {return 1;}
+			if(x < y) {return -1;}
+			if(x > y) {return 1;}
 			return 0;
 		}
 
@@ -122,7 +152,7 @@ Backend = Class.extend({
 					return rangesresponse;
 				}
 
-				if(ranges[i].from > ranges[i].to) {
+				if(ranges[i].from >= ranges[i].to) {
 					$.alert('Range from is bigger than a Range to');
 					rangesresponse = false;
 					return rangesresponse;
@@ -144,7 +174,7 @@ Backend = Class.extend({
 
 		ranges.sort(compare);
 		validateRanges(ranges, rr);
-		if (rangesresponse == true ) {
+		if(rangesresponse == true ) {
 			rangesresponse = true;
 			return true;
 		} else {
@@ -159,7 +189,11 @@ Backend = Class.extend({
 	onDomReady: function($) {
 		var obj = this;
 
-		$('.js-select2').select2({ width: '100%' });
+		$('[data-value]').each(function() {
+			var el = $(this),
+				value = el.data('value');
+			el.val(value);
+		});
 
 		// Tabs Miniplugin
 		$('.tab-list li a').on('click', function(e) {
@@ -184,7 +218,7 @@ Backend = Class.extend({
 		});
 
 		//set default 0 value in ocurrency
-		if ($('#ocurrency').val() == '') {
+		if($('#ocurrency').val() == '') {
 			$('#ocurrency').val('0');
 		}
 
@@ -196,13 +230,18 @@ Backend = Class.extend({
 		}).trigger('change');
 
 		$('#conekta').change(function() {
-			console.log('checked');
 			var el = $(this),
 				val = el.val();
 			obj.showInstallments(val);
 		}).trigger('change');
 
-		$('#PayPal, #Stripe').change( function(){
+		$('#stripe-installments').change(function() {
+			var el = $(this),
+				val = el.val();
+			obj.showInstallments(val);
+		}).trigger('change');
+
+		$('#paypal, #stripe').change( function(){
 			var el = $(this),
 				val = '';
 			obj.showInstallments(val);
@@ -212,7 +251,7 @@ Backend = Class.extend({
 			var el = $(this),
 				name = el.val(),
 				slug = $('#slug').val()
-			if (name && !slug) {
+			if(name && !slug) {
 				var slug = obj.checkSlug(name);
 				var clean = true;
 
@@ -234,7 +273,7 @@ Backend = Class.extend({
 			var el = $(this),
 				name = el.val(),
 				slug = $('#slug').val()
-			if (slug) {
+			if(slug) {
 				var slug = obj.checkSlug(name);
 				var clean = true;
 
@@ -260,7 +299,7 @@ Backend = Class.extend({
 				$.alert('You must select at least one payment processor');
 				return false;
 			}
-			var hasDiscount = $('.repeater-item').length;
+			var hasDiscount = $('#repeater-item-ranges').length;
 			if(hasDiscount >= 1) {
 				//console.log(hasDiscount);
 				var rangesresponse = false;
@@ -268,7 +307,7 @@ Backend = Class.extend({
 				 respfinal = obj.ranges(rangesresponse);
 				console.log('resp funcion' + respfinal);
 					if(respfinal == false) {
-						console.log('error en los rangos');
+						console.log('error en los rangos sdsdsd');
 						return false;
 					}
 				}
@@ -302,7 +341,7 @@ Backend = Class.extend({
 				template = repeater.data('template'),
 				number = items.find('.repeater-item').length + 1;
 			e.preventDefault();
-			if (! template ) {
+			if(! template ) {
 				template = _.template( $( repeater.data('partial') ).html() || '<div>Template not found</div>' );
 				repeater.data('template', template);
 			}
@@ -339,7 +378,7 @@ Backend = Class.extend({
 				template = repeater.data('template'),
 				number = items.find('.repeater-item').length + 1;
 			e.preventDefault();
-			if (! template ) {
+			if(! template ) {
 				template = _.template( $( repeater.data('partial') ).html() || '<div>Template not found</div>' );
 				repeater.data('template', template);
 			}
@@ -403,7 +442,7 @@ Backend = Class.extend({
 							attachment.find('.attachment-percent').fadeOut();
 							attachment.find('.attachment-progress .progress-bar').fadeOut(function() {
 
-							if (response && response.result == 'success') {
+							if(response && response.result == 'success') {
 
 								$('[name=product_image]').val(response.data.attachment.id);
 								$('.uploader-area').html('<img class="img-responsive" src="' + response.data.attachment.url + '">').addClass('has-loaded');
@@ -425,6 +464,10 @@ Backend = Class.extend({
 			});
 			// Bind events
 			loadzilla.onDomReady();
+		});
+
+		CodeMirror.fromTextArea($('[name=extra]').get(0), {
+			mode: 'htmlmixed'
 		});
 	}
 });

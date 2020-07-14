@@ -147,6 +147,7 @@
 			$controller = 'frontend';
 			array_unshift($request->parts, $controller);
 		}
+
 		// Now get the controller, which may be an action of its parent
 		$controller = $controller ?: get_item($request->parts, 0);
 		$action = get_item($request->parts, 1, 'index');

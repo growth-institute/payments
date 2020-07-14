@@ -7,8 +7,9 @@
 		'section.message-error' => 'Testing Mode',
 
 		//Form Main
+		'form.title.general' => 'Complete your data and finalize your registration',
 		'form.title.menu-payment' => 'Payment',
-		'form.title.student' => 'Student details',
+		'form.title.student' => 'Registration Details',
 		'form.title.payment' => 'Payment details',
 		'form.label.first-name' => 'First name',
 		'form.label.last-name' => 'Last name',
@@ -38,7 +39,7 @@
 		'features.p-information' => 'We\'ve already helped +40,000 mid-market organizations scale up rapidly, and methodically and without drama*',
 		'features.h2-privacy' => 'PRIVACY &amp; SECURITY',
 		'features.p-privacy' => 'All personal information you submit is encrypted and secure.',
-		'features.h2-support' => 'CUSTOMER SUPPORT',
+		'features.h2-support' => '24/7 SUPPORT',
 		'features.p-support' => 'If you have any problem or concern, just call us at 1 800 975 5108 or email at <a href="mailto:support@growthinstitute.com">support@growthinstitute.com</a>!',
 
 		//Footer

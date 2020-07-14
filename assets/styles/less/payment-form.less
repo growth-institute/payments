@@ -37,6 +37,8 @@ section {
 .button.button-primary {
 
 	.button-style(@payment_base_color);
+	width: 100%;
+	margin-bottom: 10px;
 }
 
 .tabs {
@@ -65,7 +67,7 @@ section {
 		text-align: left;
 	}
 
-	background-color: @payment_base_color;
+	background-color: white;
 
 	img {
 
@@ -141,11 +143,18 @@ section {
 
 .payment-navigation {
 
-	padding-top: 40px;
+	padding-top: 10px;
 	margin-bottom: 30px;
+	color: white;
+
 
 
 	.menu {
+
+		font-size: 1.2em;
+		padding: 15px 0;
+		text-align: center;
+		text-transform: uppercase;
 
 		.cf;
 		background-color: @payment_base_color;
@@ -195,7 +204,7 @@ section {
 
 		.form-group {
 
-			margin-bottom: 25px;
+			margin-bottom: 15px;
 
 			label {
 
@@ -271,6 +280,15 @@ section {
 		border-radius: 3px;
 	}
 
+	.installments-options {
+
+		label {
+
+			display: block;
+			margin-bottom: @margin_half;
+		}
+	}
+
 	#card-errors {
 
 		margin-bottom: 15px;
@@ -296,7 +314,8 @@ section {
 
 		.product-image {
 
-			margin-bottom: 15px;
+			display: block;
+			margin: 15px auto;
 		}
 
 		.the-content {
@@ -327,21 +346,23 @@ section {
 					text-decoration: line-through;
 				}
 
-				.total-price {
-
-					font-size: 1.2em;
-					color: @payment_base_color;
-				}
 			}
+
 		}
 	}
+}
+.total-price {
+
+	font-size: 1.2em;
+	color: @payment_base_color;
 }
 
 .payment-features {
 
 	padding: 80px 0;
-	background-color: #F5F5F5;
+	background-color: #2B66B1;
 	text-align: center;
+	color: white;
 
 	.feature {
 
@@ -361,10 +382,22 @@ section {
 			font-size: 1.2em;
 			margin-bottom: 10px;
 		}
+
+		a {
+
+			color: white;
+		}
 	}
 }
 
 .total-extra-seats {
 
 	display: none;
+}
+
+.bank-note {
+	
+	margin-top: 10px;
+	font-size: 12px;
+	text-align: justify;
 }

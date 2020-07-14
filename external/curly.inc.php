@@ -101,6 +101,7 @@
 			if ($query) {
 				$url = "{$this->url}?{$query}";
 			}
+			// print_a($url);
 			# Open connection
 			$ch = curl_init();
 			# Set the url, number of POST vars, POST data, etc
@@ -132,6 +133,7 @@
 					$fields = http_build_query($this->fields);
 					curl_setopt($ch, CURLOPT_POST, count($this->fields));
 					curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+					print_a($fields);
 				} else {
 					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($this->method));
 					curl_setopt($ch, CURLOPT_POSTFIELDS, $this->fields);
@@ -139,6 +141,7 @@
 			}
 			# Execute request
 			$this->response = curl_exec($ch);
+			print_a( curl_getinfo($ch) );
 			if ( curl_errno($ch) ) {
 				log_to_file(curl_error($ch), 'curly');
 			}
