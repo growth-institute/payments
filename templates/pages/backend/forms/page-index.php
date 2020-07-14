@@ -105,13 +105,15 @@
 															<td class="column-id"><?php echo $item->id; ?></td>
 															<td>
 																<div class="item-name"><a href="<?php $site->urlTo("/backend/forms/edit/{$item->id}", true) ?>"><?php sanitized_print($item->name); ?></a></div>
-																<div class="item-details"><?php sanitized_print($item->slug); ?></div>
+																<div class="item-details"><?php echo $item->getMeta('internal_name'); ?></div>
 																<div class="item-actions">
 																	<a href="<?php $site->urlTo("/backend/forms/edit/{$item->id}", true) ?>">Edit</a>
 																	<span class="divider">|</span>
 																	<a href="<?php $site->urlTo("/backend/forms/delete/{$item->id}", true) ?>" class="action-delete">Delete</a>
 																	<span class="divider">|</span>
-																	<a href="<?php $site->urlTo("/form/{$item->slug}", true) ?>" target="_blank">Link Form</a>
+																	<a href="<?php $site->urlTo("/form/{$item->slug}", true) ?>" target="_blank">Production Link</a>
+																	<span class="divider">|</span>
+																	<a href="<?php $site->urlTo("/form/{$item->slug}?test=ggi2018", true) ?>" target="_blank">Test Link</a>
 																</div>
 															</td>
 														</tr>

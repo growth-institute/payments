@@ -52,21 +52,21 @@
 								<option value="ti" <?php echo( $item && $item->getMeta('connector') == 'ti' ? 'selected="selected"' :  ''); ?>>Thought Industries</option>
 							</select>
 						</div>
+
 						<div class="form-group">
 							<label for="quantity_value" class="control-label">Quantity Value</label>
 							<input type="text" name="quantity_value" id="quantity_value" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('quantity_value') : ''); ?>">
 						</div>
 						<div class="form-group">
-							<label for="exchange_rate" class="control-label">Exchange Rate(MXN to USD)</label>
-							<input type="text" name="exchange_rate" id="exchange_rate" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('exchange_rate') : ''); ?>">
-						</div>
-						<div class="form-group">
 							<label for="total" class="control-label">Total</label>
 							<input type="text" name="total" id="total" class="form-control input-block" data-validate="required" value="<?php sanitized_print($item ? $item->total : ''); ?>">
 						</div>
+						<div class="form-group">
+							<label for="old_price" class="control-label">Old Price</label>
+							<input type="text" name="old_price" id="old_price" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('old_price') : ''); ?>">
+						</div>
 					</div>
 					<div class="text-right">
-
 						<a href="<?php $site->urlTo("/backend/forms/", true); ?>" class="button button-link">Go back</a>
 						<button type="submit" id='submit' class="button button-primary">Save changes</button>
 					</div>
@@ -78,15 +78,15 @@
 				<input placeholder="Add the name of your form" type="text" name="name" id="name" data-validate="required" class="form-control input-block form-control-xlarge" value="<?php sanitized_print($item ? $item->name : ''); ?>">
 			</div>
 			<div class="form-group">
-				<p><?php $site->urlTo('/', true); ?> <input type="text" id="slug" name="slug" data-validate="required" class="form-control" size="30" value="<?php sanitized_print($item ? $item->slug : ''); ?>">
+				<p><?php $site->urlTo('/', true); ?> <input type="text" id="slug" name="slug" data-validate="required" class="form-control"  value="<?php sanitized_print($item ? $item->slug : ''); ?>">
 				<input type="text" id="slugroot" name="slugroot"  class="linkcopy"  value="<?php $site->urlTo("/form/", true); sanitized_print($item ? $item->slug : ''); ?>">
 				<?php
 					$slug = $item ? $item->slug : false;
 						if($slug):
 				?>
 						<span class="field-value"><a href="#" class="button button-primary js-copy" data-clipboard-target="#slugroot"><i class="fa fa-fw fa-copy"></i></a></span>
-						<span class="field-value"><a href="<?php $site->urlTo("/form/{$item->slug}", true) ?>" target="_blank" class="button button-primary"><i class="fa fa-fw fa-external-link"></i></a></span>
-						<span class="field-value"><a href="<?php $site->urlTo("/form/{$item->slug}?test=ggi2018", true) ?>" target="_blank" class="button button-error"><i class="fa fa-fw fa-external-link"></i></a></span>
+						<span class="field-value"><a href="<?php $site->urlTo("/form/{$item->slug}", true); ?>" target="_blank" class="button button-primary"><i class="fa fa-fw fa-external-link"></i> Production</a></span>
+						<span class="field-value"><a href="<?php $site->urlTo("/form/{$item->slug}?test=ggi2018", true); ?>" target="_blank" class="button button-error"><i class="fa fa-fw fa-external-link"></i> Test</a></span>
 				<?php endif; ?>
 				<span class="span">Text copied!</span>
 				</p>
@@ -112,12 +112,26 @@
 							<div class="metabox-body">
 
 								<div class="form-group">
+									<label for="internal_name" class="control-label">Internal Name</label>
+									<input type="text" name="internal_name" id="internal_name" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('internal_name') : ''); ?>">
+								</div>
+
+								<div class="form-group">
 									<?php
 										$decode = isset($item) ? json_decode($item->products) : false;
 										$implode = isset($item) ? implode(',', $decode) : false;
+
+										$licenses = file_get_contents('https://growthinstitute.com/ti/fetch/licenses');
+										$licenses = json_decode($licenses);
+										$licenses = $licenses->data->licenses;
 									?>
-									<label for="products" class="control-label">Products (SKU) </label>
-									<input type="text" name="products" id="products"  class="form-control input-block" value="<?php sanitized_print($decode && $implode ? $implode : '');?>">
+									<label for="products" class="control-label">Products (SKU)</label>
+									<select multiple type="text" name="products[]" id="products" class="form-control input-block js-select2">
+										<?php foreach($licenses as $license): ?>
+											<option <?php echo in_array("license-{$license->id}", $decode) ? 'selected' : ''; ?> value="license-<?php echo $license->id; ?>"><?php echo $license->name; ?></option>
+										<?php endforeach; ?>
+									</select>
+									<!--<input type="text" name="products" id="products"  class="form-control input-block" value="<?php sanitized_print($decode && $implode ? $implode : '');?>">-->
 								</div>
 								<div class="row row-md">
 									<div class="col col-6 col-md-6">
@@ -168,6 +182,10 @@
 										<input type="number" min="0" name="ocurrency" id="ocurrency" value="<?php sanitized_print($item ? $item->getMeta('ocurrency') : ''); ?>" class="form-control input-block">
 										<div class="help-block" id="ocurrency_message">Zero ocurrency is unlimited</div>
 									</div>
+									<div class="form-group">
+										<label for="trial_days" id="trial_days"class="control-label">Trial Days</label>
+										<input type="text" name="trial_days" id="trial_days" value="<?php sanitized_print($item ? $item->getMeta('trial_days') : ''); ?>" class="form-control input-block">
+									</div>
 								</div>
 								<div class="form-group form-group-processors">
 									<?php
@@ -177,7 +195,6 @@
 									<label id="lbstripe"class="hide"><input type="checkbox" name="processor[]" id="Stripe" value="Stripe"  <?php echo( $obj && in_array('Stripe', $obj) ? 'checked="checked"' : ''); ?>  class="form-control ">Stripe</label>
 									<label id="lbconekta"class="hide"><input type="checkbox" name="processor[]" id="conekta" value="Conekta" <?php echo($obj && in_array('Conekta', $obj) ? 'checked="checked"' : ''); ?> class="form-control ">Conekta</label>
 									<label id="lbpaypal"class="hide"><input type="checkbox" name="processor[]" id="PayPal" value="PayPal" <?php echo( $obj && in_array('PayPal', $obj) ? 'checked="checked"' : ''); ?> class="form-control ">PayPal</label>
-									<label id="lbpayu"class="hide"><input type="checkbox" name="processor[]" id="Payu" value="Payu" <?php echo( $obj && in_array('Payu', $obj) ? 'checked="checked"' : ''); ?> class="form-control ">Payu</label>
 								</div>
 							</div>
 					</div>
@@ -186,13 +203,9 @@
 					<div class="metabox">
 						<div class="metabox-header">Additional Information</div>
 							<div class="metabox-body">
-								<div class="row row-md row-5">
-									<div class="col col-md-12">
-										<div class="form-group">
-											<label for="extra_seats_price" class="control-label">Extra Seats Price</label>
-											<input type="text" name="extra_seats_price" id="extra_seats_price" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('extra_seats_price') : ''); ?>">
-										</div>
-									</div>
+								<div class="form-group">
+									<label for="extra_seats_price" class="control-label">Extra Seats Price</label>
+									<input type="text" name="extra_seats_price" id="extra_seats_price" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('extra_seats_price') : ''); ?>">
 								</div>
 								<div class="form-group">
 									<label for="time_to_live" class="control-label">Time to live in days - leave empty for no limit</label>
@@ -227,7 +240,7 @@
 									<textarea name="product_description" id="product_description"  class="form-control input-block" rows="10"><?php sanitized_print($item ? $item->getMeta('product_description') : '');?></textarea>
 								</div>
 								<div class="form-group">
-									<label class="control-label"><input class="form-control" type="checkbox" name="growsumo" <?php  echo(isset($item) && $item->getMeta('growsumo') == 'on' ? 'checked="checked"' : false); ?> >Activate GrowSumo</label>
+									<label class="control-label"><input class="form-control" type="checkbox" name="growsumo" <?php  echo(isset($item) && $item->getMeta('growsumo') == 'on' ? 'checked="checked"' : false); ?> >PartnerStack</label>
 								</div><div class="form-group">
 									<label class="control-label"><input class="form-control" type="checkbox" name="gdpr" <?php  echo(isset($item) && $item->getMeta('gdpr') == 'on' ? 'checked="checked"' : false); ?> >Activate GDPR</label>
 								</div>
@@ -253,7 +266,7 @@
 				</div>
 				<div class="tab" id="tab-four">
 					<div class="metabox">
-						<div class="metabox-header">Range Discounts</div>
+						<div class="metabox-header">Discounts</div>
 							<div class="metabox-body">
 								<div class="repeater repeater-discount" data-partial="#partial-repeater-discount">
 
@@ -265,7 +278,7 @@
 												if ($discounts) :
 													foreach ($discounts as $discount => $value) :
 											?>
-													<div class="repeater-item" id="repeater-item-ranges">
+													<div class="repeater-item">
 														<div class="item-grip">
 															<div class="grip-number"><span><?php echo($counter++); ?></span></div>
 														</div>
@@ -298,7 +311,8 @@
 																		<label for="type_<?php echo $counter; ?>" class="control-label">Type</label>
 																		<select name="type[]" data-validate="required" id="type_<?php echo $counter; ?>" class="form-control input-block">
 																			<option value="percentage" <?php echo $value['type'] == 'percentage' ? 'selected' : ''; ?>>Percentage</option>
-																			<option value="amount" <?php echo $value['type'] == 'amount' ? 'selected' : ''; ?>>Fixed Amount</option>
+																			<option value="amount" <?php echo $value['type'] == 'amount' ? 'selected' : ''; ?>>Amount Off</option>
+																			<option value="fixed" <?php echo $value['type'] == 'fixed' ? 'selected' : ''; ?>>Fixed Amount</option>
 																		</select>
 																	</div>
 																</div>
@@ -314,7 +328,7 @@
 										<a href="#" class="button button-primary js-repeater-add">Add</a>
 									</div>
 									<script type="text/template" id="partial-repeater-discount">
-										<div class="repeater-item" id="repeater-item-ranges">
+										<div class="repeater-item">
 											<div class="item-grip">
 												<div class="grip-number"><span><%= number %></span></div>
 											</div>
@@ -347,100 +361,8 @@
 															<label for="type_<%= number %>" class="control-label">Type</label>
 															<select name="type[]" data-validate="required" id="type_<%= number %>" class="form-control input-block">
 																<option value="percentage">Percentage</option>
-																<option value="amount">Fixed Amount</option>
-															</select>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</script>
-								</div>
-
-							</div>
-						<div class="metabox-header">Coupon Discounts</div>
-							<div class="metabox-body">
-								<div class="repeater repeater-discount" data-partial="#partial-repeater-coupon">
-
-									<div class="repeater-items">
-
-											<?php
-												$coupon_codes = isset($item) ? $item->getMeta("coupon_codes") : false;
-												$counter_coupon = 1;
-												if ($coupon_codes) :
-													foreach ($coupon_codes as $coupon_code => $value) :
-											?>
-													<div class="repeater-item">
-														<div class="item-grip">
-															<div class="grip-number"><span><?php echo$counter_coupon++; ?></span></div>
-														</div>
-														<div class="item-actions">
-															<a href="#" class="item-action action-insert js-repeater-insert"><i class="fa fa-plus"></i></a>
-															<a href="#" class="item-action action-delete js-repeater-delete"><i class="fa fa-minus"></i></a>
-														</div>
-														<div class="item-controls">
-															<div class="row row-md row-5">
-																<div class="col col-md-4">
-																	<div class="form-group">
-																		<label for="range_<?php echo $counter_coupon; ?>" class="control-label">Code</label>
-																		<input type="text" data-validate="required" name="code[]" id="code_<?php echo $counter_coupon; ?>" class="form-control input-block" value="<?php echo $value['coupon']; ?>">
-																	</div>
-																</div>
-																<div class="col col-md-4">
-																	<div class="form-group">
-																		<label for="range_<?php echo $counter_coupon; ?>" class="control-label">Value</label>
-																		<input type="text" data-validate="required" name="value_code[]" id="value_code_<?php echo $counter_coupon; ?>" class="form-control input-block" value="<?php echo $value['value_code']; ?>">
-																	</div>
-																</div>
-																<div class="col col-md-4">
-																	<div class="form-group">
-																		<label for="type_code_<?php echo $counter_coupon; ?>" class="control-label">Type</label>
-																		<select name="type_code[]" data-validate="required" id="type_code_<?php echo $counter_coupon; ?>" class="form-control input-block">
-																			<option value="percentage" <?php echo $value['type_code'] == 'percentage' ? 'selected' : ''; ?>>Percentage</option>
-																			<option value="amount" <?php echo $value['type_code'] == 'amount' ? 'selected' : ''; ?>>Fixed Amount</option>
-																		</select>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-											<?php
-													endforeach;
-												endif;
-											?>
-									</div>
-									<div class="repeater-actions">
-										<a href="#" class="button button-primary js-repeater-add">Add</a>
-									</div>
-									<script type="text/template" id="partial-repeater-coupon">
-										<div class="repeater-item">
-											<div class="item-grip">
-												<div class="grip-number"><span><%= number %></span></div>
-											</div>
-											<div class="item-actions">
-												<a href="#" class="item-action action-insert js-repeater-insert"><i class="fa fa-plus"></i></a>
-												<a href="#" class="item-action action-delete js-repeater-delete"><i class="fa fa-minus"></i></a>
-											</div>
-											<div class="item-controls">
-												<div class="row row-md row-5">
-													<div class="col col-md-4">
-														<div class="form-group">
-															<label for="range_<%= number %>" class="control-label">Code</label>
-															<input type="text" data-validate="required" name="code[]" id="code_<%= number %>" class="form-control input-block" value="">
-														</div>
-													</div>
-													<div class="col col-md-4">
-														<div class="form-group">
-															<label for="range_<%= number %>" class="control-label">Value</label>
-															<input type="text" data-validate="required" name="value_code[]" id="value_code<%= number %>" class="form-control input-block" value="">
-														</div>
-													</div>
-													<div class="col col-md-4">
-														<div class="form-group">
-															<label for="type_code_<%= number %>" class="control-label">Type</label>
-															<select name="type_code[]" data-validate="required" id="type_code_<%= number %>" class="form-control input-block">
-																<option value="percentage">Percentage</option>
-																<option value="amount">Fixed Amount</option>
+																<option value="amount">Amount Off</option>
+																<option value="fixed">Fixed Amount</option>
 															</select>
 														</div>
 													</div>

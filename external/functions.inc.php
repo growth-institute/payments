@@ -27,10 +27,11 @@
 	);
 	$site->registerStyle('google-fonts', get_google_fonts($fonts), true );
 	$site->registerStyle('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', true);
+	$site->registerStyle('select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css', true);
 	$site->registerStyle('reset', 'reset.css', false );
 	$site->registerStyle('plugins', 'plugins/plugins.css', false );
 	$site->registerStyle('print', 'print.css', false, array(), array('media' => 'print') );
-	$site->registerStyle('backend', 'backend.less', false, array('reset', 'google-fonts', 'font-awesome', 'plugins') );
+	$site->registerStyle('backend', 'backend.less', false, array('reset', 'google-fonts', 'font-awesome', 'plugins', 'select2') );
 	$site->registerStyle('site', 'site.less', false, array('reset', 'google-fonts', 'font-awesome') );
 	$site->enqueueStyle('print');
 
@@ -40,9 +41,10 @@
 	$site->registerScript('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js', true);
 	$site->registerScript('underscore', 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js', true);
 	$site->registerScript('clipboard', 'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js', true);
+	$site->registerScript('select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js', true);
 	$site->registerScript('class', 'class.js', false, array('jquery', 'underscore', 'clipboard'));
-	$site->registerScript('site', 'site.js', false, array('class', 'jquery.valid4tor','plugins'));
-	$site->registerScript('backend', 'backend.js', false, array('class', 'jquery.valid4tor','plugins', 'loadzilla'));
+	$site->registerScript('site', 'site.js?v=' . time(), false, array('class', 'jquery.valid4tor','plugins'));
+	$site->registerScript('backend', 'backend.js?v=' . time(), false, array('class', 'jquery.valid4tor','plugins', 'loadzilla', 'select2'));
 
 	# General meta tags
 	$site->addMeta('UTF-8', '', 'charset');

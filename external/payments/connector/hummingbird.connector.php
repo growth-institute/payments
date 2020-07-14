@@ -16,8 +16,11 @@
 			$params['processor'] = $order->payment_processor;
 			$params['sku'] = json_decode($form->products);
 			$params['locale'] = $form->language;
-			$params['notify'] = false;
+			//$params['notify'] = false;
 			$lang = $form->language;
+
+			log_to_file('ENTRANDO AQUI', 'products');
+			log_to_file(print_r($form, 1), 'products');
 
 			$curly = Curly::newInstance(false)
 					->setMethod('get')

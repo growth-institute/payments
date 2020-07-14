@@ -9,5 +9,13 @@
 		<!-- Used to display form errors -->
 		<div id="card-errors" role="alert"></div>
 	</div>
-	<button type="submit" class="button button-primary"><?php $i18n->translate('form.stripe.submit'); ?></button>
+
+	<button type="submit" class="button button-primary js-process-payment"><?php echo $form->getMeta('form_stripe_submit', $i18n->translate('form.stripe.submit', false)) ; ?></button>
+
+	<?php if($copy = $form->getMeta('before_payment_copy')): ?>
+		<div class="the-content margins-vert">
+			<?php echo $copy; ?>
+		</div>
+	<?php endif; ?>
+
 </form>

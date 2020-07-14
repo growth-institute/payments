@@ -77,6 +77,7 @@ function checkImageAction(){
 			$params = [];
 			$params['show'] = $show;
 			$params['page'] = $page;
+			$params['sort'] = 'desc';
 			$params['conditions'] = $conditions;
 			$items = PaymentsForms::all($params);
 			$total = PaymentsForms::count($conditions);
@@ -112,7 +113,8 @@ function checkImageAction(){
 				$site->render('backend/forms/page-new', $data);
 				break;
 			case 'post':
-			//getting data post to send them to the db
+				//getting data post to send them to the db
+
 				$name = $request->post('name');
 				$slug = $request->post('slug');
 				$products = $request->post('products');
@@ -122,11 +124,11 @@ function checkImageAction(){
 				$currency = $request->post('currency');
 				$total = $request->post('total');
 				$subscription = $request->post('subscription');
+				$internal_name = $request->post('internal_name');
 				//MetaPost
 				$quantity = $request->post('quantity');
 				$quantity_value = $request->post('quantity_value');
 				$quantity_label = $request->post('quantity_label');
-				$exchange_rate = $request->post('exchange_rate');
 				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
@@ -137,12 +139,14 @@ function checkImageAction(){
 				$product_image = $request->post('product_image');
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
+				$trial_days = $request->post('trial_days');
 				$installments = $request->post('installments');
 				$from = $request->post('from');
 				$to = $request->post('to');
 				$val = $request->post('val');
 				$type = $request->post('type');
 				$coupon_subscription = $request->post('coupon_subscription');
+				$old_price = $request->post('old_price');
 				$connector = $request->post('connector');
 				$array_discount = false;
 				if(is_array($from)) {
@@ -156,20 +160,6 @@ function checkImageAction(){
 						];
 					}
 				}
-				$code = $request->post('code');
-				$value_code = $request->post('value_code');
-				$type_code = $request->post('type_code');
-				$array_coupon = false;
-				if (is_array($code)) {
-					for ($i=0; $i < count($code); $i++) {
-						$array_coupon[] = [
-							'coupon' => $code[$i],
-							'value_code' => $value_code[$i],
-							'type_code' => $type_code[$i]
-						];
-					}
-				}
-
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -187,15 +177,24 @@ function checkImageAction(){
 				$form = new PaymentsForm();
 				$form->name = $name;
 				$form->slug = $slug;
-				$explode = explode(',', $products);
-				foreach ($explode as $data) {
-					if ($data == ' ') {
-						unset($data);
-					} else {
-						trim($data);
+
+				if(is_string($products)) {
+
+					$explode = explode(',', $products);
+					foreach ($explode as $data) {
+						if ($data == ' ') {
+							unset($data);
+						} else {
+							trim($data);
+						}
 					}
+					$form->products = json_encode($explode);
+
+				} else if(is_array($products)) {
+					$form->products = json_encode($products);
 				}
-				$form->products = json_encode($explode);
+
+
 				$form->language = $language;
 				$form->processor = json_encode($processor);
 				$form->currency = $currency;
@@ -206,7 +205,6 @@ function checkImageAction(){
 				$form->updateMeta('quantity', $quantity);
 				$form->updateMeta('quantity_value', $quantity_value);
 				$form->updateMeta('quantity_label', $quantity_label);
-				$form->updateMeta('exchange_rate', $exchange_rate);
 				$form->updateMeta('id_list', $id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);
@@ -217,12 +215,13 @@ function checkImageAction(){
 				$form->updateMeta('product_image', $product_image);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
+				$form->updateMeta('trial_days', $trial_days);
 				$form->updateMeta('installments', $installments);
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
+				$form->updateMeta('old_price', $old_price);
 				$form->updateMeta('connector', $connector);
-				$form->updateMeta('coupon_codes', $array_coupon);
-
+				$form->updateMeta('internal_name', $internal_name);
 				//$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
@@ -267,11 +266,11 @@ function checkImageAction(){
 				$currency = $request->post('currency');
 				$total = $request->post('total');
 				$subscription = $request->post('subscription');
+				$internal_name = $request->post('internal_name');
 				//MetaPost
 				$quantity = $request->post('quantity');
 				$quantity_value = $request->post('quantity_value');
 				$quantity_label = $request->post('quantity_label');
-				$exchange_rate = $request->post('exchange_rate');
 				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
@@ -282,12 +281,14 @@ function checkImageAction(){
 				$product_image = $request->post('product_image');
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
+				$trial_days = $request->post('trial_days');
 				$installments = $request->post('installments');
 				$from = $request->post('from');
 				$to = $request->post('to');
 				$val = $request->post('val');
 				$type = $request->post('type');
 				$coupon_subscription = $request->post('coupon_subscription');
+				$old_price = $request->post('old_price');
 				$connector = $request->post('connector');
 				$array_discount = false;
 				if(is_array($from)) {
@@ -298,19 +299,6 @@ function checkImageAction(){
 							'to' => $to[$x],
 							'val' => $val[$x],
 							'type' => $type[$x]
-						];
-					}
-				}
-				$code = $request->post('code');
-				$value_code = $request->post('value_code');
-				$type_code = $request->post('type_code');
-				$array_coupon = false;
-				if (is_array($code)) {
-					for ($i=0; $i < count($code); $i++) {
-						$array_coupon[] = [
-							'coupon' => $code[$i],
-							'value_code' => $value_code[$i],
-							'type_code' => $type_code[$i]
 						];
 					}
 				}
@@ -331,6 +319,7 @@ function checkImageAction(){
 					$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}"));
 				}
 				//updating data
+
 				$explode = explode(',', $products);
 				$form->name = $name;
 				$form->slug = $slug;
@@ -340,12 +329,37 @@ function checkImageAction(){
 				$form->currency = $currency;
 				$form->total = $total;
 				$form->subscription = $subscription;
+
+				if(is_string($products)) {
+
+					$explode = explode(',', $products);
+					foreach ($explode as $data) {
+						if ($data == ' ') {
+							unset($data);
+						} else {
+							trim($data);
+						}
+					}
+					$form->products = json_encode($explode);
+
+				} else if(is_array($products)) {
+					$form->products = json_encode($products);
+				}
+
+				/*if ($id == 276) {
+					# code...
+					$string = array("license-3432c97f-6bb8-4b06-9bae-db25c11c6a01","license-26c8768d-51f3-426c-aadf-e806f3ddc4cf","license-63194afc-c649-418a-b902-5cf9d6f2e743","license-c0b5284d-b087-444e-a736-1f89d085f4a6","license-73caca0c-e7bd-4f9a-ab54-0901e29fd9b5","license-ccea8d90-5fd2-43d9-ab25-59378cfbe9e5","license-ed6774b7-3485-47a2-b3e5-5aedd5161193","license-df614044-d638-4548-8ba0-f9769c3cb1f3");
+					$encode = json_encode($string);
+					$form->products = $encode;
+					$form->save();
+
+				}*/
+
 				$form->save();
 				//Updating metas to DB
 				$form->updateMeta('quantity',$quantity);
 				$form->updateMeta('quantity_value',$quantity_value);
 				$form->updateMeta('quantity_label',$quantity_label);
-				$form->updateMeta('exchange_rate', $exchange_rate);
 				$form->updateMeta('id_list',$id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);
@@ -356,11 +370,13 @@ function checkImageAction(){
 				$form->updateMeta('product_image', $product_image);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
+				$form->updateMeta('trial_days', $trial_days);
 				$form->updateMeta('installments', $installments);
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
+				$form->updateMeta('old_price', $old_price);
 				$form->updateMeta('connector', $connector);
-				$form->updateMeta('coupon_codes', $array_coupon);
+				$form->updateMeta('internal_name', $internal_name);
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}

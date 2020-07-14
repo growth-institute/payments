@@ -107,7 +107,7 @@
 		return $ret;
 	}
 
-		/**
+	/**
 	 * Generate a password of the given length
 	 * @param  integer $length Password length
 	 * @return string          Generated password on success, False otherwise

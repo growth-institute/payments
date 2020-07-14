@@ -5,10 +5,18 @@ namespace Stripe;
 /**
  * Class ApplePayDomain
  *
+ * @property string $id
+ * @property string $object
+ * @property int $created
+ * @property string $domain_name
+ * @property bool $livemode
+ *
  * @package Stripe
  */
 class ApplePayDomain extends ApiResource
 {
+    const OBJECT_NAME = 'apple_pay_domain';
+
     use ApiOperations\All;
     use ApiOperations\Create;
     use ApiOperations\Delete;

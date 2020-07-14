@@ -67,28 +67,28 @@ Backend = Class.extend({
 		if ($('#currency').val() == 'usd' && $('#subscription').val() == 'Yes' ) {
 
 			$('#lbstripe').removeClass('hide');
-			$('#conekta, #PayPal, #Payu').attr('disabled', true);
+			$('#conekta, #PayPal').attr('disabled', true);
 			$('#lbpaypal').addClass('hide');
 
 		} else if($('#currency').val() == 'usd' && $('#subscription').val() == '' ) {
 
 			$('#lbpaypal, #lbstripe').removeClass('hide');
 			$('#lbconekta').addClass('hide');
-			$('#conekta, #Payu').attr('disabled', true);
+			$('#conekta').attr('disabled', true);
 			$('#PayPal, #Stripe').attr('disabled', false);
 
 
 		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == '' ) {
 
-			$('#lbconekta, #lbpaypal, #lbstripe, #lbpayu').removeClass('hide');
-			$('#conekta, #PayPal, #Stripe, #Payu').attr('disabled', false);
+			$('#lbconekta, #lbpaypal, #lbstripe').removeClass('hide');
+			$('#conekta, #PayPal, #Stripe').attr('disabled', false);
 
 
 		} else if($('#currency').val() == 'mxn' && $('#subscription').val() == 'Yes' ) {
 
 			$('#lbstripe').removeClass('hide');
-			$('#lbpaypal, #lbconekta, #lbpayu').addClass('hide');
-			$('#conekta, #PayPal, #Payu').attr('disabled', true);
+			$('#lbpaypal, #lbconekta').addClass('hide');
+			$('#conekta, #PayPal').attr('disabled', true);
 			$('#Stripe').attr('disabled', false);
 
 		}
@@ -97,8 +97,8 @@ Backend = Class.extend({
 	ranges: function(rangesresponse) {
 
 		var ranges = [];
-		froms = $('#repeater-item-ranges input[name^="from"]').map(function () { return this.value; }).get();
-		tos = $('#repeater-item-ranges input[name="to[]"').map(function () { return this.value; }).get();
+		froms = $('.repeater-item input[name^="from"]').map(function () { return this.value; }).get();
+		tos = $('.repeater-item input[name="to[]"').map(function () { return this.value; }).get();
 		ranges = $.map(froms, function(from, i) {
 			return {from:parseInt(froms[i]), to:parseInt(tos[i])};
 		});
@@ -122,7 +122,7 @@ Backend = Class.extend({
 					return rangesresponse;
 				}
 
-				if(ranges[i].from >= ranges[i].to) {
+				if(ranges[i].from > ranges[i].to) {
 					$.alert('Range from is bigger than a Range to');
 					rangesresponse = false;
 					return rangesresponse;
@@ -158,6 +158,8 @@ Backend = Class.extend({
 	},
 	onDomReady: function($) {
 		var obj = this;
+
+		$('.js-select2').select2({ width: '100%' });
 
 		// Tabs Miniplugin
 		$('.tab-list li a').on('click', function(e) {
@@ -258,7 +260,7 @@ Backend = Class.extend({
 				$.alert('You must select at least one payment processor');
 				return false;
 			}
-			var hasDiscount = $('#repeater-item-ranges').length;
+			var hasDiscount = $('.repeater-item').length;
 			if(hasDiscount >= 1) {
 				//console.log(hasDiscount);
 				var rangesresponse = false;

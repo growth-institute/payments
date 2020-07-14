@@ -102,31 +102,38 @@
 			}
 
 			try {
+
+				// ITS A SUBSCRIPTION
 				if ($form->subscription) {
-					try{
-						$plan = \Stripe\Plan::retrieve($form->slug);
-					} catch (\Stripe\Error\InvalidRequest $e) {
+					/*try{
+						$plan = \Stripe\Plan::retrieve("{$form->id}-{$form->slug}-{$order->id}");
+					} catch (\Stripe\Error\InvalidRequest $e) {*/
 						if (! isset($plan) ) {
 							if ($form->getMeta('ocurrency') == '0') {
 								$amount = $charge_amount*100;
-								echo $form->getMeta('ocurrency');
 							} else {
 								$amount = round(($charge_amount*100)/$form->getMeta('ocurrency'));
 							}
-							$options_plan = array(
-								'id' => $form->slug,
+							$options_plan = [
 								//'object' => 'plan',
+								//'created' => $form->created,
+								'id' => "{$form->id}-{$form->slug}-{$order->id}",
 								'active' => true,
 								'amount' => $amount,
 								'currency' => $form->currency,
 								'interval' => 'month',
+								//'nickname' => "Subscription Plan created for form with ID {$form->id}",
 								'interval_count' => $form->getMeta('periodicity'),
-								//'created' => $form->created,
-								'name' => $form->name
-							);
+								'name' => "{$form->name} (Form: {$form->id}, Order: {$order->id})",
+								'metadata' => [
+									'form_id' => $form->id,
+									'form_slug' => $form->slug,
+									'form_name' => $form->name
+								]
+							];
 							$plan = \Stripe\Plan::create($options_plan);
 						}
-					}
+					//}
 					if( $form->getMeta('coupon_subscription') ) {
 						try {
 							$coupon = \Stripe\Coupon::retrieve($form->slug);
@@ -136,7 +143,12 @@
 									'percent_off' => $form->getMeta('coupon_subscription'),
 									'currency' => $form->currency,
 									'duration' => 'once',
-									'id' => $form->slug
+									'id' => $form->slug,
+									'metadata' => [
+										'form_id' => $form->id,
+										'form_slug' => $form->slug,
+										'form_name' => $form->name
+									]
 								);
 								$coupon = \Stripe\Coupon::create($options_coupon);
 							}
@@ -148,9 +160,15 @@
 						'customer' => $customer->id,
 						'coupon' => $coupon->id
 					);
-					log_to_file(print_r($options_subscription,1), 'subscription');
+
+					if($form->getMeta('trial_days')) {
+
+						$options_subscription['trial_period_days'] = $form->getMeta('trial_days');
+					}
+
 					$subscription = \Stripe\Subscription::create($options_subscription);
-					if ($subscription && $subscription->status == 'active') {
+
+					if ($subscription && ($subscription->status == 'active' || $subscription->status == 'trialing')) {
 						$order->payment_status = 'Paid';
 						$order->payment_processor = 'Stripe';
 						$order->payment_ticket = $subscription->id;
@@ -180,7 +198,12 @@
 						}
 						$url = $url ?: $site->urlTo("/thanks/{$order->uid}");
 						$site->redirectTo($url);
+					} else {
+
+						echo "Subscription is not active or trialing";
 					}
+
+				// ITS NOT A SUBSCRIPTION
 				} else {
 					$options = array(
 						'amount' => $charge_amount*100,
