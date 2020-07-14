@@ -39,7 +39,7 @@
 		'features.p-information' => 'Hemos ayudado a más de 40,000 organizaciones del mercado medio a escalar rápidamente, fácil de implementar y sin drama *',
 		'features.h2-privacy' => 'PRIVACIDAD Y SEGURIDAD',
 		'features.p-privacy' => 'Toda la información personal que envía es encriptada y se mantiene segura.',
-		'features.h2-support' => 'SOPORTE 24/7',
+		'features.h2-support' => 'SOPORTE',
 		'features.p-support' => 'Si tiene algún problema o inquietud, solo llámenos al 52 (55) 3300 6767 o al 1 800 975 5108 desde cualquier parte del mundo o envíe un correo electrónico a <a href="mailto:soporte@growthinstitute.com">soporte@growthinstitute.com</a>!',
 
 		//Footer
