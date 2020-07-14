@@ -111,7 +111,9 @@
 																	<span class="divider">|</span>
 																	<a href="<?php $site->urlTo("/backend/forms/delete/{$item->id}", true) ?>" class="action-delete">Delete</a>
 																	<span class="divider">|</span>
-																	<a href="<?php $site->urlTo("/form/{$item->slug}", true) ?>" target="_blank">Link Form</a>
+																	<a href="<?php $site->urlTo("/form/{$item->slug}", true) ?>" target="_blank">Production Link</a>
+																	<span class="divider">|</span>
+																	<a href="<?php $site->urlTo("/form/{$item->slug}?test=ggi2018", true) ?>" target="_blank">Test Link</a>
 																</div>
 															</td>
 														</tr>
