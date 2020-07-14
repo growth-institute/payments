@@ -310,9 +310,6 @@
 			#
 			$endpoint = "{$this->api_url}/contacts/v1/contact/createOrUpdate/email/{$email}";
 			#
-			$headers = array();
-			$headers['Content-Type'] = 'application/json';
-			#
 			$params = array();
 			$params['hapikey'] = $this->api_key;
 			#
@@ -330,7 +327,6 @@
 				->setURL($endpoint)
 				->setParams($params)
 				->setFields($fields)
-				->setHeaders($headers)
 				->execute();
 			#
 			$res = $curly->getResponse('json');

@@ -26,7 +26,6 @@
 						<?php
 							$data = array();
 							$data['item'] = null;
-							$data['events'] = $events;
 							//$data['hubspot_list'] = $hubspot_list;
 							$site->partial('backend/forms/editor', $data, $site->baseDir('/templates/pages'));
 						?>

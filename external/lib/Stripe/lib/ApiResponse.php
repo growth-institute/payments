@@ -2,8 +2,6 @@
 
 namespace Stripe;
 
-use Stripe\Util\CaseInsensitiveArray;
-
 /**
  * Class ApiResponse
  *
@@ -11,31 +9,18 @@ use Stripe\Util\CaseInsensitiveArray;
  */
 class ApiResponse
 {
-    /**
-     * @var array|CaseInsensitiveArray|null
-     */
     public $headers;
-    
-    /**
-     * @var string
-     */
     public $body;
-
-    /**
-     * @var array|null
-     */
     public $json;
-
-    /**
-     * @var int
-     */
     public $code;
 
     /**
      * @param string $body
      * @param integer $code
-     * @param array|CaseInsensitiveArray|null $headers
+     * @param array|null $headers
      * @param array|null $json
+     *
+     * @return obj An APIResponse
      */
     public function __construct($body, $code, $headers, $json)
     {

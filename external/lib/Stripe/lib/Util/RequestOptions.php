@@ -2,7 +2,7 @@
 
 namespace Stripe\Util;
 
-use Stripe\Exception;
+use Stripe\Error;
 
 class RequestOptions
 {
@@ -16,22 +16,11 @@ class RequestOptions
 
     public $headers;
     public $apiKey;
-    public $apiBase;
 
-    public function __construct($key = null, $headers = [], $base = null)
+    public function __construct($key = null, $headers = [])
     {
         $this->apiKey = $key;
         $this->headers = $headers;
-        $this->apiBase = $base;
-    }
-
-    public function __debugInfo()
-    {
-        return [
-            'apiKey' => $this->redactedApiKey(),
-            'headers' => $this->headers,
-            'apiBase' => $this->apiBase,
-        ];
     }
 
     /**
@@ -46,9 +35,6 @@ class RequestOptions
         $other_options = self::parse($options);
         if ($other_options->apiKey === null) {
             $other_options->apiKey = $this->apiKey;
-        }
-        if ($other_options->apiBase === null) {
-            $other_options->apiBase = $this->apiBase;
         }
         $other_options->headers = array_merge($this->headers, $other_options->headers);
         return $other_options;
@@ -79,17 +65,16 @@ class RequestOptions
         }
 
         if (is_null($options)) {
-            return new RequestOptions(null, [], null);
+            return new RequestOptions(null, []);
         }
 
         if (is_string($options)) {
-            return new RequestOptions($options, [], null);
+            return new RequestOptions($options, []);
         }
 
         if (is_array($options)) {
             $headers = [];
             $key = null;
-            $base = null;
             if (array_key_exists('api_key', $options)) {
                 $key = $options['api_key'];
             }
@@ -102,27 +87,13 @@ class RequestOptions
             if (array_key_exists('stripe_version', $options)) {
                 $headers['Stripe-Version'] = $options['stripe_version'];
             }
-            if (array_key_exists('api_base', $options)) {
-                $base = $options['api_base'];
-            }
-            return new RequestOptions($key, $headers, $base);
+            return new RequestOptions($key, $headers);
         }
 
         $message = 'The second argument to Stripe API method calls is an '
            . 'optional per-request apiKey, which must be a string, or '
            . 'per-request options, which must be an array. (HINT: you can set '
            . 'a global apiKey by "Stripe::setApiKey(<apiKey>)")';
-        throw new Exception\InvalidArgumentException($message);
-    }
-
-    private function redactedApiKey()
-    {
-        $pieces = explode('_', $this->apiKey, 3);
-        $last = array_pop($pieces);
-        $redactedLast = strlen($last) > 4
-            ? (str_repeat('*', strlen($last) - 4) . substr($last, -4))
-            : $last;
-        array_push($pieces, $redactedLast);
-        return implode('_', $pieces);
+        throw new Error\Api($message);
     }
 }

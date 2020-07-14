@@ -77,7 +77,6 @@ function checkImageAction(){
 			$params = [];
 			$params['show'] = $show;
 			$params['page'] = $page;
-			$params['sort'] = 'desc';
 			$params['conditions'] = $conditions;
 			$items = PaymentsForms::all($params);
 			$total = PaymentsForms::count($conditions);
@@ -106,11 +105,9 @@ function checkImageAction(){
 				$credentials['api_key'] = 'a32d646d-4819-4c40-89a9-dd9140ae9fda';
 				$hubspot = HubSpot::newInstance($credentials);
 				$res = $hubspot->contactListsAll();*/
-				$events = Events::all();
 				$notice = Flasher::notice();
 				$data = [];
 				$data['notice'] = $notice;
-				$data['events'] = $events;
 				//$data['hubspot_list'] = $res;
 				$site->render('backend/forms/page-new', $data);
 				break;
@@ -129,29 +126,24 @@ function checkImageAction(){
 				$quantity = $request->post('quantity');
 				$quantity_value = $request->post('quantity_value');
 				$quantity_label = $request->post('quantity_label');
-				$exchange_rate = $request->post('exchange_rate');
 				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
-				$extra = $request->post('extra');
 				$growsumo = $request->post('growsumo');
 				$gdpr = $request->post('gdpr');
-				$send_notification = $request->post('send_notification');
 				$product_image = $request->post('product_image');
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				$installments = $request->post('installments');
-				$stripe_installments = $request->post('stripe-installments');
 				$from = $request->post('from');
 				$to = $request->post('to');
 				$val = $request->post('val');
 				$type = $request->post('type');
 				$coupon_subscription = $request->post('coupon_subscription');
+				$old_price = $request->post('old_price');
 				$connector = $request->post('connector');
-				$public_name = $request->post('public_name');
-				$event = $request->post('event');
 				$array_discount = false;
 				if(is_array($from)) {
 					$array_discount = [];
@@ -164,31 +156,6 @@ function checkImageAction(){
 						];
 					}
 				}
-				$code = $request->post('code');
-				$value_code = $request->post('value_code');
-				$type_code = $request->post('type_code');
-				$array_coupon = false;
-				if (is_array($code)) {
-					for ($i=0; $i < count($code); $i++) {
-						$array_coupon[] = [
-							'coupon' => $code[$i],
-							'value_code' => $value_code[$i],
-							'type_code' => $type_code[$i]
-						];
-					}
-				}
-
-				$input_name = $request->post('input_name');
-				$input_value = $request->post('input_value');
-				$array_fields = false;
-				if (is_array($input_name)) {
-					for ($i=0; $i < count($input_name); $i++) {
-						$array_fields[] = [
-							$input_name[$i] => $input_value[$i],
-						];
-					}
-				}
-
 				//creating an object validator and added some rules
 				$validator = Validator::newInstance()
 				->addRule('Name', $name)
@@ -225,29 +192,21 @@ function checkImageAction(){
 				$form->updateMeta('quantity', $quantity);
 				$form->updateMeta('quantity_value', $quantity_value);
 				$form->updateMeta('quantity_label', $quantity_label);
-				$form->updateMeta('exchange_rate', $exchange_rate);
 				$form->updateMeta('id_list', $id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
-				$form->updateMeta('extra', $extra);
 				$form->updateMeta('growsumo', $growsumo);
 				$form->updateMeta('gdpr', $gdpr);
-				$form->updateMeta('send_notification', $send_notification);
 				$form->updateMeta('product_image', $product_image);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);
-				$form->updateMeta('stripe_installments', $stripe_installments);
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
+				$form->updateMeta('old_price', $old_price);
 				$form->updateMeta('connector', $connector);
-				$form->updateMeta('public_name', $public_name);
-				$form->updateMeta('coupon_codes', $array_coupon);
-				$form->updateMeta('custom_fields', $array_fields);
-				$form->updateMeta('event', $event);
-
 				//$site->redirectTo($site->urlTo('/backend/forms?msg=220'));
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
@@ -263,7 +222,6 @@ function checkImageAction(){
 		//getting data with metas
 		$params['pdoargs'] = array('fetch_metas' => 1);
 		$form = PaymentsForms::getById($id, $params);
-		$events = Events::all();
 		//Validate if there isn't data redirect to index forms
 		if(!$form) {
 			$site->redirectTo( $site->urlTo('/backend/forms/') );
@@ -279,12 +237,11 @@ function checkImageAction(){
 				$data = [];
 				$data['item'] = $form;
 				$data['notice'] = $notice;
-				$data['events'] = $events;
 				//$data['hubspot_list'] = $res;
 				$site->render('backend/forms/page-edit', $data);
 			break;
 			case 'post':
-				//Getting data post to send them DB
+			//getting data post to send them DB
 				$name = $request->post('name');
 				$slug = $request->post('slug');
 				$products = $request->post('products');
@@ -298,31 +255,24 @@ function checkImageAction(){
 				$quantity = $request->post('quantity');
 				$quantity_value = $request->post('quantity_value');
 				$quantity_label = $request->post('quantity_label');
-				$exchange_rate = $request->post('exchange_rate');
 				$id_list = $request->post('id_list');
 				$extra_seats_price = $request->post('extra_seats_price');
 				$time_to_live = $request->post('time_to_live');
 				$thank_you_page = $request->post('thank_you_page');
 				$product_description = $request->post('product_description');
-				$extra = $request->post('extra');
 				$growsumo = $request->post('growsumo');
 				$gdpr = $request->post('gdpr');
-				$send_notification = $request->post('send_notification');
 				$product_image = $request->post('product_image');
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
 				$installments = $request->post('installments');
-				$stripe_installments = $request->post('stripe-installments');
-				$array_stripe_installments = $request->post('array_stripe_installments');
 				$from = $request->post('from');
 				$to = $request->post('to');
 				$val = $request->post('val');
 				$type = $request->post('type');
 				$coupon_subscription = $request->post('coupon_subscription');
+				$old_price = $request->post('old_price');
 				$connector = $request->post('connector');
-				$public_name = $request->post('public_name');
-				$event = $request->post('event');
-
 				$array_discount = false;
 				if(is_array($from)) {
 					$array_discount = [];
@@ -332,30 +282,6 @@ function checkImageAction(){
 							'to' => $to[$x],
 							'val' => $val[$x],
 							'type' => $type[$x]
-						];
-					}
-				}
-				$code = $request->post('code');
-				$value_code = $request->post('value_code');
-				$type_code = $request->post('type_code');
-				$array_coupon = false;
-				if (is_array($code)) {
-					for ($i=0; $i < count($code); $i++) {
-						$array_coupon[] = [
-							'coupon' => $code[$i],
-							'value_code' => $value_code[$i],
-							'type_code' => $type_code[$i]
-						];
-					}
-				}
-
-				$input_name = $request->post('input_name');
-				$input_value = $request->post('input_value');
-				$array_fields = false;
-				if (is_array($input_name)) {
-					for ($i=0; $i < count($input_name); $i++) {
-						$array_fields[] = [
-							$input_name[$i] => $input_value[$i],
 						];
 					}
 				}
@@ -390,29 +316,21 @@ function checkImageAction(){
 				$form->updateMeta('quantity',$quantity);
 				$form->updateMeta('quantity_value',$quantity_value);
 				$form->updateMeta('quantity_label',$quantity_label);
-				$form->updateMeta('exchange_rate', $exchange_rate);
 				$form->updateMeta('id_list',$id_list);
 				$form->updateMeta('extra_seats_price', $extra_seats_price);
 				$form->updateMeta('time_to_live', $time_to_live);
 				$form->updateMeta('thank_you_page', $thank_you_page);
 				$form->updateMeta('product_description', $product_description);
-				$form->updateMeta('extra', $extra);
 				$form->updateMeta('growsumo', $growsumo);
 				$form->updateMeta('gdpr', $gdpr);
-				$form->updateMeta('send_notification', $send_notification);
 				$form->updateMeta('product_image', $product_image);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('installments', $installments);
-				$form->updateMeta('stripe_installments', $stripe_installments);
-				$form->updateMeta('array_stripe_installments', $array_stripe_installments);
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
+				$form->updateMeta('old_price', $old_price);
 				$form->updateMeta('connector', $connector);
-				$form->updateMeta('public_name', $public_name);
-				$form->updateMeta('coupon_codes', $array_coupon);
-				$form->updateMeta('custom_fields', $array_fields);
-				$form->updateMeta('event', $event);
 				$site->redirectTo($site->urlTo("/backend/forms/edit/{$form->id}?msg=220"));
 			break;
 		}

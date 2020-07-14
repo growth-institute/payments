@@ -101,24 +101,7 @@
 					# Reset the cart
 					$site->payments->cart->reset();
 					# Notify the payments system
-					$class_name = $form->getMeta('connector') == 'ti' ? 'TIConnector' : 'HummingbirdConnector';
-					if (!$form->getMeta('connector')) {
-
-						$site->payments->enableConnector('hummingbird', new HummingbirdConnector);
-						$site->payments->notifyProcessed($order);
-					} else {
-
-						$site->payments->enableConnector($form->getMeta('connector'), new $class_name);
-						$site->payments->notifyProcessed($order);
-					}
-
-					if ($form->getMeta('event')) {
-
-						$site->payments->enableConnector('notifications', new NotificationsConnector);
-						$site->payments->notifyConnector($order, 'notifications');
-						$site->payments->enableConnector('events', new EventsConnector);
-						$site->payments->notifyConnector($order, 'events');
-					}
+					$site->payments->notifyProcessed($order);
 					#
 					$form = PaymentsForms::getById( $order->getMeta('form', 0) );
 					$url = '';

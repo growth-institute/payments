@@ -1,4 +1,5 @@
 <?php
+
 	abstract class PaymentsProcessor {
 
 		abstract function getTitle();
@@ -10,4 +11,5 @@
 			return false;
 		}
 	}
+
 ?>

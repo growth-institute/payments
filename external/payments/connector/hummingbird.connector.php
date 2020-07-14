@@ -19,20 +19,17 @@
 			//$params['notify'] = false;
 			$lang = $form->language;
 
-			if(isset($form->products) && $form->products && count($form->products) && !empty($form->products) && $form->products != '[""]') {
+			$curly = Curly::newInstance(false)
+					->setMethod('get')
+					->setURL("https://growthinstitute.com/{$lang}/payments/generic/")
+					->setOptions([CURLOPT_FOLLOWLOCATION => true])
+					->setParams($params)
+					->execute();
 
-				$curly = Curly::newInstance(false)
-						->setMethod('get')
-						->setURL("https://growthinstitute.com/{$lang}/payments/generic/")
-						->setOptions([CURLOPT_FOLLOWLOCATION => true])
-						->setParams($params)
-						->execute();
+			$res = $curly->getResponse('json');
 
-				$res = $curly->getResponse('json');
-
-				log_to_file(print_r($curly, 1), 'HummingbirdConnector');
-				log_to_file(print_r($res, 1), 'HummingbirdConnector');
-			}
+			log_to_file(print_r($curly, 1), 'HummingbirdConnector');
+			log_to_file(print_r($res, 1), 'HummingbirdConnector');
 		}
 	}
 ?>

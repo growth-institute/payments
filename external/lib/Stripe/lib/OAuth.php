@@ -22,7 +22,7 @@ abstract class OAuth
         if (!array_key_exists('response_type', $params)) {
             $params['response_type'] = 'code';
         }
-        $query = Util\Util::encodeParameters($params);
+        $query = Util\Util::urlEncode($params);
 
         return $base . '/oauth/authorize?' . $query;
     }
@@ -33,8 +33,6 @@ abstract class OAuth
      *
      * @param array|null $params
      * @param array|null $opts
-     *
-     * @throws \Stripe\Exception\OAuth\OAuthErrorException if the request fails
      *
      * @return StripeObject Object containing the response from the API.
      */
@@ -56,8 +54,6 @@ abstract class OAuth
      *
      * @param array|null $params
      * @param array|null $opts
-     *
-     * @throws \Stripe\Exception\OAuth\OAuthErrorException if the request fails
      *
      * @return StripeObject Object containing the response from the API.
      */
@@ -90,7 +86,7 @@ abstract class OAuth
               . 'after registering your account as a platform. See '
               . 'https://stripe.com/docs/connect/standard-accounts for details, '
               . 'or email support@stripe.com if you have any questions.';
-            throw new Exception\AuthenticationException($msg);
+            throw new Error\Authentication($msg);
         }
         return $clientId;
     }

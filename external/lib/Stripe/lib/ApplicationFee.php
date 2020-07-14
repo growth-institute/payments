@@ -11,21 +11,19 @@ namespace Stripe;
  * @property int $amount
  * @property int $amount_refunded
  * @property string $application
- * @property string|null $balance_transaction
+ * @property string $balance_transaction
  * @property string $charge
  * @property int $created
  * @property string $currency
  * @property bool $livemode
- * @property string|null $originating_transaction
+ * @property string $originating_transaction
  * @property bool $refunded
- * @property \Stripe\Collection $refunds
+ * @property Collection $refunds
  *
  * @package Stripe
  */
 class ApplicationFee extends ApiResource
 {
-    const OBJECT_NAME = 'application_fee';
-
     use ApiOperations\All;
     use ApiOperations\NestedResource;
     use ApiOperations\Retrieve;
@@ -33,11 +31,33 @@ class ApplicationFee extends ApiResource
     const PATH_REFUNDS = '/refunds';
 
     /**
-     * @param string $id The ID of the application fee on which to create the fee refund.
+     * This is a special case because the application fee endpoint has an
+     *    underscore in it. The parent `className` function strips underscores.
+     *
+     * @return string The name of the class.
+     */
+    public static function className()
+    {
+        return 'application_fee';
+    }
+
+    /**
      * @param array|null $params
      * @param array|string|null $opts
      *
-     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     * @return ApplicationFee The refunded application fee.
+     */
+    public function refund($params = null, $opts = null)
+    {
+        $this->refunds->create($params, $opts);
+        $this->refresh();
+        return $this;
+    }
+
+    /**
+     * @param array|null $id The ID of the application fee on which to create the refund.
+     * @param array|null $params
+     * @param array|string|null $opts
      *
      * @return ApplicationFeeRefund
      */
@@ -47,12 +67,10 @@ class ApplicationFee extends ApiResource
     }
 
     /**
-     * @param string $id The ID of the application fee to which the fee refund belongs.
-     * @param string $refundId The ID of the fee refund to retrieve.
+     * @param array|null $id The ID of the application fee to which the refund belongs.
+     * @param array|null $refundId The ID of the refund to retrieve.
      * @param array|null $params
      * @param array|string|null $opts
-     *
-     * @throws \Stripe\Exception\ApiErrorException if the request fails
      *
      * @return ApplicationFeeRefund
      */
@@ -62,12 +80,10 @@ class ApplicationFee extends ApiResource
     }
 
     /**
-     * @param string $id The ID of the application fee to which the fee refund belongs.
-     * @param string $refundId The ID of the fee refund to update.
+     * @param array|null $id The ID of the application fee to which the refund belongs.
+     * @param array|null $refundId The ID of the refund to update.
      * @param array|null $params
      * @param array|string|null $opts
-     *
-     * @throws \Stripe\Exception\ApiErrorException if the request fails
      *
      * @return ApplicationFeeRefund
      */
@@ -77,13 +93,11 @@ class ApplicationFee extends ApiResource
     }
 
     /**
-     * @param string $id The ID of the application fee on which to retrieve the fee refunds.
+     * @param array|null $id The ID of the application fee on which to retrieve the refunds.
      * @param array|null $params
      * @param array|string|null $opts
      *
-     * @throws \Stripe\Exception\ApiErrorException if the request fails
-     *
-     * @return Collection The list of fee refunds.
+     * @return ApplicationFeeRefund
      */
     public static function allRefunds($id, $params = null, $opts = null)
     {

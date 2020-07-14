@@ -11,11 +11,11 @@ namespace Stripe;
  * @property mixed $attributes
  * @property int $created
  * @property string $currency
- * @property string|null $image
+ * @property string $image
  * @property mixed $inventory
  * @property bool $livemode
- * @property \Stripe\StripeObject $metadata
- * @property mixed|null $package_dimensions
+ * @property StripeObject $metadata
+ * @property mixed $package_dimensions
  * @property int $price
  * @property string $product
  * @property int $updated
@@ -24,8 +24,6 @@ namespace Stripe;
  */
 class SKU extends ApiResource
 {
-    const OBJECT_NAME = 'sku';
-
     use ApiOperations\All;
     use ApiOperations\Create;
     use ApiOperations\Delete;

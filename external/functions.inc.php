@@ -19,7 +19,6 @@
 	include $site->baseDir('/external/pagination.inc.php');
 	include $site->baseDir('/external/cacher.inc.php');
 	include $site->baseDir('/external/curly.inc.php');
-	include $site->baseDir('/external/csbuddy.inc.php');
 
 	# Include Google Fonts
 	$fonts = array(
@@ -28,11 +27,10 @@
 	);
 	$site->registerStyle('google-fonts', get_google_fonts($fonts), true );
 	$site->registerStyle('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', true);
-	$site->registerStyle('codemirror', 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.css', true);
 	$site->registerStyle('reset', 'reset.css', false );
 	$site->registerStyle('plugins', 'plugins/plugins.css', false );
 	$site->registerStyle('print', 'print.css', false, array(), array('media' => 'print') );
-	$site->registerStyle('backend', 'backend.less', false, array('reset', 'google-fonts', 'font-awesome', 'plugins', 'codemirror') );
+	$site->registerStyle('backend', 'backend.less', false, array('reset', 'google-fonts', 'font-awesome', 'plugins') );
 	$site->registerStyle('site', 'site.less', false, array('reset', 'google-fonts', 'font-awesome') );
 	$site->enqueueStyle('print');
 
@@ -42,12 +40,9 @@
 	$site->registerScript('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js', true);
 	$site->registerScript('underscore', 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js', true);
 	$site->registerScript('clipboard', 'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js', true);
-	$site->registerScript('codemirror', 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.js', true);
-	$site->registerScript('codemirror.xml', 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/xml/xml.min.js', true);
-	$site->registerScript('codemirror.htmlmixed', 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js', true);
 	$site->registerScript('class', 'class.js', false, array('jquery', 'underscore', 'clipboard'));
 	$site->registerScript('site', 'site.js', false, array('class', 'jquery.valid4tor','plugins'));
-	$site->registerScript('backend', 'backend.js', false, array('class', 'jquery.valid4tor','plugins', 'loadzilla', 'codemirror', 'codemirror.xml', 'codemirror.htmlmixed'));
+	$site->registerScript('backend', 'backend.js', false, array('class', 'jquery.valid4tor','plugins', 'loadzilla'));
 
 	# General meta tags
 	$site->addMeta('UTF-8', '', 'charset');
@@ -71,26 +66,21 @@
 	include $site->baseDir('/external/lib/Parsedown.php');
 	include $site->baseDir('/external/lib/PasswordHash.php');
 	include $site->baseDir('/external/lib/Random.php');
-	include $site->baseDir('/external/lib/bcmath/autoload.php');
 
 	# Modules
 	include $site->baseDir('/external/hubspot.inc.php');
 
 	# Controllers
-	include $site->baseDir('/external/controller/client.controller.php');
+	// include $site->baseDir('/external/controller/client.controller.php');
 	include $site->baseDir('/external/controller/backend.controller.php');
 	include $site->baseDir('/external/controller/backend/managers.controller.php');
 	include $site->baseDir('/external/controller/backend/forms.controller.php');
-	include $site->baseDir('/external/controller/backend/events.controller.php');
-	include $site->baseDir('/external/controller/backend/attendees.controller.php');
 
 	# Models
 	include $site->baseDir('/external/model/attachment.model.php');
 	include $site->baseDir('/external/model/payments/form.model.php');
 	include $site->baseDir('/external/model/user.model.php');
 	include $site->baseDir('/external/model/manager.model.php');
-	include $site->baseDir('/external/model/event.model.php');
-	include $site->baseDir('/external/model/event_order.model.php');
 	#Validator Class
 	include $site->baseDir('/external/validator.inc.php');
 	#Flasher Library
@@ -101,7 +91,7 @@
 	include $site->baseDir('/external/payments/payments.inc.php');
 
 	$site->payments->enableConnector('hubspot', new HubSpotConnector);
-	//$site->payments->enableConnector('notifications', new NotificationsConnector);
+	/*$site->payments->enableConnector('hummingbird', new HummingbirdConnector);*/
 
 	# Start session
 	//session_start();

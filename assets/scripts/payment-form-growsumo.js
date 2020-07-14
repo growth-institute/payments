@@ -55,4 +55,4 @@ GrowSumo = Class.extend({
 	}
 });
 
-var giGrowsumo = new GrowSumo();
+var growsumo = new GrowSumo();

@@ -12,13 +12,9 @@
 			$first_name = $order->metas->first_name;
 			$last_name= $order->metas->last_name;
 			$email = $order->metas->email;
-			$form_name = $form->getMeta('public_name') ? $form->getMeta('public_name') : $form->name;
-
-			$password = $order->getMeta('password') ?: generate_password(8);
-			$order->updateMeta('password', $password);
-
+			$password = 'ggi2019';
 			$products = json_decode($form->products);
-			$locale = $form->language;
+			$params['locale'] = $form->language;
 
 			$courses = [];
 			$licenses = [];
@@ -28,12 +24,10 @@
 				$product_parts = explode('-', $product);
 				if (get_item($product_parts, 0) == 'license') {
 
-					$product_replace = str_replace('license-', '', $product);
-					$licenses[] = trim($product_replace);
-				} else if (get_item($product_parts, 0) == 'course') {
+					$licenses[] = $product;
+				} else {
 
-					$product_replace = str_replace('course-', '', $product);
-					$courses[] = trim($product_replace);
+					$courses[] = $product;
 				}
 			}
 
@@ -46,26 +40,7 @@
 				'ti_courses' => $courses
 			];
 
-			$fields_email = [
-				'name' => $first_name.' '.$last_name,
-				'send_email' => 1,
-				'password' => $password,
-				'email' => $email,
-				'form_name' => $form_name,
-				'language' => $locale
-			];
-
-
-			if($first_name && $last_name && $email && $password && (count($licenses) || count($courses))) {
-
-					$curly = Curly::newInstance(false)
-					->setMethod('post')
-					->setURL('https://learn.growthinstitute.com/admin/ti-create-email')
-					->setFields($fields_email)
-					->execute();
-
-					$res = $curly->getResponse('json');
-
+			if($first_name && $last_name && $email && $password) {
 
 					$curly = Curly::newInstance(false)
 					->setMethod('post')
@@ -73,11 +48,13 @@
 					->setFields($fields)
 					->execute();
 
+					$data['user'] = $curly->getResponse('json');
 					$json = file_get_contents("https://growthinstitute.com/ti/fetch/users/{$email}");
-					$res = $curly->getResponse('json');
 			}
 
-
+			$res = $curly->getResponse('json');
+			print_a($res);
+			exit;
 		}
 	}
 ?>

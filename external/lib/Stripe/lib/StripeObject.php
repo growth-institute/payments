@@ -32,73 +32,6 @@ class StripeObject implements \ArrayAccess, \Countable, \JsonSerializable
         return $permanentAttributes;
     }
 
-    /**
-     * Additive objects are subobjects in the API that don't have the same
-     * semantics as most subobjects, which are fully replaced when they're set.
-     * This is best illustrated by example. The `source` parameter sent when
-     * updating a subscription is *not* additive; if we set it:
-     *
-     *     source[object]=card&source[number]=123
-     *
-     * We expect the old `source` object to have been overwritten completely. If
-     * the previous source had an `address_state` key associated with it and we
-     * didn't send one this time, that value of `address_state` is gone.
-     *
-     * By contrast, additive objects are those that will have new data added to
-     * them while keeping any existing data in place. The only known case of its
-     * use is for `metadata`, but it could in theory be more general. As an
-     * example, say we have a `metadata` object that looks like this on the
-     * server side:
-     *
-     *     metadata = ["old" => "old_value"]
-     *
-     * If we update the object with `metadata[new]=new_value`, the server side
-     * object now has *both* fields:
-     *
-     *     metadata = ["old" => "old_value", "new" => "new_value"]
-     *
-     * This is okay in itself because usually users will want to treat it as
-     * additive:
-     *
-     *     $obj->metadata["new"] = "new_value";
-     *     $obj->save();
-     *
-     * However, in other cases, they may want to replace the entire existing
-     * contents:
-     *
-     *     $obj->metadata = ["new" => "new_value"];
-     *     $obj->save();
-     *
-     * This is where things get a little bit tricky because in order to clear
-     * any old keys that may have existed, we actually have to send an explicit
-     * empty string to the server. So the operation above would have to send
-     * this form to get the intended behavior:
-     *
-     *     metadata[old]=&metadata[new]=new_value
-     *
-     * This method allows us to track which parameters are considered additive,
-     * and lets us behave correctly where appropriate when serializing
-     * parameters to be sent.
-     *
-     * @return Util\Set Set of additive parameters
-     */
-    public static function getAdditiveParams()
-    {
-        static $additiveParams = null;
-        if ($additiveParams === null) {
-            // Set `metadata` as additive so that when it's set directly we remember
-            // to clear keys that may have been previously set by sending empty
-            // values for them.
-            //
-            // It's possible that not every object has `metadata`, but having this
-            // option set when there is no `metadata` field is not harmful.
-            $additiveParams = new Util\Set([
-                'metadata',
-            ]);
-        }
-        return $additiveParams;
-    }
-
     public function __construct($id = null, $opts = null)
     {
         list($id, $this->_retrieveOptions) = Util\Util::normalizeId($id);
@@ -116,14 +49,14 @@ class StripeObject implements \ArrayAccess, \Countable, \JsonSerializable
     public function __set($k, $v)
     {
         if (static::getPermanentAttributes()->includes($k)) {
-            throw new Exception\InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 "Cannot set $k on this object. HINT: you can't set: " .
                 join(', ', static::getPermanentAttributes()->toArray())
             );
         }
 
         if ($v === "") {
-            throw new Exception\InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 'You cannot set \''.$k.'\'to an empty string. '
                 .'We interpret empty strings as NULL in requests. '
                 .'You may set obj->'.$k.' = NULL to delete the property'
@@ -153,7 +86,7 @@ class StripeObject implements \ArrayAccess, \Countable, \JsonSerializable
         $nullval = null;
         if (!empty($this->_values) && array_key_exists($k, $this->_values)) {
             return $this->_values[$k];
-        } elseif (!empty($this->_transientValues) && $this->_transientValues->includes($k)) {
+        } else if (!empty($this->_transientValues) && $this->_transientValues->includes($k)) {
             $class = get_class($this);
             $attrs = join(', ', array_keys($this->_values));
             $message = "Stripe Notice: Undefined property of $class instance: $k. "
@@ -220,7 +153,7 @@ class StripeObject implements \ArrayAccess, \Countable, \JsonSerializable
      * @param array $values
      * @param null|string|array|Util\RequestOptions $opts
      *
-     * @return static The object constructed from the given values.
+     * @return StripeObject The object constructed from the given values.
      */
     public static function constructFrom($values, $opts = null)
     {
@@ -243,7 +176,7 @@ class StripeObject implements \ArrayAccess, \Countable, \JsonSerializable
         $this->_originalValues = self::deepCopy($values);
 
         if ($values instanceof StripeObject) {
-            $values = $values->toArray();
+            $values = $values->__toArray(true);
         }
 
         // Wipe old state before setting new.  This is useful for e.g. updating a
@@ -280,7 +213,7 @@ class StripeObject implements \ArrayAccess, \Countable, \JsonSerializable
             // This is necessary in case metadata is empty, as PHP arrays do
             // not differentiate between lists and hashes, and we consider
             // empty arrays to be lists.
-            if (($k === "metadata") && (is_array($v))) {
+            if ($k === "metadata") {
                 $this->_values[$k] = StripeObject::constructFrom($v, $opts);
             } else {
                 $this->_values[$k] = Util\Util::convertToStripeObject($v, $opts);
@@ -361,13 +294,13 @@ class StripeObject implements \ArrayAccess, \Countable, \JsonSerializable
         // user intended it to.
         if ($value === null) {
             return "";
-        } elseif (($value instanceof ApiResource) && (!$value->saveWithParent)) {
+        } elseif (($value instanceof APIResource) && (!$value->saveWithParent)) {
             if (!$unsaved) {
                 return null;
             } elseif (isset($value->id)) {
                 return $value;
             } else {
-                throw new Exception\InvalidArgumentException(
+                throw new \InvalidArgumentException(
                     "Cannot save property `$key` containing an API resource of type " .
                     get_class($value) . ". It doesn't appear to be persisted and is " .
                     "not marked as `saveWithParent`."
@@ -390,7 +323,7 @@ class StripeObject implements \ArrayAccess, \Countable, \JsonSerializable
             }
         } elseif ($value instanceof StripeObject) {
             $update = $value->serializeParameters($force);
-            if ($original && $unsaved && $key && static::getAdditiveParams()->includes($key)) {
+            if ($original && $unsaved) {
                 $update = array_merge(self::emptyValues($original), $update);
             }
             return $update;
@@ -401,53 +334,27 @@ class StripeObject implements \ArrayAccess, \Countable, \JsonSerializable
 
     public function jsonSerialize()
     {
-        return $this->toArray();
+        return $this->__toArray(true);
     }
 
-    /**
-     * Returns an associative array with the key and values composing the
-     * Stripe object.
-     *
-     * @return array The associative array.
-     */
-    public function toArray()
+    public function __toJSON()
     {
-        $maybeToArray = function ($value) {
-            if (is_null($value)) {
-                return null;
-            }
-
-            return is_object($value) && method_exists($value, 'toArray') ? $value->toArray() : $value;
-        };
-
-        return array_reduce(array_keys($this->_values), function ($acc, $k) use ($maybeToArray) {
-            if ($k[0] == '_') {
-                return $acc;
-            }
-            $v = $this->_values[$k];
-            if (Util\Util::isList($v)) {
-                $acc[$k] = array_map($maybeToArray, $v);
-            } else {
-                $acc[$k] = $maybeToArray($v);
-            }
-            return $acc;
-        }, []);
-    }
-
-    /**
-     * Returns a pretty JSON representation of the Stripe object.
-     *
-     * @return string The JSON representation of the Stripe object.
-     */
-    public function toJSON()
-    {
-        return json_encode($this->toArray(), JSON_PRETTY_PRINT);
+        return json_encode($this->__toArray(true), JSON_PRETTY_PRINT);
     }
 
     public function __toString()
     {
         $class = get_class($this);
-        return $class . ' JSON: ' . $this->toJSON();
+        return $class . ' JSON: ' . $this->__toJSON();
+    }
+
+    public function __toArray($recursive = false)
+    {
+        if ($recursive) {
+            return Util\Util::convertStripeObjectToArray($this->_values);
+        } else {
+            return $this->_values;
+        }
     }
 
     /**
@@ -508,8 +415,8 @@ class StripeObject implements \ArrayAccess, \Countable, \JsonSerializable
         } elseif ($obj instanceof StripeObject) {
             $values = $obj->_values;
         } else {
-            throw new Exception\InvalidArgumentException(
-                "empty_values got unexpected object type: " . get_class($obj)
+            throw new InvalidArgumentException(
+                "empty_values got got unexpected object type: " . get_class($obj)
             );
         }
         $update = array_fill_keys(array_keys($values), "");
@@ -525,25 +432,12 @@ class StripeObject implements \ArrayAccess, \Countable, \JsonSerializable
     }
 
     /**
-     * Sets the last response from the Stripe API
+     * @param ApiResponse
      *
-     * @param ApiResponse $resp
-     * @return void
+     * @return void Set the last response from the Stripe API
      */
     public function setLastResponse($resp)
     {
         $this->_lastResponse = $resp;
-    }
-
-    /**
-     * Indicates whether or not the resource has been deleted on the server.
-     * Note that some, but not all, resources can indicate whether they have
-     * been deleted.
-     *
-     * @return bool Whether the resource is deleted.
-     */
-    public function isDeleted()
-    {
-        return isset($this->_values['deleted']) ? $this->_values['deleted'] : false;
     }
 }

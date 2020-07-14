@@ -14,7 +14,7 @@
 		<input type="hidden" name="bn" value="PP-BuyNowBF">
 		<input type="hidden" name="custom" value="<?php echo $site->payments->cart->uid; ?>">
 		<input type="hidden" name="notify_url" value="<?php $site->urlTo('/paypal/webhook', true); ?>">
-		<input type="hidden" name="return" value="<?php sanitized_print($form->getMeta('thank_you_page') ? $form->getMeta('thank_you_page') :  $site->urlTo("/thanks/{$site->payments->cart->uid}", false)); ?>">
+		<input type="hidden" name="return" value="<?php $site->urlTo("/thanks/{$site->payments->cart->uid}", true); ?>">
 		<div class="form-actions">
 			<button type="submit" class="button button-primary"><?php $i18n->translate('form.paypal.button'); ?></button>
 		</div>

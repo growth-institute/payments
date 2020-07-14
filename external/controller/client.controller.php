@@ -1,17 +1,12 @@
 <?php
 
-	class FrontendController extends Controller {
+	class ClientController extends Controller {
 
 		function init() {
-			global $site;
 			$this->addActionAlias('home', 'indexAction');
 			#
 			$site->enqueueStyle('site');
 			$site->enqueueScript('site');
-		}
-
-		function getSubControllerName($base_name) {
-			return "Frontend{$base_name}";
 		}
 
 		function indexAction() {
@@ -19,7 +14,7 @@
 			$request = $site->getRequest();
 			$response = $site->getResponse();
 			#
-			$site->redirectTo($site->urlTo('/backend', false));
+			$site->render('page-home');
 			#
 			return $response->respond();
 		}

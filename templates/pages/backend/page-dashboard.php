@@ -36,16 +36,7 @@
 													</div>
 												</div>
 											</div>
-											<div class="item item-module">
-												<div class="item-name">
-													<a href="<?php $site->urlTo('/backend/events', true); ?>">Events</a>
-												</div>
-												<div class="item-details">
-													<div class="details">
-														<span class="details-name">Manage Events</span>
-													</div>
-												</div>
-											</div>
+											
 											<div class="item item-module">
 												<div class="item-name">
 													<a href="<?php $site->urlTo('/backend/managers', true); ?>">Managers</a>
@@ -56,7 +47,7 @@
 													</div>
 												</div>
 											</div>
-
+										
 										</div>
 									</div>
 								</div>
