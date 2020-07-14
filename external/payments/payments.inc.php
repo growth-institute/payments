@@ -10,7 +10,10 @@
 	include $site->baseDir('/external/payments/processor.inc.php');
 	include $site->baseDir('/external/payments/connector/docebo.connector.php');
 	include $site->baseDir('/external/payments/connector/hubspot.connector.php');
+	include $site->baseDir('/external/payments/connector/ti.connector.php');
 	include $site->baseDir('/external/payments/connector/hummingbird.connector.php');
+	include $site->baseDir('/external/payments/connector/notifications.connector.php');
+	include $site->baseDir('/external/payments/connector/event.connector.php');
 	include $site->baseDir('/external/payments/processor/conekta.processor.php');
 	include $site->baseDir('/external/payments/processor/paypal.processor.php');
 	include $site->baseDir('/external/payments/processor/stripe.processor.php');
@@ -69,36 +72,52 @@
 			$req_form = get_item($args, 1);
 			$form = is_numeric($req_form) ? PaymentsForms::getById($req_form, $params) : PaymentsForms::getBySlug($req_form, $params);
 			if ($form) {
-				#
+
+				$site->addScriptVar('payments', array(
+					'id_form' => $form->id
+				));
+
 				switch ($request->type) {
 					case 'get':
-						if ($form->language == 'es') {
-							$i18n->setLocale('es');
-						}else if ($form->language == 'en') {
-							$i18n->setLocale('en');
+
+						# Changing locale bases on form language
+						$i18n->setLocale($form->language);
+
+						if($form->id == 119 || $form->id == 123 || $form->id == 124 || $form->id == 125 || $form->id == 132 || $form->id == 133 || $form->id == 134 || $form->id == 142 || $form->id == 143 || $form->id == 144) {
+
+							$site->registerStyle('suc', 'suc.less', false);
+							$site->enqueueStyle('suc');
 						}
+
+						# Inyecting Growsimo script
 						if($form->getMeta('growsumo')) {
+
 							$site->registerScript('growsumo', 'payment-form-growsumo.js', false);
 							$site->enqueueScript('growsumo');
 						}
-						if($form->getMeta('quantity')) {
 
-							$quantity_script = [];
-							$quantity_script['price'] = $form->total;
-							$quantity_script['usd'] = $form->getMeta('price_usd');
-							$quantity_script['currency'] = strtoupper($form->currency);
+						$quantity_script = [];
+						$quantity_script['price'] = $form->total;
+						$quantity_script['currency'] = strtoupper($form->currency);
+						$quantity_script['codes'] = $form->getMeta('coupon_codes');
 
-							if($form->getMeta('discounts')) {
-								$quantity_script['discounts'] = $form->getMeta('discounts');
-							} elseif($form->getMeta('extra_seats_price')) {
-								$quantity_script['extraSeatPrice'] = $form->getMeta('extra_seats_price');
-								if ($form->getMeta('extra_seats_price_usd')) {
-									$quantity_script['extraSeatPriceUsd'] = $form->getMeta('extra_seats_price_usd');
-								}
-							}
-							$site->addScriptVar( 'quantity', $quantity_script );
+						# If discounts are present, then we add the full discounts array to the variable
+						if($form->getMeta('discounts')) {
+
+							$quantity_script['discounts'] = $form->getMeta('discounts');
+
+						# Variables for extra seats
+						} else if($form->getMeta('extra_seats_price')) {
+
+							$quantity_script['extraSeatPrice'] = $form->getMeta('extra_seats_price');
+
+						}
+						if($form->getMeta('exchange_rate')) {
+
+							$quantity_script['exchangeRate'] = $form->getMeta('exchange_rate');
 						}
 
+						$site->addScriptVar( 'quantity', $quantity_script );
 						# Initialize cart
 						$products_json = json_decode($form->products);
 						if ($products_json) {
@@ -137,7 +156,8 @@
 						$data['form'] = $form;
 						$data['order'] = $order;
 
-						$site->setPageTitle( $site->getPageTitle($form->name) );
+						$title = $form->getMeta('public_name') ? $form->getMeta('public_name') : $form->name;
+						$site->setPageTitle( $site->getPageTitle($title) );
 						$site->render('payments/page-form', $data);
 					break;
 					case 'post':
@@ -146,20 +166,25 @@
 						$email = 		$request->post('email');
 						$phone = 		$request->post('phone');
 						$company = 		$request->post('company');
+						$coach = 		$request->post('coach');
 						$quantity = 	$request->post('quantity', 1);
 						$gdpr = 		$request->post('gdpr');
 						$growsumo = 	$request->post('growsumo');
 						$partner_key = 	$request->post('growsumo-partner-key');
+						$code = 		$request->post('code');
 						#
+
 						$order = PaymentsOrders::getByUid($site->payments->cart->uid);
 						if($order) {
 
 							//Updating total based on rules
 
+							# The final total should be the total times the quantity
 							$final_total = $form->total*$quantity;
 							$total_seats = $form->total;
 							$quantity_info = '';
 
+							# Applying discounts based on quantity (Range discounts)
 							if($discounts = get_item($form->metas, 'discounts')) {
 
 								foreach($discounts as $discount) {
@@ -170,32 +195,48 @@
 
 											$final_total = $final_total*(1-($discount['val']/100));
 											$quantity_info = "{$quantity} ({$discount['val']}% off)";
+										} else {
+											$final_total -= $discount['val'];
+											$quantity_info = "{$quantity} (\${$discount['val']}% off)";
 										}
 									}
 								}
 							} else if ($seats = get_item($form->metas, 'extra_seats_price')) {
+
 								$final_total = $total_seats+($seats*$quantity);
 							}
 
-							$order->total = $final_total;
-							$order->save();
+							# Apply Coupon code discount
+							if($codes = $form->getMeta('coupon_codes')) {
+								$code_trim = str_replace(' ','',$code);
+								/*var_dump($code);
+								var_dump($code_trim);*/
 
-							if ($form->getMeta('price_usd')) {
-								if ($form->getMeta('extra_seats_price_usd')) {
-									$price_usd = $form->getMeta('price_usd');
-									$seats_usd = $form->getMeta('extra_seats_price_usd');
-									$total_seats_usd = $price_usd + ($seats_usd * $quantity);
-									$order->updateMeta('total_usd', $total_seats_usd);
-								} else {
-									$total_usd = $form->getMeta('price_usd') * $quantity;
-									$order->updateMeta('total_usd', $total_usd);
+								foreach ($codes as $code) {
+
+									if ($code['coupon'] == $code_trim) {
+
+										if ($code['type_code'] == 'percentage') {
+
+											$final_total = $final_total*(1-($code['value_code']/100));
+											$quantity_info = "{$quantity} ({$code['value_code']}% off)(coupon code {$code['coupon']} with {$code['value_code']} % off)";
+										} else {
+
+											$final_total -= $code['value_code'];
+											$quantity_info = "{$quantity} (\${$code['value_code']}% off)(coupon code {$code['coupon']} with {$code['value_code']} % off)";
+										}
+
+									}
 								}
 							}
+							$order->total = $final_total;
+							$order->save();
 							$order->updateMeta('first_name', $first_name);
 							$order->updateMeta('last_name', $last_name);
 							$order->updateMeta('email', $email);
 							$order->updateMeta('phone', $phone);
 							$order->updateMeta('company', $company);
+							$order->updateMeta('coach', $coach);
 							$order->updateMeta('quantity', $quantity);
 
 							if($quantity_info) $order->updateMeta('quantity_info', $quantity_info);
@@ -205,8 +246,16 @@
 							$order->updateMeta('growsumo-partner-key', $partner_key);
 							$order->updateMeta('growsumo-customer-key', $email);
 							# Notify the abandonment payments system
-							$site->payments->disableConnector('hummingbird');
-							$site->payments->notifyRegister($order);
+							$site->payments->notifyConnector($order, 'hubspot');
+
+							if ($request->post('free')) {
+								$order->updateMeta('free', '1');
+
+								# Notify the abandonment payments system
+								$site->payments->notifyConnector($order, 'hubspot');
+								$url = $form->getMeta('thank_you_page');
+								$site->redirectTo($url);
+							}
 						}
 						#
 						$site->redirectTo( $site->urlTo("/review/{$order->uid}") );
@@ -231,15 +280,27 @@
 			$params['pdoargs'] = ['fetch_metas'];
 			$order = PaymentsOrders::getByUid($req_order, $params);
 			$form = PaymentsForms::getById($order->getMeta('form', 0), $params);
+
 			# Setting Language
 			$i18n->setLocale($form->language);
 			# If we have order and form
 			if ($order && $form) {
+
+				$site->addScriptVar('payments', array(
+					'id_order' => $order->id,
+					'id_form' => $form->id
+				));
+
 				# If the form is pending of payment
 				if ($order->payment_status == 'Pending') {
 					switch ($request->type) {
 						case 'get':
 							#
+							if($form->id == 119 || $form->id == 123 || $form->id == 124 || $form->id == 125 || $form->id == 132 || $form->id == 133 || $form->id == 134 || $form->id == 142 || $form->id == 143 || $form->id == 144) {
+
+								$site->registerStyle('suc', 'suc.less', false);
+								$site->enqueueStyle('suc');
+							}
 							$processors_json = json_decode($form->processor);
 							$processors = [];
 							if ($processors_json) {
@@ -257,7 +318,8 @@
 							ksort($processors);
 							$data['processors'] = $processors;
 
-							$site->setPageTitle( $site->getPageTitle($form->name) );
+							$title = $form->getMeta('public_name') ? $form->getMeta('public_name') : $form->name;
+							$site->setPageTitle( $site->getPageTitle($title) );
 							$site->render('payments/page-review', $data);
 						break;
 					}
@@ -290,6 +352,9 @@
 					case 'post':
 						$fields = $request->post();
 						$order = PaymentsOrders::getByUid( $fields['custom'] );
+
+						$order->updateMeta('password', generate_password(6));
+
 						if ($order) {
 							$processor->process($order, $fields);
 						} else {
@@ -372,6 +437,13 @@
 			}
 		}
 
+		function notifyConnector($order, $connector) {
+			global $site;
+			if(isset($this->connectors)) {
+				$this->connectors[$connector]->process($order);
+			}
+		}
+
 		function notifyRegister($order) {
 			global $site;
 			if ($this->connectors) {
@@ -428,5 +500,4 @@
 	}
 
 	$site->payments = Payments::getInstance();
-
 ?>

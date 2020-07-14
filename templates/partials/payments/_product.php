@@ -13,7 +13,7 @@
 			<?php endif; ?>
 
 			<div class="the-content">
-				<h1 class="section-title"><?php sanitized_print($form->name); ?></h1>
+				<h1 class="section-title"><?php $form->getMeta('public_name') ? sanitized_print($form->getMeta('public_name')) : sanitized_print($form->name); ?></h1>
 				<?php echo $parsedown->text( get_item($form->metas, 'product_description') ); ?>
 			</div>
 		</div>

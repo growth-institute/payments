@@ -9,7 +9,7 @@
 		//Form Main
 		'form.title.general' => 'Complete your data and finalize your registration',
 		'form.title.menu-payment' => 'Payment',
-		'form.title.student' => 'Student details',
+		'form.title.student' => 'Registration Details',
 		'form.title.payment' => 'Payment details',
 		'form.label.first-name' => 'First name',
 		'form.label.last-name' => 'Last name',

@@ -16,20 +16,23 @@
 			$params['processor'] = $order->payment_processor;
 			$params['sku'] = json_decode($form->products);
 			$params['locale'] = $form->language;
-			$params['notify'] = false;
+			//$params['notify'] = false;
 			$lang = $form->language;
 
-			$curly = Curly::newInstance(false)
-					->setMethod('get')
-					->setURL("https://growthinstitute.com/{$lang}/payments/generic/")
-					->setOptions([CURLOPT_FOLLOWLOCATION => true])
-					->setParams($params)
-					->execute();
+			if(isset($form->products) && $form->products && count($form->products) && !empty($form->products) && $form->products != '[""]') {
 
-			$res = $curly->getResponse('json');
+				$curly = Curly::newInstance(false)
+						->setMethod('get')
+						->setURL("https://growthinstitute.com/{$lang}/payments/generic/")
+						->setOptions([CURLOPT_FOLLOWLOCATION => true])
+						->setParams($params)
+						->execute();
 
-			log_to_file(print_r($curly, 1), 'HummingbirdConnector');
-			log_to_file(print_r($res, 1), 'HummingbirdConnector');
+				$res = $curly->getResponse('json');
+
+				log_to_file(print_r($curly, 1), 'HummingbirdConnector');
+				log_to_file(print_r($res, 1), 'HummingbirdConnector');
+			}
 		}
 	}
 ?>

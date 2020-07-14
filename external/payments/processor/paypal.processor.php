@@ -38,10 +38,6 @@
 		function webhook($fields = []) {
 			global $site;
 			#
-			$paypal_opts = $site->getOption('paypal');
-			$paypal_account = get_item($paypal_opts, 'account');
-			#
-			$res = $this->validate($fields);
 			# Get values
 			$item_name = get_item($fields, 'item_name');
 			$item_number = get_item($fields, 'item_number');
@@ -54,18 +50,43 @@
 			$payer_email = get_item($fields, 'payer_email');
 			$resend = get_item($fields, 'resend');
 			$custom = get_item($fields, 'custom');
+
+			$req_order = $custom;
+			$order = PaymentsOrders::getByUid($req_order);
+			#
+			$paypal_opts = $site->getOption('paypal');
+			$paypal_opts = get_item($paypal_opts, $order->sandbox ? 'sandbox' : 'production');
+
+			$paypal_account = get_item($paypal_opts, 'account');
+			$paypal_sandbox = get_item($paypal_opts, 'sandbox');
+
+			log_to_file('Entering to Webhook', 'paypal');
+
+			$res = $this->validate($fields, $order);
+
+			log_to_file('Entering to Webhook', 'paypal');
+
 			# Check payment
 			if ( strcmp($res, "VERIFIED") == 0 ) {
 				# Decode payload
-				$req_order = $custom;
-				$order = PaymentsOrders::getByUid($req_order);
 				if ($order) {
+					$form = PaymentsForms::getById($order->getMeta('form'));
 					# Process payment
 					log_to_file("PayPal IPN notification {$ipn_track_id}::{$txn_id} ({$res})", 'paypal');
 					log_to_file("Received verified payment from {$payer_email}", 'paypal');
 					log_to_file(print_r($_POST, true), 'paypal');
+
+					log_to_file("Payment Status: {$payment_status}", 'paypal');
+					log_to_file("Receiver Email: {$receiver_email}", 'paypal');
+					log_to_file("Paypal Account: {$paypal_account[$order->currency]}", 'paypal');
+					log_to_file("Payment amount: " . floatval($payment_amount), 'paypal');
+					log_to_file("Order Total: " . floatval($order->total), 'paypal');
+					log_to_file("Payment Currency: {$payment_currency}", 'paypal');
+					log_to_file("Order Currency: {$order->currency}", 'paypal');
+					log_to_file("checking payment status: " . ($payment_status == 'Completed' && $receiver_email == $paypal_account[$order->currency] && floatval($payment_amount) == floatval($order->total) && $payment_currency == strtoupper($order->currency)), 'paypal');
+
 					# Check payment status
-					if ( $payment_status == 'Completed' && $receiver_email == $paypal_account && $payment_amount == $order->total && $payment_currency == strtoupper($order->currency) ) {
+					if ( $payment_status == 'Completed' && $receiver_email == $paypal_account[$order->currency] && floatval($payment_amount) == floatval($order->total) && $payment_currency == strtoupper($order->currency) ) {
 						log_to_file("Payment status from {$payer_email} is now \"Completed\"", 'paypal');
 						$order->payment_status = 'Paid';
 						$order->payment_processor = 'PayPal';
@@ -74,7 +95,16 @@
 						$order->save();
 						$order->updateMeta('installments', 0);
 						# Notify the payments system
-						$site->payments->notifyProcessed($order);
+						$class_name = $form->getMeta('connector') == 'ti' ? 'TIConnector' : 'HummingbirdConnector';
+						if (!$form->getMeta('connector')) {
+
+							$site->payments->enableConnector('hummingbird', new HummingbirdConnector);
+							$site->payments->notifyProcessed($order);
+						} else {
+
+							$site->payments->enableConnector($form->getMeta('connector'), new $class_name);
+							$site->payments->notifyProcessed($order);
+						}
 					}
 					log_to_file('---------------------------------', 'paypal');
 				} else {
@@ -89,7 +119,7 @@
 			}
 		}
 
-		protected function validate($fields) {
+		protected function validate($fields, $order = null) {
 			global $site;
 			#
 			$paypal_opts = $site->getOption('paypal');
@@ -122,5 +152,4 @@
 			return $res;
 		}
 	}
-
 ?>

@@ -27,7 +27,7 @@
 
 		//Form Payments Stripe
 		'form.stripe.card-element' => 'Tarjeta de crédito o débito',
-		'form.stripe.submit' => 'Procesando Pago',
+		'form.stripe.submit' => 'Procesar pago',
 
 		//Form Payments Paypal
 		'form.paypal.label-title' => 'Pague de manera segura y fácil con PayPal',
