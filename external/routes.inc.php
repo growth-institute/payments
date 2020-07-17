@@ -157,7 +157,7 @@
 		$handled = Controller::routeRequest($controller, $action, $id);
 		#
 		if (! $handled ) {
-			$response->setStatus(404);
+			//$response->setStatus(404);
 			$ret = false;
 		} else {
 			$ret = true;
