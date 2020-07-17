@@ -64,24 +64,25 @@
 						<?php endif; ?>
 					</div>
 				</div>
-				<div class="row row-md row-collapse">
-				<?php if($form->getMeta('trial_days')): ?>
+					<div class="row row-md row-collapse">
 
-					<div class="col col-6 total-total">
-						<h3>Right Now</h3>
-					</div>
-					<div class="col col-6 total-prices">
-						<span class="total-price js-total-price">$<?php echo number_format(0, 2); ?> <?php echo strtoupper($form->currency); ?></span>
-					</div>
-					<br><br>
+					<?php if($form->getMeta('trial_days')): ?>
 
-					<div class="col col-6 total-total">
-						<h3><small>At the end of the trial</small></h3>
-					</div>
-					<div class="col col-6 total-prices">
-						<span class="total-price js-total-price"><small>$<?php echo number_format(isset($order) ? $order->total : $form->total, 2); ?> <?php echo strtoupper($form->currency); ?> / month</small></span>
-					</div>
-				<?php endif; ?>
+						<div class="col col-6 total-total">
+							<h3>Ahora</h3>
+						</div>
+						<div class="col col-6 total-prices">
+							<span class="total-price js-total-price">$<?php echo number_format(0, 2); ?> <?php echo strtoupper($form->currency); ?></span>
+						</div>
+						<br><br>
+
+						<div class="col col-6 total-total">
+							<h3><small>Al final del periodo de pruebas</small></h3>
+						</div>
+						<div class="col col-6 total-prices">
+							<span class="total-price js-total-price"><small>$<?php echo number_format(isset($order) ? $order->total : $form->total, 2); ?> <?php echo strtoupper($form->currency); ?> / mensual</small></span>
+						</div>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>
