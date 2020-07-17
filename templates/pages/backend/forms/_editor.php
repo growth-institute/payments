@@ -176,6 +176,10 @@
 											<option name="annual" value="12" <?php echo( $item && $item->getMeta('periodicity') == '12' ? 'selected="selected"' : ''); ?> >Annual</option>
 										</select>
 									</div>
+									<div class="form-group">
+										<label for="trial_days" class="control-label">Trial Days</label>
+										<input type="text" name="trial_days" id="trial_days" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('trial_days') : ''); ?>">
+									</div>
 									<!-- <div class="form-group">
 										<label for="ocurrency" id="label_ocurrency" class="control-label">Ocurrency</label>
 										<input type="number" min="0" name="ocurrency" id="ocurrency" value="<?php sanitized_print($item ? $item->getMeta('ocurrency') : ''); ?>" class="form-control input-block">

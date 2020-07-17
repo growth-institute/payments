@@ -142,6 +142,7 @@ function checkImageAction(){
 				$product_image = $request->post('product_image');
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
+				$trial_days = $request->post('trial_days');
 				$installments = $request->post('installments');
 				$stripe_installments = $request->post('stripe-installments');
 				$from = $request->post('from');
@@ -238,6 +239,7 @@ function checkImageAction(){
 				$form->updateMeta('product_image', $product_image);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
+				$form->updateMeta('trial_days', $trial_days);
 				$form->updateMeta('installments', $installments);
 				$form->updateMeta('stripe_installments', $stripe_installments);
 				$form->updateMeta('discounts', $array_discount);
@@ -311,6 +313,7 @@ function checkImageAction(){
 				$product_image = $request->post('product_image');
 				$periodicity = $request->post('periodicity');
 				$ocurrency = $request->post('ocurrency');
+				$trial_days = $request->post('trial_days');
 				$installments = $request->post('installments');
 				$stripe_installments = $request->post('stripe-installments');
 				$array_stripe_installments = $request->post('array_stripe_installments');
@@ -403,6 +406,7 @@ function checkImageAction(){
 				$form->updateMeta('product_image', $product_image);
 				$form->updateMeta('periodicity', $periodicity);
 				$form->updateMeta('ocurrency', $ocurrency);
+				$form->updateMeta('trial_days', $trial_days);
 				$form->updateMeta('installments', $installments);
 				$form->updateMeta('stripe_installments', $stripe_installments);
 				$form->updateMeta('array_stripe_installments', $array_stripe_installments);
