@@ -287,6 +287,11 @@
 
 						if(isset($coupon) && isset($coupon->id)) $options_subscription['coupon'] = $coupon->id;
 
+						if($form->getMeta('trial_days')) {
+
+							$options_subscription['trial_period_days'] = $form->getMeta('trial_days');
+						}
+
 						log_to_file(print_r($options_subscription,1), 'subscription');
 						$subscription = \Stripe\Subscription::create($options_subscription);
 						if ($subscription && $subscription->status == 'active') {
