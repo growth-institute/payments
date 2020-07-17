@@ -21,12 +21,12 @@
 				<div class="inner boxfix-vert">
 					<div class="margins-horz">
 						<div class="row row-md">
-							<div class="col col-6 col-md-6">
+							<div class="col col-7 col-md-7">
 								<div class="the-content">
 									<?php $site->partial('payments/payment', ['form' => $form, 'order' => $order, 'processors' => $processors]); ?>
 								</div>
 							</div>
-							<div class="col col-6 col-md-6">
+							<div class="col col-5 col-md-5">
 								<?php $site->partial('payments/product', ['form' => $form, 'order' => $order]); ?>
 							</div>
 						</div>
