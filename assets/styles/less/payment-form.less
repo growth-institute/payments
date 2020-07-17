@@ -37,8 +37,6 @@ section {
 .button.button-primary {
 
 	.button-style(@payment_base_color);
-	width: 100%;
-	margin-bottom: 10px;
 }
 
 .tabs {
@@ -67,7 +65,7 @@ section {
 		text-align: left;
 	}
 
-	background-color: white;
+	background-color: @payment_base_color;
 
 	img {
 
@@ -143,18 +141,13 @@ section {
 
 .payment-navigation {
 
-	padding-top: 10px;
+	padding-top: 40px;
 	margin-bottom: 30px;
 	color: white;
 
 
 
 	.menu {
-
-		font-size: 1.2em;
-		padding: 15px 0;
-		text-align: center;
-		text-transform: uppercase;
 
 		.cf;
 		background-color: @payment_base_color;
@@ -204,7 +197,7 @@ section {
 
 		.form-group {
 
-			margin-bottom: 15px;
+			margin-bottom: 25px;
 
 			label {
 
@@ -346,16 +339,18 @@ section {
 					text-decoration: line-through;
 				}
 
+				.total-price {
+
+					font-size: 1.2em;
+					color: @payment_base_color;
+				}
+
 			}
 
 		}
 	}
 }
-.total-price {
 
-	font-size: 1.2em;
-	color: @payment_base_color;
-}
 
 .payment-features {
 

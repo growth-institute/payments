@@ -2,14 +2,14 @@
 	return [
 		//Student details
 		'globals.button' => 'Continuar',
-		'tabs.menu.item-info' => 'Detalles de usuario',
-		'tabs.menu.item-payment' => 'Pago',
+		'tabs.menu.item-info' => 'Paso 1',
+		'tabs.menu.item-payment' => 'Paso 2',
 		'section.message-error' => 'Modo de Pruebas',
 
 		//Form Main
 		'form.title.general' => 'Completa tus datos y finaliza tu inscripción',
-		'form.title.menu-payment' => 'Pago',
-		'form.title.student' => 'Detalles de estudiante',
+		'form.title.menu-payment' => 'Paso 2',
+		'form.title.student' => 'Detalles del Líder',
 		'form.title.payment' => 'Detalles de pago',
 		'form.label.first-name' => 'Nombre',
 		'form.label.last-name' => 'Apellido',

@@ -6,7 +6,7 @@
 		<div class="inner boxfix-vert">
 			<div class="margins-horz">
 				<div class="site-logo">
-					<img src="<?php $site->img('payment-form/logoGIblue2018.jpg'); ?>" alt="Growth Institute">
+					<img src="<?php $site->img('backend/logo-white.svg'); ?>" alt="Growth Institute">
 				</div>
 			</div>
 		</div>
