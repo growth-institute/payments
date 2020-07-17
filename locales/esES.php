@@ -28,6 +28,10 @@
 		//Form Payments Stripe
 		'form.stripe.card-element' => 'Tarjeta de crédito o débito',
 		'form.stripe.submit' => 'Procesar pago',
+		'periodicity.option1' => 'mensual',
+		'periodicity.option3' => 'trimestral',
+		'periodicity.option6' => 'semestral',
+		'periodicity.option12' => 'anual',
 
 		//Form Payments Paypal
 		'form.paypal.label-title' => 'Pague de manera segura y fácil con PayPal',
