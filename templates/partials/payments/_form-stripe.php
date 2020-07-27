@@ -48,3 +48,9 @@
 	</div>
 
 <?php endif; ?>
+
+<?php if($copy = $form->getMeta('before_payment_copy')): ?>
+	<div class="the-content margins-vert">
+		<?php echo $copy; ?>
+	</div>
+<?php endif; ?>
