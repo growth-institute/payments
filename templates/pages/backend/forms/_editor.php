@@ -166,15 +166,25 @@
 										<label for="coupon_subscription" class="control-label">Coupon Subscription (applies only in the first month %off)</label>
 										<input type="text" name="coupon_subscription" id="coupon_subscription" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('coupon_subscription') : ''); ?>">
 									</div>
-									<div class="form-group">
-										<label for="periodicity" id="label_periodicity" class="control-label">Periodicity</label>
-										<select name="periodicity" id="periodicity" class="form-control input-block">
-											<option value="">Select</option>
-											<option name="monthly" value="1" <?php echo( $item && $item->getMeta('periodicity') == '1' ? 'selected="selected"' : ''); ?> >Monthly</option>
-											<option name="3_months" value="3" <?php echo( $item && $item->getMeta('periodicity') == '3' ? 'selected="slected"' : ''); ?> >Every 3 months</option>
-											<option name="6_months" value="6" <?php echo( $item && $item->getMeta('periodicity') == '6' ? 'selected="selected"' : ''); ?> >Every 6 months</option>
-											<option name="annual" value="12" <?php echo( $item && $item->getMeta('periodicity') == '12' ? 'selected="selected"' : ''); ?> >Annual</option>
-										</select>
+									<div class="row row-md">
+										<div class="col col-6 col-md-6">
+											<div class="form-group">
+												<label for="periodicity" id="label_periodicity" class="control-label">Periodicity</label>
+												<select name="periodicity" id="periodicity" class="form-control input-block">
+													<option value="">Select</option>
+													<option name="monthly" value="1" <?php echo( $item && $item->getMeta('periodicity') == '1' ? 'selected="selected"' : ''); ?> >Monthly</option>
+													<option name="3_months" value="3" <?php echo( $item && $item->getMeta('periodicity') == '3' ? 'selected="slected"' : ''); ?> >Every 3 months</option>
+													<option name="6_months" value="6" <?php echo( $item && $item->getMeta('periodicity') == '6' ? 'selected="selected"' : ''); ?> >Every 6 months</option>
+													<option name="annual" value="12" <?php echo( $item && $item->getMeta('periodicity') == '12' ? 'selected="selected"' : ''); ?> >Annual</option>
+												</select>
+											</div>
+										</div>
+										<div class="col col-6 col-md-6">
+											<div class="form-group">
+												<label for="coupon_subscription" class="control-label">Number of periods</label>
+												<input type="text" name="periods" id="periods" class="form-control input-block" value="<?php sanitized_print($item ? $item->getMeta('periods') : ''); ?>">
+											</div>
+										</div>
 									</div>
 									<div class="form-group">
 										<label for="trial_days" class="control-label">Trial Days</label>

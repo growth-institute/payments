@@ -125,6 +125,29 @@
 		return $ret;
 	}
 
+	function cancel_date($date, $periods, $periodicity) {
+
+		switch ($periodicity) {
+			case '1':
+				$months = 1 * $periods;
+				$date = date('Y-m-d', strtotime("+{$months} months", strtotime($date)));
+			break;
+			case '3':
+				$months = 3 * $periods;
+				$date = date('Y-m-d', strtotime("+{$months} months", strtotime($date)));
+			break;
+			case '6':
+				$months = 6 * $periods;
+				$date = date('Y-m-d', strtotime("+{$months} months", strtotime($date)));
+			break;
+			case '12':
+				$months = 12 * $periods;
+				$date = date('Y-m-d', strtotime("+{$months} months", strtotime($date)));
+			break;
+		}
+		return $date;
+	}
+
 	function message($message, $type = 'error') {
 
 		if($message) {

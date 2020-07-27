@@ -274,6 +274,7 @@
 								//}
 							//}
 						}
+						
 						$options_subscription = array(
 							'items' => [['plan' => $plan->id]],
 							'customer' => $customer->id,
@@ -290,6 +291,13 @@
 						if($form->getMeta('trial_days')) {
 
 							$options_subscription['trial_period_days'] = $form->getMeta('trial_days');
+						}
+
+						if($form->getMeta('periods')) {
+
+							$time = date('Y-m-d');
+							$cancelation = cancel_date($time, $form->getMeta('periods'), $form->getMeta('periodicity'));
+							$options_subscription['cancel_at'] = strtotime($cancelation);
 						}
 
 						log_to_file(print_r($options_subscription,1), 'subscription');

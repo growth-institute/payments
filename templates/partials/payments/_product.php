@@ -61,9 +61,14 @@
 					</div>
 				</div>
 				<div class="row row-md">
-					<div class="col col-12 price-mxn">
+					<div class="col col-6 total-total">
 						<?php if ($form->currency == 'mxn' && $form->getMeta('exchange_rate')): ?>
-							<span class="js-price-mxn"> equivale a:$<?php echo number_format(isset($order) ? $order->total : $form->total, 2); ?> <?php echo strtoupper($form->currency); ?> <?php echo $periodicity; ?></span>
+							<h3>equivale a:</h3>
+						<?php endif; ?>
+					</div>
+					<div class="col col-6 total-prices">
+						<?php if ($form->currency == 'mxn' && $form->getMeta('exchange_rate')): ?>
+							<span class="total-price js-price-mxn">$<?php echo number_format(isset($order) ? $order->total : $form->total, 2); ?> <?php echo strtoupper($form->currency); ?> <?php echo $periodicity; ?></span>
 						<?php endif; ?>
 					</div>
 				</div>
