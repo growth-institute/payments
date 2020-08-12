@@ -106,9 +106,14 @@ function checkImageAction(){
 				$credentials['api_key'] = 'a32d646d-4819-4c40-89a9-dd9140ae9fda';
 				$hubspot = HubSpot::newInstance($credentials);
 				$res = $hubspot->contactListsAll();*/
+				$url_emails = "https://api.hubapi.com/marketing-emails/v1/emails?hapikey=a32d646d-4819-4c40-89a9-dd9140ae9fda&limit=300&orderBy=-created&subcategory=single_send_api";
+				$emails = file_get_contents($url_emails);
+				$emails = json_decode($emails, true);
 				$notice = Flasher::notice();
 				$data = [];
 				$data['notice'] = $notice;
+				$data['emails'] = $emails;
+
 				//$data['hubspot_list'] = $res;
 				$site->render('backend/forms/page-new', $data);
 				break;
@@ -141,6 +146,7 @@ function checkImageAction(){
 				$ocurrency = $request->post('ocurrency');
 				$trial_days = $request->post('trial_days');
 				$installments = $request->post('installments');
+				$email_notification = $request->post('email_notification');
 				$from = $request->post('from');
 				$to = $request->post('to');
 				$val = $request->post('val');
@@ -217,6 +223,7 @@ function checkImageAction(){
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('trial_days', $trial_days);
 				$form->updateMeta('installments', $installments);
+				$form->updateMeta('email_notification', $email_notification);
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
 				$form->updateMeta('old_price', $old_price);
@@ -243,15 +250,19 @@ function checkImageAction(){
 		}
 		switch($request->type){
 			case 'get':
-			//create an object Flasher to send massage with url
+				//create an object Flasher to send massage with url
 				/*$credentials = array();
 				$credentials['api_key'] = 'a32d646d-4819-4c40-89a9-dd9140ae9fda';
 				$hubspot = HubSpot::newInstance($credentials);
 				$res = $hubspot->contactListsAll();*/
+				$url_emails = "https://api.hubapi.com/marketing-emails/v1/emails?hapikey=a32d646d-4819-4c40-89a9-dd9140ae9fda&limit=300&orderBy=-created&subcategory=single_send_api";
+				$emails = file_get_contents($url_emails);
+				$emails = json_decode($emails, true);
 				$notice = Flasher::notice();
 				$data = [];
 				$data['item'] = $form;
 				$data['notice'] = $notice;
+				$data['emails'] = $emails;
 				//$data['hubspot_list'] = $res;
 				$site->render('backend/forms/page-edit', $data);
 			break;
@@ -283,6 +294,7 @@ function checkImageAction(){
 				$ocurrency = $request->post('ocurrency');
 				$trial_days = $request->post('trial_days');
 				$installments = $request->post('installments');
+				$email_notification = $request->post('email_notification');
 				$from = $request->post('from');
 				$to = $request->post('to');
 				$val = $request->post('val');
@@ -372,6 +384,7 @@ function checkImageAction(){
 				$form->updateMeta('ocurrency', $ocurrency);
 				$form->updateMeta('trial_days', $trial_days);
 				$form->updateMeta('installments', $installments);
+				$form->updateMeta('email_notification', $email_notification);
 				$form->updateMeta('discounts', $array_discount);
 				$form->updateMeta('coupon_subscription', $coupon_subscription);
 				$form->updateMeta('old_price', $old_price);

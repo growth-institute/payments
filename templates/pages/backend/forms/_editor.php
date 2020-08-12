@@ -104,6 +104,9 @@
 				<li>
 					<a href="#tab-four">Discounts</a>
 				</li>
+				<li>
+					<a href="#tab-five">Email Notification</a>
+				</li>
 			</ul>
 			<div class="tabs">
 				<div class="tab" id="tab-one">
@@ -372,6 +375,24 @@
 									</script>
 								</div>
 							</div>
+					</div>
+				</div>
+				<div class="tab" id="tab-five">
+					<div class="metabox">
+						<div class="metabox-header">Notification</div>
+						<div class="metabox-body">
+							<div class="form-group">
+								<label for="email_notification" class="control-label">Email Notification</label>
+								<select type="text" name="email_notification" id="email_notification" class="form-control input-block js-select2">
+									<option value="">Select</option>
+									<?php foreach($emails['objects'] as $email): ?>
+										
+										<option <?php echo $item && $item->getMeta('email_notification') ? 'selected' : ''; ?> value="<?php echo $email['id']; ?>"><?php echo $email['name']; ?></option>
+											
+									<?php endforeach; ?>
+								</select>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
