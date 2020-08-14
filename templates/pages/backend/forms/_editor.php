@@ -48,7 +48,7 @@
 							<label for="connector" class="control-label">Connector</label>
 							<select name="connector" id="connector" class="form-control input-block">
 								<option value="">Select</option>
-								<option value="hummingbird" <?php echo( $item && $item->getMeta('connector') == 'hummingbird' ? 'selected="selected"' :  ''); ?>>Hummingbird</option>
+								<option value="none" <?php echo( $item && $item->getMeta('connector') == 'none' ? 'selected="selected"' :  ''); ?>>None</option>
 								<option value="ti" <?php echo( $item && $item->getMeta('connector') == 'ti' ? 'selected="selected"' :  ''); ?>>Thought Industries</option>
 							</select>
 						</div>

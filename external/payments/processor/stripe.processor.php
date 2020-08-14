@@ -180,10 +180,10 @@
 						# Reset the cart
 						$site->payments->cart->reset();
 						# Notify the payments system
-						$class_name = $form->getMeta('connector') == 'ti' ? 'TIConnector' : 'HummingbirdConnector';
+						$class_name = $form->getMeta('connector') == 'ti' ? 'TIConnector' : 'none';
 						if (!$form->getMeta('connector')) {
 
-							$site->payments->enableConnector('hummingbird', new HummingbirdConnector);
+							$site->payments->enableConnector('ti', new TIConnector);
 							$site->payments->notifyProcessed($order);
 						} else {
 
@@ -227,10 +227,10 @@
 						# Reset the cart
 						$site->payments->cart->reset();
 						# Notify the payments system
-						$class_name = $form->getMeta('connector') == 'ti' ? 'TIConnector' : 'HummingbirdConnector';
+						$class_name = $form->getMeta('connector') == 'ti' ? 'TIConnector' : 'none';
 						if (!$form->getMeta('connector')) {
 
-							$site->payments->enableConnector('hummingbird', new HummingbirdConnector);
+							$site->payments->enableConnector('ti', new TIConnector);
 							$site->payments->notifyProcessed($order);
 						} else {
 
