@@ -237,6 +237,7 @@
 							$order->updateMeta('phone', $phone);
 							$order->updateMeta('company', $company);
 							$order->updateMeta('coach', $coach);
+							$order->updateMeta('code', $code);
 							$order->updateMeta('quantity', $quantity);
 
 							if($quantity_info) $order->updateMeta('quantity_info', $quantity_info);

@@ -33,7 +33,7 @@
 					<div class="form-group">
 						<input type="text" name="company" id="company" placeholder="<?php $i18n->translate('form.label.company'); ?>*" class="form-control input-block" value="<?php sanitized_print($order ? $order->getMeta('company') : ''); ?>" data-validate="required">
 					</div>
-					<?php if ($form->id == 123 || $form->id == 124 || $form->id == 125 || $form->id == 132 || $form->id == 133 || $form->id == 134 || $form->id == 142 || $form->id == 143 || $form->id == 144): ?>
+					<?php if ($form->id == 123 || $form->id == 124 || $form->id == 125 || $form->id == 142 || $form->id == 143 || $form->id == 144): ?>
 						<hr>
 						<div class="form-group">
 						<input type="text" name="coach" id="coach" placeholder="Scaling Up Coach name (if applicable)" class="form-control input-block">
