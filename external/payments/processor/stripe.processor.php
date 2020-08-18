@@ -274,7 +274,7 @@
 								//}
 							//}
 						}
-						
+
 						$options_subscription = array(
 							'items' => [['plan' => $plan->id]],
 							'customer' => $customer->id,
@@ -345,9 +345,13 @@
 					// ITS NOT A SUBSCRIPTION
 					} else {
 
-						$order_metadata = (array)$order->getMetas();
+						//$order_metadata = (array)$order->getMetas();
 						$order_metadata = array_filter($order_metadata);
 						$order_metadata['order_id'] = $order->id;
+
+						/*foreach($order_metadata as $k => $metadata) {
+							if(is_array($metadata)) $order_metadata[$k] = @json_encode($metadata);
+						}*/
 
 						if($form->getMeta('growsumo')) {
 
