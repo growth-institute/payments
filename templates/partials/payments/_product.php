@@ -91,6 +91,23 @@
 							<span class="total-price js-total-price"><small>$<?php echo number_format(isset($order) ? $order->total : $form->total, 2); ?> <?php echo strtoupper($form->currency); ?> / mensual</small></span>
 						</div>
 					<?php endif; ?>
+					<?php if($form->getMeta('coupon_subscription')): ?>
+
+						<div class="col col-6 total-total">
+							<h3>Paga Ahora</h3>
+						</div>
+						<div class="col col-6 total-prices">
+							<span class="total-price js-total-price">$<?php echo number_format($form->total - ($form->total*$form->getMeta('coupon_subscription')/ 100), 2); ?> <?php echo strtoupper($form->currency); ?></span>
+						</div>
+						<br><br>
+
+						<div class="col col-6 total-total">
+							<h3><small>En 30 días</small></h3>
+						</div>
+						<div class="col col-6 total-prices">
+							<span class="total-price js-total-price"><small>$<?php echo number_format(isset($order) ? $order->total : $form->total, 2); ?> <?php echo strtoupper($form->currency); ?> / mensual</small></span>
+						</div>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>
