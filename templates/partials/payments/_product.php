@@ -48,17 +48,19 @@
 				<?php $periodicity = $form->getMeta('periodicity') ? $i18n->translate('periodicity.option' . $form->getMeta('periodicity'), false) : false; ?>
 
 				<div class="row row-md">
-					<div class="col col-6 total-total">
-						<h3><?php $i18n->translate('sidebar.product.h3-total'); ?></h3>
-					</div>
-					<div class="col col-6 total-prices">
-						<?php if ($form->currency == 'mxn' && $form->getMeta('exchange_rate')): ?>
-								<span class="total-price js-total-price-mxn">$<?php echo number_format(isset($form) ? (float) $form->total / $form->getMeta('exchange_rate') : (float) $form->total, 2); ?> USD <?php echo $periodicity; ?></span>
-						<?php else: ?>
-							<span class="total-price js-total-price">$<?php echo number_format(isset($order) ? $order->total : $form->total, 2); ?> <?php echo strtoupper($form->currency); ?> <?php echo $periodicity; ?></span>
-						<?php endif; ?>
-							<!-- <span class="total-price js-quantity2"></span> -->
-					</div>
+					<?php if (!$form->getMeta('coupon_subscription')): ?>
+						<div class="col col-6 total-total">
+							<h3><?php $i18n->translate('sidebar.product.h3-total'); ?></h3>
+						</div>
+						<div class="col col-6 total-prices">
+							<?php if ($form->currency == 'mxn' && $form->getMeta('exchange_rate')): ?>
+									<span class="total-price js-total-price-mxn">$<?php echo number_format(isset($form) ? (float) $form->total / $form->getMeta('exchange_rate') : (float) $form->total, 2); ?> USD <?php echo $periodicity; ?></span>
+							<?php else: ?>
+								<span class="total-price js-total-price">$<?php echo number_format(isset($order) ? $order->total : $form->total, 2); ?> <?php echo strtoupper($form->currency); ?> <?php echo $periodicity; ?></span>
+							<?php endif; ?>
+								<!-- <span class="total-price js-quantity2"></span> -->
+						</div>
+					<?php endif; ?>
 				</div>
 				<div class="row row-md">
 					<div class="col col-6 total-total">
