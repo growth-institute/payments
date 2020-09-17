@@ -83,7 +83,7 @@
 						# Changing locale bases on form language
 						$i18n->setLocale($form->language);
 
-						if($form->id == 119 || $form->id == 123 || $form->id == 124 || $form->id == 125 || $form->id == 132 || $form->id == 133 || $form->id == 134 || $form->id == 142 || $form->id == 143 || $form->id == 144) {
+						if($form->id == 119 || $form->id == 123 || $form->id == 124 || $form->id == 125 || $form->id == 132 || $form->id == 133 || $form->id == 134 || $form->id == 142 || $form->id == 143 || $form->id == 144 || $form->id == 168 || $form->id == 169 || $form->id == 170) {
 
 							$site->registerStyle('suc', 'suc.less', false);
 							$site->enqueueStyle('suc');
@@ -297,7 +297,7 @@
 					switch ($request->type) {
 						case 'get':
 							#
-							if($form->id == 119 || $form->id == 123 || $form->id == 124 || $form->id == 125 || $form->id == 132 || $form->id == 133 || $form->id == 134 || $form->id == 142 || $form->id == 143 || $form->id == 144) {
+							if($form->id == 119 || $form->id == 123 || $form->id == 124 || $form->id == 125 || $form->id == 132 || $form->id == 133 || $form->id == 134 || $form->id == 142 || $form->id == 143 || $form->id == 144 || $form->id == 168 || $form->id == 169 || $form->id == 170) {
 
 								$site->registerStyle('suc', 'suc.less', false);
 								$site->enqueueStyle('suc');
